@@ -1,33 +1,15 @@
 import torch
-import torchvision
 from torchvision import datasets, transforms
 from torch.utils.data import Dataset, DataLoader
 import torch.nn as nn
 import torch.nn.functional as F
-import torchvision.models
 import argparse
-from datetime import datetime
 import os
-import time
-import multiprocessing
-import psutil
-import json
-import itertools
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import h5py
-from sklearn.model_selection import train_test_split
-from skimage.util import crop, random_noise
-from skimage.transform import rescale, resize, rotate, AffineTransform, warp
 import torch.optim as optim
-from tqdm import tqdm
-import copy
 import sys
 
 sys.path.append("..")
 import logging
-import random
 
 from resnet18 import resnet18
 from dataset import Dataset_Generator, train_validation_test_split, get_classes_map, number_of_classes, \
