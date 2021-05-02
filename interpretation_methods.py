@@ -1,5 +1,8 @@
 import torch
 from torch import Tensor
+import numpy as np
+import copy
+from scipy.special import softmax
 from captum.attr import (
     GuidedGradCam,
     DeepLift,
@@ -17,8 +20,7 @@ from captum.attr import (
     KernelShap
 )
 
-__all__ = ['deep_lift', 'guided_grad_cam', 'saliency', 'gradient_shap', 'input_x_gradient', 'kernel_shap',
-           'shapley_value_sampling', 'feature_permutation', 'occlusion', 'deconvolution', 'guided_backprop',
+__all__ = ['deep_lift', 'guided_grad_cam', 'saliency', 'gradient_shap', 'input_x_gradient', 'shapley_value_sampling', 'feature_permutation', 'occlusion', 'deconvolution', 'guided_backprop',
            'intergrated_gradients']
 """
 Interpretation Methods from Library Captum
@@ -116,3 +118,45 @@ def guided_grad_cam(model, input, label, layer=None):
 def saliency(model, input, label):
     saliency = Saliency(model)
     return saliency.attribute(input, target=label)
+
+
+### Shuffle interpretation methods
+
+def shuffle_pixel_interpretation(model, test_loader, num_channels, device, shuffle_times):
+    model.eval()
+    y_true = list()
+    y_pred = list()
+    y_pred_per_channel = {}
+    for n in range(num_channels):
+        y_pred_per_channel["y_pred_{}".format(n)] = list()
+    with torch.no_grad():
+        for test_data in test_loader:
+            test_images, test_labels = test_data[0].to(device).float(), test_data[1].to(device)
+            pred = model(test_images).argmax(dim=1)
+            ### True and Predicted labels of original data
+            for i_or in range(len(pred)):
+                y_true.append(test_labels[i_or].item())
+                y_pred.append(pred[i_or].item())
+            ### Predited labels of shuffled data
+            for i in range(test_images[0].shape[0]):
+                pred_images = []
+                for image in test_images:
+                    image_shuffled_times = []
+                    for t in range(shuffle_times):
+                        im = shuffle_pixels_in_channel(i, image)
+                        image_shuffled_times.append(im)
+                    image_shuffled_times = torch.stack(image_shuffled_times, dim=0)
+                    pred_image_shuffled_times = model(image_shuffled_times).argmax(dim=1)
+                    pred_images.append(pred_image_shuffled_times)
+                for i_ch in range(len(pred_images)):
+                    y_pred_per_channel["y_pred_{}".format(i)].append(pred_images[i_ch])
+        return y_true, y_pred, y_pred_per_channel
+
+
+def shuffle_pixels_in_channel(channel, image):
+    im = copy.deepcopy(image)
+    channel_shape = im[channel].shape
+    arr = np.asarray(im[channel].flatten())
+    np.random.shuffle(arr)
+    im[channel] = torch.Tensor(arr.reshape(channel_shape))
+    return im

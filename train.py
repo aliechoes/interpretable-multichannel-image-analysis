@@ -7,6 +7,7 @@ import argparse
 import os
 import torch.optim as optim
 import sys
+from datetime import datetime
 
 sys.path.append("..")
 import logging
@@ -16,10 +17,10 @@ from dataset import Dataset_Generator, train_validation_test_split, get_classes_
     number_of_channels
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--h5_file', default="data/Lyse fix sample_1_Focused & Singlets & CD45 pos.h5",
+parser.add_argument('--h5_file', default="data/WBC/Lyse fix sample_1_Focused & Singlets & CD45 pos.h5",
                     help="dataset root dir")
 parser.add_argument('--batch_size', default=64, help="batch size", type=int)
-parser.add_argument('--n_epochs', default=10, help="epochs to train", type=int)
+parser.add_argument('--n_epochs', default=30, help="epochs to train", type=int)
 parser.add_argument('--num_workers', type=int, default=2, help='number of data loading workers')
 parser.add_argument('--lr', default=0.001, help="learning rate", type=float)
 parser.add_argument('--model_save_path', default='models/', help="path to save models")
@@ -27,10 +28,13 @@ parser.add_argument('--log_dir', default='logs/', help="path to save logs")
 parser.add_argument('--resume_model', default='', help="resume model name")
 parser.add_argument('--only_channels', default=[], help="the channels to be used for the model training", nargs='+', type=int)
 parser.add_argument('--only_classes', default=None, help="the classes to be used for the model training", nargs='+', type=int)
+parser.add_argument('--dev', default='cpu', help="cpu or cuda")
 opt = parser.parse_args()
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+STATISTICS = {'mean': torch.tensor([304.2639,   9.8240,  22.6822,   8.7255,  11.8347,  21.6101,  24.2642,
+         20.3926, 297.5268,  21.1990,   9.0134,  13.9198]), 'std': torch.tensor([111.9068,  13.5673,   8.3950,   3.7691,   4.4474,  23.4030,  21.6173,
+         16.3016, 109.4356,   8.6368,   3.8256,   5.8190])}
 
 def get_statistics(dataloader):
     nmb_channels = 0
@@ -49,16 +53,29 @@ def get_statistics(dataloader):
         for i in range(nmb_channels):
             statistics["mean"][i] += data[:, i, :, :].mean()
             statistics["std"][i] += data[:, i, :, :].std()
+    logging.info('statistics used: %s' % (str(statistics)))
     return statistics
 
 
 if __name__ == '__main__':
+    if opt.dev != 'cpu':
+        opt.dev = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output.txt'), level=logging.DEBUG)
+    now = datetime.now()
 
+    timestamp = datetime.timestamp(now)
+
+    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_{}.txt'.format(timestamp)), level=logging.DEBUG)
+    logging.info("the deviced being used is {}".format(opt.dev))
     train_indx, validation_indx, test_indx = train_validation_test_split(h5_file=opt.h5_file, only_classes=opt.only_classes)
 
     label_map = get_classes_map(opt.h5_file)
+
+    logging.info('train_indx used: %s' % (', '.join(str(x) for x in train_indx)))
+    logging.info('validation_indx used: %s' % (', '.join(str(x) for x in validation_indx)))
+    logging.info('test_indx used: %s' % (', '.join(str(x) for x in test_indx)))
+    logging.info('label_map used: %s' % (str(label_map)))
+
 
     transform = transforms.Compose(
         [transforms.RandomVerticalFlip(),
@@ -71,6 +88,8 @@ if __name__ == '__main__':
                              batch_size=opt.batch_size,
                              shuffle=False,
                              num_workers=opt.num_workers)
+
+    logging.info('the length of the trainloader is: %s' % (str(len(trainloader))))
 
     # collect statistics of the train data (mean & standard deviation) to normalize the data
     statistics = get_statistics(trainloader)
@@ -118,7 +137,7 @@ if __name__ == '__main__':
     num_ftrs = model.fc.in_features
     model.fc = nn.Linear(num_ftrs, num_classes)
 
-    model = model.to(device)
+    model = model.to(opt.dev)
     criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
 
@@ -127,7 +146,7 @@ if __name__ == '__main__':
         model.load_state_dict(checkpoint)
         for log in os.listdir(opt.log_dir):
             os.remove(os.path.join(opt.log_dir, log))
-
+    breakpoint()
     for epoch in range(opt.n_epochs):
         running_loss = 0.0
         logging.info('epoch%d' % epoch)
@@ -138,7 +157,7 @@ if __name__ == '__main__':
             if indx.sum() > 0:
                 inputs, labels = data["image"][indx], data["label"][indx]
 
-                inputs, labels = inputs.to(device), labels.to(device)
+                inputs, labels = inputs.to(opt.dev), labels.to(opt.dev)
                 inputs = inputs.float()
                 labels = labels.reshape(-1)
 
@@ -167,7 +186,7 @@ if __name__ == '__main__':
                 if indx.sum() > 0:
                     inputs, labels = data["image"][indx], data["label"][indx]
 
-                    inputs, labels = inputs.to(device), labels.to(device)
+                    inputs, labels = inputs.to(opt.dev), labels.to(opt.dev)
                     inputs = inputs.float()
                     labels = labels.reshape(-1)
 
@@ -190,7 +209,7 @@ if __name__ == '__main__':
             if indx.sum() > 0:
                 inputs, labels = data["image"][indx], data["label"][indx]
 
-                inputs, labels = inputs.to(device), labels.to(device)
+                inputs, labels = inputs.to(opt.dev), labels.to(opt.dev)
                 inputs = inputs.float()
                 labels = labels.reshape(-1)
 
@@ -202,4 +221,5 @@ if __name__ == '__main__':
     logging.info('Accuracy of the network on the %d test images: %d %%' % (len(test_dataset),
                                                                            100 * correct / total))
 
-    torch.save(model.state_dict(), os.path.join(opt.model_save_path, "final_model_dict.pth"))
+    logging.info("The model saved: %s" % "final_model_dict_{}.pth".format(timestamp))
+    torch.save(model.state_dict(), os.path.join(opt.model_save_path, "final_model_dict_{}.pth".format(timestamp)))

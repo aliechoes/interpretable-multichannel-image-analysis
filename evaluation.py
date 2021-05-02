@@ -7,7 +7,8 @@ from matplotlib import pyplot as plt
 from interpretation_methods import *
 import numpy as np
 from resnet18 import resnet18
-from interpretation import preprocess_image, run_interpretation_methods
+from interpretation_heatmap import run_interpretation_methods
+from util import preprocess_image
 import copy
 from scipy.special import softmax
 
@@ -22,6 +23,7 @@ parser.add_argument('--num_class', default=7, help="number of the classes to loa
 parser.add_argument('--batch', default=64, type=int)
 parser.add_argument('--path_to_save_results', default="results/",
                     help="path to the folder to save results")
+parser.add_argument('--num_workers', default=1, type=int)
 opt = parser.parse_args()
 
 __all_interpret_methods__ = ['deep_lift', 'guided_grad_cam', 'saliency', 'gradient_shap', 'input_x_gradient',
@@ -77,7 +79,7 @@ if __name__ == '__main__':
     logging.info('The model is loaded')
 
     # evaluate the method
-    files_to_interpret, data_loader = preprocess_image(opt.path_to_images)
+    files_to_interpret, data_loader = preprocess_image(opt.path_to_images, opt.batch, opt.num_workers)
     number_of_samples = len(files_to_interpret)
     if opt.only_methods is not None:
         methods_to_run = opt.only_methods

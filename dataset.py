@@ -6,6 +6,8 @@ from sklearn.model_selection import train_test_split
 from skimage.util import crop,  random_noise
 import copy
 import sys
+from imblearn.over_sampling import RandomOverSampler
+from collections import Counter
 sys.path.append("..")
 
 def crop_pad_h_w(image_dummy,reshape_size):
@@ -42,17 +44,27 @@ def crop_pad_h_w(image_dummy,reshape_size):
 def train_validation_test_split(h5_file, validation_size = 0.15, test_size = 0.20, only_classes = None):
     data = h5py.File(h5_file, "r")
     # object_numbers = data.get("object_number")[()]
+
+    oversample = RandomOverSampler(random_state=42, sampling_strategy='all')
+
     if only_classes is None:
         only_classes = data.get("labels")[()]
     object_numbers = data.get("object_number")[()][np.isin(data.get("labels")[()], only_classes)]
-    data.close()
     train, test = train_test_split( object_numbers,
-                                       test_size=test_size,
+                                       test_size=test_size, stratify=data.get("labels")[()][object_numbers],
                                        random_state=314)
+
     train, validation = train_test_split( train,
                                        test_size=validation_size,
                                        random_state=314)
-    return train, validation, test
+
+    train_lbl = data.get("labels")[()][train]
+    val_lbl = data.get("labels")[()][validation]
+    train, _ = oversample.fit_resample(np.asarray(train).reshape(-1, 1), np.asarray(train_lbl))
+    validation, _ = oversample.fit_resample(np.asarray(validation).reshape(-1, 1), np.asarray(val_lbl))
+    # breakpoint()
+    data.close()
+    return train.T[0], validation.T[0], test
 
 def get_classes_map(h5_file):
     data = h5py.File(h5_file, "r")
