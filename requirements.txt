@@ -40,7 +40,7 @@ sklearn==0.0
 threadpoolctl==2.1.0
 tifffile
 torch==1.7.1
-torchvision==0.8.2
+torchvision==0.9.1
 tornado==6.0.4
 tqdm==4.28.1
 typing-extensions==3.7.4.3

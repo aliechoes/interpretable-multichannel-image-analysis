@@ -3,29 +3,30 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 import h5py
 from sklearn.model_selection import train_test_split
-from skimage.util import crop,  random_noise
+from skimage.util import crop, random_noise
 import copy
 import sys
 from imblearn.over_sampling import RandomOverSampler
-from collections import Counter
+
 sys.path.append("..")
 
-def crop_pad_h_w(image_dummy,reshape_size):
+
+def crop_pad_h_w(image_dummy, reshape_size):
     if image_dummy.shape[0] < reshape_size:
-        h1_pad = ( reshape_size - image_dummy.shape[0])/2
+        h1_pad = (reshape_size - image_dummy.shape[0]) / 2
         h1_pad = int(h1_pad)
-        h2_pad =  reshape_size - h1_pad - image_dummy.shape[0]
+        h2_pad = reshape_size - h1_pad - image_dummy.shape[0]
         h1_crop = 0
         h2_crop = 0
     else:
         h1_pad = 0
         h2_pad = 0
-        h1_crop = ( reshape_size - image_dummy.shape[0])/2
+        h1_crop = (reshape_size - image_dummy.shape[0]) / 2
         h1_crop = abs(int(h1_crop))
-        h2_crop = image_dummy.shape[0]- reshape_size  - h1_crop
+        h2_crop = image_dummy.shape[0] - reshape_size - h1_crop
 
     if image_dummy.shape[1] < reshape_size:
-        w1_pad = (reshape_size - image_dummy.shape[1])/2
+        w1_pad = (reshape_size - image_dummy.shape[1]) / 2
         w1_pad = int(w1_pad)
         w2_pad = reshape_size - w1_pad - image_dummy.shape[1]
         w1_crop = 0
@@ -33,15 +34,26 @@ def crop_pad_h_w(image_dummy,reshape_size):
     else:
         w1_pad = 0
         w2_pad = 0
-        w1_crop = (reshape_size - image_dummy.shape[1])/2
+        w1_crop = (reshape_size - image_dummy.shape[1]) / 2
         w1_crop = abs(int(w1_crop))
-        w2_crop = image_dummy.shape[1]- reshape_size  - w1_crop
+        w2_crop = image_dummy.shape[1] - reshape_size - w1_crop
 
     h = [h1_crop, h2_crop, h1_pad, h2_pad]
     w = [w1_crop, w2_crop, w1_pad, w2_pad]
     return h, w
 
-def train_validation_test_split(h5_file, validation_size = 0.15, test_size = 0.20, only_classes = None):
+
+def get_all_object_numbers_labels(h5_file, only_classes=None):
+    data = h5py.File(h5_file, "r")
+    if only_classes is None:
+        only_classes = data.get("labels")[()]
+    object_numbers = data.get("object_number")[()][np.isin(data.get("labels")[()], only_classes)]
+    labels = data.get("labels")[()][object_numbers]
+    data.close()
+    return object_numbers, labels
+
+
+def train_validation_test_split(h5_file, validation_size=0.15, test_size=0.20, only_classes=None):
     data = h5py.File(h5_file, "r")
     # object_numbers = data.get("object_number")[()]
 
@@ -50,13 +62,13 @@ def train_validation_test_split(h5_file, validation_size = 0.15, test_size = 0.2
     if only_classes is None:
         only_classes = data.get("labels")[()]
     object_numbers = data.get("object_number")[()][np.isin(data.get("labels")[()], only_classes)]
-    train, test = train_test_split( object_numbers,
-                                       test_size=test_size, stratify=data.get("labels")[()][object_numbers],
-                                       random_state=314)
+    train, test = train_test_split(object_numbers,
+                                   test_size=test_size, stratify=data.get("labels")[()][object_numbers],
+                                   random_state=314)
 
-    train, validation = train_test_split( train,
-                                       test_size=validation_size,
-                                       random_state=314)
+    train, validation = train_test_split(train,
+                                         test_size=validation_size,
+                                         random_state=314)
 
     train_lbl = data.get("labels")[()][train]
     val_lbl = data.get("labels")[()][validation]
@@ -66,24 +78,27 @@ def train_validation_test_split(h5_file, validation_size = 0.15, test_size = 0.2
     data.close()
     return train.T[0], validation.T[0], test
 
+
 def get_classes_map(h5_file):
     data = h5py.File(h5_file, "r")
     label_map = data.get("label_map")[()]
     data.close()
     return eval(label_map)
 
-def number_of_channels(h5_file, only_channels = []):
-    if len(only_channels)==0:
+
+def number_of_channels(h5_file, only_channels=[]):
+    if len(only_channels) == 0:
         data = h5py.File(h5_file, "r")
         object_numbers = data.get("object_number")[()]
         o_n = object_numbers[0]
-        num_channels = data.get(str(o_n)  + "_image"  )[()].shape[2]
+        num_channels = data.get(str(o_n) + "_image")[()].shape[2]
         data.close()
         return num_channels
     else:
         return len(only_channels)
 
-def number_of_classes(h5_file, only_classes = None):
+
+def number_of_classes(h5_file, only_classes=None):
     if only_classes is not None:
         return len(only_classes)
     else:
@@ -178,6 +193,6 @@ class Dataset_Generator(Dataset):
         except:
             sample = {'image': torch.from_numpy(
                 np.zeros((self.num_channels, self.reshape_size, self.reshape_size), dtype=np.float64)),
-                      'label': torch.from_numpy(np.array([-1])), "idx": idx, "object_number": np.array([-1])}
+                'label': torch.from_numpy(np.array([-1])), "idx": idx, "object_number": np.array([-1])}
 
         return sample
