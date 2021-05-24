@@ -20,8 +20,8 @@ from captum.attr import (
     KernelShap
 )
 
-__all__ = ['deep_lift', 'guided_grad_cam', 'saliency', 'gradient_shap', 'input_x_gradient', 'shapley_value_sampling', 'feature_permutation', 'occlusion', 'deconvolution', 'guided_backprop',
-           'intergrated_gradients']
+__all__ = ['deep_lift', 'guided_grad_cam', 'saliency', 'gradient_shap', 'input_x_gradient', 'shapley_value_sampling',
+           'feature_permutation', 'occlusion', 'deconvolution', 'guided_backprop', 'intergrated_gradients']
 """
 Interpretation Methods from Library Captum
 """
@@ -65,8 +65,8 @@ def feature_permutation(model, input, label):
 
 
 def occlusion(model, input, label):
-    occ = GuidedBackprop(model)
-    return occ.attribute(input, (4, 4), target=label)
+    occ = Occlusion(model)
+    return occ.attribute(input, sliding_window_shapes=(4, 4), target=label)
 
 
 def deconvolution(model, input, label):
