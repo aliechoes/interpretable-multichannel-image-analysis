@@ -4,13 +4,8 @@ import logging
 import os
 import torch.nn as nn
 from matplotlib import pyplot as plt
-from interpretation_methods import *
 import numpy as np
 from resnet18 import resnet18
-from torchvision import datasets, transforms
-from custom_transforms import LoadTensor
-from test_dataset import TestDataset
-from torch.utils.data import Dataset, DataLoader
 from interpretation_methods import shuffle_pixel_interpretation
 from util import preprocess_image
 from sklearn.metrics import f1_score

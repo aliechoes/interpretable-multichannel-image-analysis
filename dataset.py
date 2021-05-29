@@ -7,6 +7,7 @@ from skimage.util import crop, random_noise
 import copy
 import sys
 from imblearn.over_sampling import RandomOverSampler
+import os
 
 sys.path.append("..")
 
@@ -196,3 +197,40 @@ class Dataset_Generator(Dataset):
                 'label': torch.from_numpy(np.array([-1])), "idx": idx, "object_number": np.array([-1])}
 
         return sample
+
+
+class Dataset_Generator_Preprocessed(Dataset):
+
+    def __init__(self, path_to_data, set_indx,
+                 transform=None, means=None, stds=None,
+                 only_channels=[], only_classes=None, num_channels=12):
+
+        self.path_to_data = path_to_data
+        self.only_channels = only_channels
+        self.only_classes = only_classes
+        self.object_numbers = set_indx
+
+        self.num_channels = num_channels
+        self.transform = transform
+        if means is None:
+            self.means = torch.zeros(self.num_channels)
+        else:
+            self.means = means
+        if stds is None:
+            self.stds = torch.ones(self.num_channels)
+        else:
+            self.stds = stds
+
+    def __len__(self):
+        return len(self.object_numbers)
+
+    def __getitem__(self, idx):
+        tensor = torch.load(os.path.join(self.path_to_data, "{}.pt".format(idx)))
+        image, label = tensor[0], tensor[1]
+        if len(self.only_channels) > 0:
+            image = image[self.only_channels, :, :]
+        for i in range(self.num_channels):
+            image[i] = (image[i] - self.means[i]) / self.stds[i]
+        if self.transform:
+            image = self.transform(image)
+        return image, label
