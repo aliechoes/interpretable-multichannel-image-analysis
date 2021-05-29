@@ -155,7 +155,7 @@ if __name__ == '__main__':
             running_loss = 0.0
             print('epoch%d' % epoch)
             logging.info('epoch%d' % epoch)
-            for data in trainloader:
+            for i, data in enumerate(trainloader, 0):
                 indx = (data[1] != -1).reshape(-1)
                 if indx.sum() > 0:
                     inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
@@ -205,8 +205,11 @@ if __name__ == '__main__':
             logging.info('Model was saved with accuracy %d' % (best_accuracy))
             logging.info('train_indx used: %s' % (', '.join(str(x) for x in np.unique(train_indx))))
             logging.info('test_indx used: %s' % (', '.join(str(x) for x in np.unique(test_indx))))
-        logging.info(classification_report(y_true, y_pred, target_names=opt.class_names, digits=4))
+        cr = classification_report(y_true, y_pred, target_names=opt.class_names, digits=4)
+        logging.info(cr)
+        print(cr)
         f1_score_original = f1_score(y_true, y_pred, average=None, labels=np.arange(opt.num_classes))
         df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=opt.class_names)
         logging.info(df.to_string())
+        print(df.to_string())
         torch.cuda.empty_cache()
