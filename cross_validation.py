@@ -1,40 +1,23 @@
-from IPython.core.debugger import Tracer
 import torch
-import torchvision
 from torchvision import datasets, transforms
 from torch.utils.data import Dataset, DataLoader
 import torch.nn as nn
 import torch.nn.functional as F
-import torchvision.models
 import argparse
 from datetime import datetime
 import os
-import time
-import multiprocessing
-import psutil
-import json
-import itertools
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import h5py
-from sklearn.model_selection import train_test_split
-from skimage.util import crop, random_noise
-from skimage.transform import rescale, resize, rotate, AffineTransform, warp
 import torch.optim as optim
-from tqdm import tqdm
 from resnet18 import resnet18
 from collections import Counter
 from util import get_statistics
-from dataset import Dataset_Generator, train_validation_test_split, get_classes_map, number_of_classes, \
-    number_of_channels, get_all_object_numbers_labels
 from sklearn.metrics import classification_report
 from sklearn.metrics import f1_score
 import sys
 import logging
 from custom_transforms import AddGaussianNoise
 from imblearn.over_sampling import RandomOverSampler
-from imblearn.under_sampling import RandomUnderSampler
 from dataset import Dataset_Generator_Preprocessed
 
 JCD_CLASS_NAMES = ['Anaphase', 'G1', 'G2', 'Metaphase', 'Prophase', 'S', 'Telophase']
@@ -116,6 +99,7 @@ if __name__ == '__main__':
     best_accuracy = 0.0
 
     logging.info("Start validation")
+    print("Start Validation")
     for train_indx, test_indx in rkf_search.split(X, y):
         train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                        set_indx=train_indx,
@@ -162,6 +146,7 @@ if __name__ == '__main__':
         optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
         for epoch in range(opt.n_epochs):
             running_loss = 0.0
+            print(epoch)
             logging.info('epoch%d' % epoch)
             for data in trainloader:
                 inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
@@ -179,6 +164,7 @@ if __name__ == '__main__':
                 # print statistics
                 running_loss += loss.item()
                 if i % 100 == 99:  # print every 2000 mini-batches
+                    print('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
                     logging.info('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
                     running_loss = 0.0
         correct = 0.
@@ -199,6 +185,7 @@ if __name__ == '__main__':
                     y_true.append(labels[i].item())
                     y_pred.append(pred[i].item())
 
+        print('Accuracy of the network on the %d test images: %d %%' % (len(test_dataset), 100 * correct / total))
         logging.info(
             'Accuracy of the network on the %d test images: %d %%' % (len(test_dataset), 100 * correct / total))
         if 100 * correct / total > best_accuracy:
