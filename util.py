@@ -39,7 +39,27 @@ def get_statistics(dataloader, only_channels):
     statistics["mean"] = torch.zeros(nmb_channels)
     statistics["std"] = torch.zeros(nmb_channels)
 
-    for j, data_l in enumerate(dataloader, 1):
+    for j, data_l in enumerate(dataloader, 0):
+        #breakpoint()
+        data_l = data_l[0]
+        for n in range(nmb_channels):
+            statistics["mean"][n] += data_l[:, n, :, :].mean()
+            statistics["std"][n] += data_l[:, n, :, :].std()
+    logging.info('statistics used: %s' % (str(statistics)))
+    return statistics
+
+def get_statistics_2(dataloader, only_channels):
+    nmb_channels = 0
+    if len(only_channels) == 0:
+        nmb_channels = 12
+    else:
+        nmb_channels = len(only_channels)
+
+    statistics = dict()
+    statistics["mean"] = torch.zeros(nmb_channels)
+    statistics["std"] = torch.zeros(nmb_channels)
+
+    for data_l in dataloader:
         #breakpoint()
         data_l = data_l[0]
         for n in range(nmb_channels):

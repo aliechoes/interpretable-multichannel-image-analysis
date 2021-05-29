@@ -11,7 +11,7 @@ import pandas as pd
 import torch.optim as optim
 from resnet18 import resnet18
 from collections import Counter
-from util import get_statistics
+from util import get_statistics, get_statistics_2
 from sklearn.metrics import classification_report
 from sklearn.metrics import f1_score
 import sys
@@ -30,6 +30,11 @@ WBC_CLASS_NAMES = [' unknown',
                    ' CD56+ NK',
                    ' NKT',
                    ' eosinophil']
+
+STATISTICS = {'mean': torch.tensor([304.2639, 9.8240, 22.6822, 8.7255, 11.8347, 21.6101, 24.2642,
+                                    20.3926, 297.5268, 21.1990, 9.0134, 13.9198]),
+              'std': torch.tensor([111.9068, 13.5673, 8.3950, 3.7691, 4.4474, 23.4030, 21.6173,
+                                   16.3016, 109.4356, 8.6368, 3.8256, 5.8190])}
 
 sys.path.append("..")
 
@@ -75,7 +80,7 @@ class oversampled_Kfold():
 
 if __name__ == '__main__':
     if opt.dev != 'cpu':
-        opt.dev = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+        opt.dev = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     now = datetime.now()
     timestamp = datetime.timestamp(now)
@@ -110,7 +115,9 @@ if __name__ == '__main__':
                                  batch_size=opt.batch_size,
                                  shuffle=False,
                                  num_workers=opt.num_workers)
+        #breakpoint()
         statistics = get_statistics(trainloader, opt.only_channels)
+        #breakpoint()
         train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                        set_indx=train_indx, transform=transform,
                                                        means=statistics["mean"].div_(len(trainloader)),
@@ -146,27 +153,29 @@ if __name__ == '__main__':
         optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
         for epoch in range(opt.n_epochs):
             running_loss = 0.0
-            print(epoch)
+            print('epoch%d' % epoch)
             logging.info('epoch%d' % epoch)
             for data in trainloader:
-                inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
-                # labels = labels.reshape(-1)
-                # zero the parameter gradients
-                optimizer.zero_grad()
-                # forward + backward + optimize
-                outputs = model(inputs)
-                _, predicted = torch.max(outputs.data, 1)
+                indx = (data[1] != -1).reshape(-1)
+                if indx.sum() > 0:
+                    inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
+                    # labels = labels.reshape(-1)
+                    # zero the parameter gradients
+                    optimizer.zero_grad()
+                    # forward + backward + optimize
+                    outputs = model(inputs)
+                    _, predicted = torch.max(outputs.data, 1)
 
-                loss = criterion(outputs, F.one_hot(labels.long(), opt.num_classes).type_as(outputs))
-                loss.backward()
-                optimizer.step()
+                    loss = criterion(outputs, F.one_hot(labels.long(), opt.num_classes).type_as(outputs))
+                    loss.backward()
+                    optimizer.step()
 
-                # print statistics
-                running_loss += loss.item()
-                if i % 100 == 99:  # print every 2000 mini-batches
-                    print('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
-                    logging.info('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
-                    running_loss = 0.0
+                    # print statistics
+                    running_loss += loss.item()
+                    if i % 100 == 99:  # print every 2000 mini-batches
+                        print('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
+                        logging.info('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
+                        running_loss = 0.0
         correct = 0.
         total = 0.
         y_true = list()
@@ -174,16 +183,18 @@ if __name__ == '__main__':
 
         with torch.no_grad():
             for data in testloader:
-                inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
-                # labels = labels.reshape(-1)
-                outputs = model(inputs)
-                pred = outputs.argmax(dim=1)
-                _, predicted = torch.max(outputs.data, 1)
-                total += labels.size(0)
-                correct += (labels.reshape(-1) == predicted).sum().item()
-                for i in range(len(pred)):
-                    y_true.append(labels[i].item())
-                    y_pred.append(pred[i].item())
+                indx = (data[1] != -1).reshape(-1)
+                if indx.sum() > 0:
+                    inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
+                    # labels = labels.reshape(-1)
+                    outputs = model(inputs)
+                    pred = outputs.argmax(dim=1)
+                    _, predicted = torch.max(outputs.data, 1)
+                    total += labels.size(0)
+                    correct += (labels.reshape(-1) == predicted).sum().item()
+                    for i in range(len(pred)):
+                        y_true.append(labels[i].item())
+                        y_pred.append(pred[i].item())
 
         print('Accuracy of the network on the %d test images: %d %%' % (len(test_dataset), 100 * correct / total))
         logging.info(
