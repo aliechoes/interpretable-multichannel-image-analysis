@@ -116,7 +116,7 @@ if __name__ == '__main__':
                                  shuffle=False,
                                  num_workers=opt.num_workers)
         #breakpoint()
-        statistics = get_statistics(trainloader, opt.only_channels)
+        statistics = get_statistics(trainloader, opt.only_channels, logging)
         #breakpoint()
         train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                        set_indx=train_indx, transform=transform,

@@ -28,7 +28,7 @@ def load_test_data(files_to_interpret, batch, num_workers):
     return DataLoader(test_ds, batch_size=batch, shuffle=False, num_workers=num_workers)
 
 
-def get_statistics(dataloader, only_channels):
+def get_statistics(dataloader, only_channels, logging):
     nmb_channels = 0
     if len(only_channels) == 0:
         nmb_channels = 12
@@ -45,5 +45,6 @@ def get_statistics(dataloader, only_channels):
         for n in range(nmb_channels):
             statistics["mean"][n] += data_l[:, n, :, :].mean()
             statistics["std"][n] += data_l[:, n, :, :].std()
+    print('statistics used: %s' % (str(statistics)))
     logging.info('statistics used: %s' % (str(statistics)))
     return statistics
