@@ -11,7 +11,7 @@ import pandas as pd
 import torch.optim as optim
 from resnet18 import resnet18
 from collections import Counter
-from util import get_statistics, get_statistics_2
+from util import get_statistics
 from sklearn.metrics import classification_report
 from sklearn.metrics import f1_score
 import sys
