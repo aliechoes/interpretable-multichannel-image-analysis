@@ -156,7 +156,9 @@ def shuffle_pixel_interpretation(model, test_loader, num_channels, device, shuff
 def shuffle_pixels_in_channel(channel, image):
     im = copy.deepcopy(image)
     channel_shape = im[channel].shape
-    arr = np.asarray(im[channel].flatten())
-    np.random.shuffle(arr)
-    im[channel] = torch.Tensor(arr.reshape(channel_shape))
+    #breakpoint()
+    #im[0].flatten()[torch.randperm(len(im[0].flatten()))]
+    #arr = np.asarray(im[channel].flatten())
+    #np.random.shuffle(arr)
+    im[channel] = im[channel].flatten()[torch.randperm(len(im[channel].flatten()))].reshape(channel_shape)
     return im
