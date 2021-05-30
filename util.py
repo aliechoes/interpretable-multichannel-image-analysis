@@ -40,7 +40,6 @@ def get_statistics(dataloader, only_channels, logging):
     statistics["std"] = torch.zeros(nmb_channels)
 
     for j, data_l in enumerate(dataloader, 0):
-        #breakpoint()
         data_l = data_l[0]
         for n in range(nmb_channels):
             statistics["mean"][n] += data_l[:, n, :, :].mean()

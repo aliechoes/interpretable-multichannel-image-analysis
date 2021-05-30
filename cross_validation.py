@@ -1,6 +1,6 @@
 import torch
 from torchvision import datasets, transforms
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader, WeightedRandomSampler
 import torch.nn as nn
 import torch.nn.functional as F
 import argparse
@@ -19,6 +19,7 @@ import logging
 from custom_transforms import AddGaussianNoise
 from imblearn.over_sampling import RandomOverSampler
 from dataset import Dataset_Generator_Preprocessed
+from sklearn.model_selection import KFold
 
 JCD_CLASS_NAMES = ['Anaphase', 'G1', 'G2', 'Metaphase', 'Prophase', 'S', 'Telophase']
 WBC_CLASS_NAMES = [' unknown',
@@ -56,11 +57,22 @@ parser.add_argument('--num_classes', type=int, default=9, help='number of classe
 parser.add_argument('--class_names', default=WBC_CLASS_NAMES, help="name of the classes", nargs='+', type=str)
 opt = parser.parse_args()
 
+WBC_CLASS_NAMES = [' unknown',
+                   ' CD4+ T',
+                   ' CD8+ T',
+                   ' CD15+ neutrophil',
+                   ' CD14+ monocyte',
+                   ' CD19+ B',
+                   ' CD56+ NK',
+                   ' NKT',
+                   ' eosinophil']
+
 
 class oversampled_Kfold():
-    def __init__(self, n_splits, n_repeats=1):
+    def __init__(self, n_splits, ros, n_repeats=1):
         self.n_splits = n_splits
         self.n_repeats = n_repeats
+        self.ros = ros
 
     def get_n_splits(self, X, y, groups=None):
         return self.n_splits * self.n_repeats
@@ -70,9 +82,9 @@ class oversampled_Kfold():
         train, test = [], []
         for repeat in range(self.n_repeats):
             for idx in range(len(splits)):
-                trainingIdx = np.delete(splits, idx)
-                Xidx_r, y_r = ros.fit_resample(np.hstack(trainingIdx).reshape((-1, 1)),
-                                               np.asarray(y[np.hstack(trainingIdx)]))
+                trainingIdx = np.delete(splits, idx, 0)
+                Xidx_r, y_r = self.ros.fit_resample(np.hstack(trainingIdx).reshape((-1, 1)),
+                                                    np.asarray(y[np.hstack(trainingIdx)]))
                 train.append(Xidx_r.flatten())
                 test.append(splits[idx])
         return list(zip(train, test))
@@ -95,29 +107,48 @@ if __name__ == '__main__':
          transforms.RandomRotation(45),
          AddGaussianNoise(0., 1., 0.3)])
 
-    ros = RandomOverSampler(random_state=42, sampling_strategy='all')
+    # ros = RandomOverSampler(random_state=42, sampling_strategy='all')
 
-    rkf_search = oversampled_Kfold(n_splits=opt.n_splits, n_repeats=1)
+    # rkf_search = oversampled_Kfold(n_splits=opt.n_splits, n_repeats=1)
+    torch.manual_seed(42)
 
+    kf = KFold(n_splits=opt.n_splits, shuffle=True)
     X, y = np.loadtxt(os.path.join(opt.path_to_data, "X.txt"), dtype=int), np.loadtxt(
         os.path.join(opt.path_to_data, "y.txt"), dtype=int)
     best_accuracy = 0.0
+    criterion = nn.BCEWithLogitsLoss()
 
     logging.info("Start validation")
     print("Start Validation")
-    for train_indx, test_indx in rkf_search.split(X, y):
+
+    for train_indx, test_indx in kf.split(X):
+        # for train_indx, test_indx in rkf_search.split(X, y):
+        y_train = y[train_indx]
+        y_test = y[test_indx]
+        class_counts = Counter(y_train)
+        num_train_indx = sum(class_counts.values())
+        class_weights = []
+        for i in range(opt.num_classes):
+            #class_weights.append(class_counts.get(i) / num_train_indx)
+            class_weights.append(1. / class_counts.get(i))
+        class_weights = torch.FloatTensor(class_weights).to(opt.dev)
+        class_weights_all = class_weights[y_train]
+        weighted_sampler = WeightedRandomSampler(
+            weights=class_weights_all,
+            num_samples=len(class_weights_all),
+            replacement=True
+        )
         train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                        set_indx=train_indx,
                                                        transform=transform,
                                                        only_channels=opt.only_channels,
                                                        num_channels=opt.num_channels)
         trainloader = DataLoader(train_dataset,
+                                 sampler=weighted_sampler,
                                  batch_size=opt.batch_size,
                                  shuffle=False,
                                  num_workers=opt.num_workers)
-        #breakpoint()
         statistics = get_statistics(trainloader, opt.only_channels, logging)
-        #breakpoint()
         train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                        set_indx=train_indx, transform=transform,
                                                        means=statistics["mean"].div_(len(trainloader)),
@@ -133,7 +164,8 @@ if __name__ == '__main__':
         trainloader = DataLoader(train_dataset,
                                  batch_size=opt.batch_size,
                                  shuffle=False,
-                                 num_workers=opt.num_workers)
+                                 num_workers=opt.num_workers,
+                                 sampler=weighted_sampler)
         testloader = DataLoader(test_dataset,
                                 batch_size=opt.batch_size,
                                 shuffle=False,
@@ -149,7 +181,6 @@ if __name__ == '__main__':
 
         model = model.to(opt.dev)
         # class_weights = torch.FloatTensor(weights).to(device)
-        criterion = nn.BCEWithLogitsLoss()
         optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
         for epoch in range(opt.n_epochs):
             running_loss = 0.0
@@ -172,7 +203,7 @@ if __name__ == '__main__':
 
                     # print statistics
                     running_loss += loss.item()
-                    if i % 100 == 99:  # print every 2000 mini-batches
+                    if i % 50 == 49:  # print every 2000 mini-batches
                         print('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
                         logging.info('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
                         running_loss = 0.0
