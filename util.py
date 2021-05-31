@@ -8,10 +8,10 @@ from torch.utils.data import Dataset, DataLoader
 import torch
 
 
-def preprocess_image(path_to_images, batch, num_workers):
+def preprocess_image(path_to_images, batch, num_workers, test_data=[], statistics={}):
     files_to_interpret = []
     for file in os.listdir(path_to_images):
-        if file.endswith(".pt"):
+        if file.endswith(".pt") and (len(test_data) == 0 or int(os.path.splitext(file)[0]) in test_data):
             files_to_interpret.append(os.path.join(path_to_images, file))
     logging.info("The samples to interpret are in: {} and the number of samples is {}".format(path_to_images,
                                                                                               len(files_to_interpret)))
@@ -46,4 +46,5 @@ def get_statistics(dataloader, only_channels, logging):
             statistics["std"][n] += data_l[:, n, :, :].std()
     print('statistics used: %s' % (str(statistics)))
     logging.info('statistics used: %s' % (str(statistics)))
+    logging.info('length of the dataloader is: %s' % (str(len(dataloader))))
     return statistics

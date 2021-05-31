@@ -7,11 +7,14 @@ from matplotlib import pyplot as plt
 import numpy as np
 from resnet18 import resnet18
 from interpretation_methods import shuffle_pixel_interpretation
+from dataset import Dataset_Generator_Preprocessed
 from util import preprocess_image
 from sklearn.metrics import f1_score
 import pandas as pd
 from datetime import datetime
 from timeit import default_timer as timer
+from torch.utils.data import DataLoader
+from test_config import STATISTICS, TEST_DATA, LEN_TRAIN_DATALOADER
 
 JCD_CLASS_NAMES = ['Anaphase', 'G1', 'G2', 'Metaphase', 'Prophase', 'S', 'Telophase']
 WBC_CLASS_NAMES = [' unknown',
@@ -36,12 +39,15 @@ parser.add_argument('--num_channels', default=3, help="number of the channels", 
 parser.add_argument('--class_names', default=WBC_CLASS_NAMES,
                     help="mapped names of classes", nargs='+',
                     type=str)
-parser.add_argument('--shuffle_times', default=5, help="number of the channels", type=int)
+parser.add_argument('--shuffle_times', default=100, help="number of the channels", type=int)
 parser.add_argument('--log_dir', default='logs/', help="path to save logs")
 parser.add_argument('--dev', default='cpu', help="cpu or cuda")
 parser.add_argument('--cmap', default='gray', help="colormap for visualizing saliency maps")
 parser.add_argument('--batch', default=64, type=int)
 parser.add_argument('--num_workers', default=1, type=int)
+parser.add_argument('--only_channels', default=[], help="the channels to be used for the model training", nargs='+',
+                    type=int)
+parser.add_argument('--batch_size', default=300, help="batch size", type=int)
 opt = parser.parse_args()
 
 now = datetime.now()
@@ -70,7 +76,17 @@ if __name__ == '__main__':
     logging.info('The model is loaded')
     print('The model is loaded')
 
-    files_to_interpret, data_loader = preprocess_image(opt.path_to_images, opt.batch, opt.num_workers)
+    # files_to_interpret, data_loader = preprocess_image(opt.path_to_images, opt.batch, opt.num_workers)
+    test_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_images,
+                                                  set_indx=TEST_DATA,
+                                                  means=STATISTICS["mean"].div_(LEN_TRAIN_DATALOADER),
+                                                  stds=STATISTICS["std"].div_(LEN_TRAIN_DATALOADER),
+                                                  only_channels=opt.only_channels,
+                                                  num_channels=opt.num_channels)
+    data_loader = DataLoader(test_dataset,
+                             batch_size=opt.batch_size,
+                             shuffle=False,
+                             num_workers=opt.num_workers)
 
     start = timer()
     print("Start shuffling")
@@ -80,6 +96,7 @@ if __name__ == '__main__':
     f1_score_original = f1_score(y_true.cpu(), y_pred.cpu(), average=None, labels=np.arange(opt.num_class))
     df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=opt.class_names)
     logging.info("the f1 score for original data is \n {}".format(df))
+    print("the f1 score for original data is \n {}".format(df))
     for channel, y_pred_per_ch in y_pred_per_channel.items():
         f1_scores_per_shuffle = []
         '''torch.stack(y_pred_ch, dim=0): tensor([[1, 1, 1, 1, 1], [1, 3, 1, 1, 1], [1, 1, 1, 1, 1]]), where 5 is # 

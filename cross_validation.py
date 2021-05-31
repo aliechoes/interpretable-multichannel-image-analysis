@@ -1,5 +1,5 @@
 import torch
-from torchvision import datasets, transforms
+from torchvision import transforms
 from torch.utils.data import DataLoader, WeightedRandomSampler
 import torch.nn as nn
 import torch.nn.functional as F
@@ -17,7 +17,6 @@ from sklearn.metrics import f1_score
 import sys
 import logging
 from custom_transforms import AddGaussianNoise
-from imblearn.over_sampling import RandomOverSampler
 from dataset import Dataset_Generator_Preprocessed
 from sklearn.model_selection import KFold
 
