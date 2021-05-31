@@ -224,8 +224,8 @@ if __name__ == '__main__':
         if 100 * correct / total > best_accuracy:
             torch.save(model.state_dict(), os.path.join("models/final_model_dict_best_metrics_h5.pth"))
             logging.info('test_indx used: %s' % (', '.join(str(x) for x in np.unique(test_indx))))
-        print(classification_report(y_true, y_pred, target_names=opt.class_names, digits=4))
+        logging.info(classification_report(y_true, y_pred, target_names=opt.class_names, digits=4))
         f1_score_original = f1_score(y_true, y_pred, average=None, labels=np.arange(num_classes))
         df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=opt.class_names)
-        print(df.to_string())
+        logging.info(df.to_string())
         torch.cuda.empty_cache()
