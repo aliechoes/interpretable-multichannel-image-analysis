@@ -77,7 +77,7 @@ if __name__ == '__main__':
     y_true, y_pred, y_pred_per_channel = shuffle_pixel_interpretation(model, data_loader, opt.num_channels, opt.dev,
                                                                       opt.shuffle_times)
     f1_scores_per_channel = {}
-    f1_score_original = f1_score(y_true, y_pred, average=None, labels=np.arange(opt.num_class))
+    f1_score_original = f1_score(y_true.cpu(), y_pred.cpu(), average=None, labels=np.arange(opt.num_class))
     df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=opt.class_names)
     logging.info("the f1 score for original data is \n {}".format(df))
     for channel, y_pred_per_ch in y_pred_per_channel.items():
@@ -88,7 +88,7 @@ if __name__ == '__main__':
         y_pred_per_im = torch.stack(y_pred_per_ch, dim=0).T
         for y_pred_per_shuffle in y_pred_per_im:
             f1_scores_per_shuffle.append(
-                f1_score(y_true, y_pred_per_shuffle, average=None, labels=np.arange(opt.num_class)))
+                f1_score(y_true.cpu(), y_pred_per_shuffle.cpu(), average=None, labels=np.arange(opt.num_class)))
         f1_score_all_per_channel = np.stack(f1_scores_per_shuffle)
 
         f1_diff_from_original = f1_score_original - f1_score_all_per_channel
