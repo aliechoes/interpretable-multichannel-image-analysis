@@ -127,6 +127,7 @@ def shuffle_pixel_interpretation(model, test_loader, num_channels, device, shuff
     y_true = list()
     y_pred = list()
     y_pred_per_channel = {}
+    torch.cuda.empty_cache()
     for n in range(num_channels):
         y_pred_per_channel["y_pred_{}".format(n)] = list()
     with torch.no_grad():
@@ -150,6 +151,7 @@ def shuffle_pixel_interpretation(model, test_loader, num_channels, device, shuff
                     pred_images.append(pred_image_shuffled_times)
                 for i_ch in range(len(pred_images)):
                     y_pred_per_channel["y_pred_{}".format(i)].append(pred_images[i_ch])
+            torch.cuda.empty_cache()
         return y_true, y_pred, y_pred_per_channel
 
 

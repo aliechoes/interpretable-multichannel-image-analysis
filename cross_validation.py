@@ -31,11 +31,6 @@ WBC_CLASS_NAMES = [' unknown',
                    ' NKT',
                    ' eosinophil']
 
-STATISTICS = {'mean': torch.tensor([304.2639, 9.8240, 22.6822, 8.7255, 11.8347, 21.6101, 24.2642,
-                                    20.3926, 297.5268, 21.1990, 9.0134, 13.9198]),
-              'std': torch.tensor([111.9068, 13.5673, 8.3950, 3.7691, 4.4474, 23.4030, 21.6173,
-                                   16.3016, 109.4356, 8.6368, 3.8256, 5.8190])}
-
 sys.path.append("..")
 
 parser = argparse.ArgumentParser()
@@ -213,18 +208,16 @@ if __name__ == '__main__':
 
         with torch.no_grad():
             for data in testloader:
-                indx = (data[1] != -1).reshape(-1)
-                if indx.sum() > 0:
-                    inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
-                    # labels = labels.reshape(-1)
-                    outputs = model(inputs)
-                    pred = outputs.argmax(dim=1)
-                    _, predicted = torch.max(outputs.data, 1)
-                    total += labels.size(0)
-                    correct += (labels.reshape(-1) == predicted).sum().item()
-                    for i in range(len(pred)):
-                        y_true.append(labels[i].item())
-                        y_pred.append(pred[i].item())
+                inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
+                # labels = labels.reshape(-1)
+                outputs = model(inputs)
+                pred = outputs.argmax(dim=1)
+                _, predicted = torch.max(outputs.data, 1)
+                total += labels.size(0)
+                correct += (labels.reshape(-1) == predicted).sum().item()
+                for i in range(len(pred)):
+                    y_true.append(labels[i].item())
+                    y_pred.append(pred[i].item())
 
         print('Accuracy of the network on the %d test images: %d %%' % (len(test_dataset), 100 * correct / total))
         logging.info(

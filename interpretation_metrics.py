@@ -39,7 +39,7 @@ parser.add_argument('--num_channels', default=3, help="number of the channels", 
 parser.add_argument('--class_names', default=WBC_CLASS_NAMES,
                     help="mapped names of classes", nargs='+',
                     type=str)
-parser.add_argument('--shuffle_times', default=100, help="number of the channels", type=int)
+parser.add_argument('--shuffle_times', default=10, help="number of the channels", type=int)
 parser.add_argument('--log_dir', default='logs/', help="path to save logs")
 parser.add_argument('--dev', default='cpu', help="cpu or cuda")
 parser.add_argument('--cmap', default='gray', help="colormap for visualizing saliency maps")
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     y_true, y_pred, y_pred_per_channel = shuffle_pixel_interpretation(model, data_loader, opt.num_channels, opt.dev,
                                                                       opt.shuffle_times)
     f1_scores_per_channel = {}
-    f1_score_original = f1_score(y_true.cpu(), y_pred.cpu(), average=None, labels=np.arange(opt.num_class))
+    f1_score_original = f1_score(y_true, y_pred, average=None, labels=np.arange(opt.num_class))
     df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=opt.class_names)
     logging.info("the f1 score for original data is \n {}".format(df))
     print("the f1 score for original data is \n {}".format(df))
@@ -105,7 +105,7 @@ if __name__ == '__main__':
         y_pred_per_im = torch.stack(y_pred_per_ch, dim=0).T
         for y_pred_per_shuffle in y_pred_per_im:
             f1_scores_per_shuffle.append(
-                f1_score(y_true.cpu(), y_pred_per_shuffle.cpu(), average=None, labels=np.arange(opt.num_class)))
+                f1_score(y_true, y_pred_per_shuffle.cpu(), average=None, labels=np.arange(opt.num_class)))
         f1_score_all_per_channel = np.stack(f1_scores_per_shuffle)
 
         f1_diff_from_original = f1_score_original - f1_score_all_per_channel
@@ -114,7 +114,7 @@ if __name__ == '__main__':
         fig = plt.figure(figsize=(10, 5))
         bp = df_diff.boxplot()
         fig.savefig(os.path.join(opt.path_to_save_results,
-                                 "bp-shuffle_method-model-{}-channel-{}.png".format(
+                                 "wbc-shuffle_method-model-{}-channel-{}.png".format(
                                      str(os.path.basename(os.path.normpath(opt.path_to_model))), str(channel))))
         # breakpoint()
         # f1_mean = np.mean(f1_score_all_per_channel, axis=0)
@@ -124,6 +124,7 @@ if __name__ == '__main__':
         # logging.info("the mean of the f1 score for the channel {} is \n {}".format(channel, df_mean))
         # logging.info("the standard deviation of the f1 score for the channel {} is \n {}".format(channel, df_std))
         """
-        python interpretation_metrics.py --dev cpu --shuffle_times 100 --path_to_images /home/aleksandra/PycharmProjects/interpretable-multichannel-image-analysis/data/WBC/PreprocessedTestData --path_to_model /home/aleksandra/PycharmProjects/interpretable-multichannel-image-analysis/models/final_model_dict_wbc_all.pth --num_class 9 --num_channels 12"""
+        python interpretation_metrics.py --dev cpu --shuffle_times 100 --path_to_images /home/aleksandra/PycharmProjects/interpretable-multichannel-image-analysis/data/WBC/PreprocessedTestData --path_to_model /home/aleksandra/PycharmProjects/interpretable-multichannel-image-analysis/models/final_model_dict_wbc_all.pth --num_class 9 --num_channels 12
+        python interpretation_metrics.py --path_to_model models/final_model_dict_best_metrics.pth --path_to_images data/WBC/PreprocessedData/ --num_class 9 --num_channels 12 --dev cuda --batch 300 --num_workers 2"""
     end = timer()
     logging.info("runtime of the shuffle pixels method is: {}".format(end - start))
