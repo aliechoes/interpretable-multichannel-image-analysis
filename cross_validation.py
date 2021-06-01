@@ -42,6 +42,7 @@ parser.add_argument('--num_workers', type=int, default=2, help='number of data l
 parser.add_argument('--lr', default=0.001, help="learning rate", type=float)
 parser.add_argument('--n_splits', default=5, type=int)
 parser.add_argument('--model_save_path', default='models/', help="path to save models")
+parser.add_argument('--model_name', default='dict_best_metrics', help="model name")
 parser.add_argument('--log_dir', default='logs/', help="path to save logs")
 parser.add_argument('--only_channels', default=[], help="the channels to be used for the model training", nargs='+',
                     type=int)
@@ -222,7 +223,7 @@ if __name__ == '__main__':
             'Accuracy of the network on the %d test images: %d %%' % (len(test_dataset), 100 * correct / total))
         if 100 * correct / total > best_accuracy:
             best_accuracy = 100 * correct / total
-            torch.save(model.state_dict(), os.path.join("models/final_model_dict_best_metrics_weighted_sampler.pth"))
+            torch.save(model.state_dict(), os.path.join(opt.model_save_path, "final_model_{}.pth".format(opt.model_name)))
             logging.info('Model was saved with accuracy %d' % (best_accuracy))
             #logging.info('train_indx used: %s' % (', '.join(str(x) for x in np.unique(train_indx))))
             logging.info('test_indx used: %s' % (', '.join(str(x) for x in np.unique(test_indx))))
