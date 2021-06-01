@@ -11,7 +11,7 @@ import pandas as pd
 import torch.optim as optim
 from resnet18 import resnet18
 from collections import Counter
-from util import get_statistics
+from util import get_statistics, get_statistics_2
 from sklearn.metrics import classification_report
 from sklearn.metrics import f1_score
 import sys
@@ -116,7 +116,6 @@ if __name__ == '__main__':
     print("Start Validation")
 
     for train_indx, test_indx in kf.split(X):
-        # for train_indx, test_indx in rkf_search.split(X, y):
         y_train = y[train_indx]
         y_test = y[test_indx]
         class_counts = Counter(y_train)
@@ -142,7 +141,7 @@ if __name__ == '__main__':
                                  batch_size=opt.batch_size,
                                  shuffle=False,
                                  num_workers=opt.num_workers)
-        statistics = get_statistics(trainloader, opt.only_channels, logging)
+        statistics = get_statistics_2(trainloader, opt.only_channels, logging)
         train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                        set_indx=train_indx, transform=transform,
                                                        means=statistics["mean"].div_(len(trainloader)),
@@ -174,7 +173,6 @@ if __name__ == '__main__':
         model.fc = nn.Linear(num_ftrs, opt.num_classes)
 
         model = model.to(opt.dev)
-        # class_weights = torch.FloatTensor(weights).to(device)
         optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
         for epoch in range(opt.n_epochs):
             running_loss = 0.0
@@ -224,9 +222,9 @@ if __name__ == '__main__':
             'Accuracy of the network on the %d test images: %d %%' % (len(test_dataset), 100 * correct / total))
         if 100 * correct / total > best_accuracy:
             best_accuracy = 100 * correct / total
-            torch.save(model.state_dict(), os.path.join("models/final_model_dict_best_metrics.pth"))
+            torch.save(model.state_dict(), os.path.join("models/final_model_dict_best_metrics_weighted_sampler.pth"))
             logging.info('Model was saved with accuracy %d' % (best_accuracy))
-            logging.info('train_indx used: %s' % (', '.join(str(x) for x in np.unique(train_indx))))
+            #logging.info('train_indx used: %s' % (', '.join(str(x) for x in np.unique(train_indx))))
             logging.info('test_indx used: %s' % (', '.join(str(x) for x in np.unique(test_indx))))
         cr = classification_report(y_true, y_pred, target_names=opt.class_names, digits=4)
         logging.info(cr)
