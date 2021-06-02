@@ -10,7 +10,8 @@ import torch.optim as optim
 import sys
 from datetime import datetime
 import numpy as np
-
+from sklearn.metrics import classification_report, f1_score
+import pandas as pd
 from resnet18 import resnet18
 from dataset import Dataset_Generator, train_validation_test_split, get_classes_map, number_of_classes, \
     number_of_channels
@@ -26,6 +27,7 @@ parser.add_argument('--n_epochs', default=30, help="epochs to train", type=int)
 parser.add_argument('--num_workers', type=int, default=0, help='number of data loading workers')
 parser.add_argument('--lr', default=0.001, help="learning rate", type=float)
 parser.add_argument('--model_save_path', default='models/', help="path to save models")
+parser.add_argument('--model_name', default='best_metrics', help="path to save models")
 parser.add_argument('--log_dir', default='logs/', help="path to save logs")
 parser.add_argument('--resume_model', default='', help="resume model name")
 parser.add_argument('--only_channels', default=[], help="the channels to be used for the model training", nargs='+',
@@ -56,8 +58,8 @@ if __name__ == '__main__':
 
     label_map = get_classes_map(opt.h5_file)
 
-    logging.info('train_indx used: %s' % (', '.join(str(x) for x in train_indx)))
-    logging.info('validation_indx used: %s' % (', '.join(str(x) for x in validation_indx)))
+    #logging.info('train_indx used: %s' % (', '.join(str(x) for x in train_indx)))
+    #logging.info('validation_indx used: %s' % (', '.join(str(x) for x in validation_indx)))
     logging.info('test_indx used: %s' % (', '.join(str(x) for x in test_indx)))
     logging.info('label_map used: %s' % (str(label_map)))
 
@@ -74,9 +76,9 @@ if __name__ == '__main__':
                              num_workers=opt.num_workers)
 
     logging.info('the length of the trainloader is: %s' % (str(len(trainloader))))
-
     # collect statistics of the train data (mean & standard deviation) to normalize the data
     statistics = get_statistics(trainloader, opt.only_channels)
+    logging.info('statistics used: %s' % (str(statistics)))
 
     # create a new normalized train_dataset
     train_dataset = Dataset_Generator(opt.h5_file, train_indx, reshape_size=64, transform=transform,
@@ -171,7 +173,6 @@ if __name__ == '__main__':
         total = 0
         with torch.no_grad():
             for i, data in enumerate(validationloader, 0):
-                # breakpoint()
                 indx = (data["object_number"] != -1).reshape(-1)
                 if indx.sum() > 0:
                     inputs, labels = data["image"][indx], data["label"][indx]
@@ -192,6 +193,8 @@ if __name__ == '__main__':
 
     correct = 0.
     total = 0.
+    y_true = list()
+    y_pred = list()
 
     with torch.no_grad():
         for data in testloader:
@@ -204,14 +207,23 @@ if __name__ == '__main__':
                 labels = labels.reshape(-1)
 
                 outputs = model(inputs)
+                pred = outputs.argmax(dim=1)
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (labels.reshape(-1) == predicted).sum().item()
+                for i in range(len(pred)):
+                    y_true.append(labels[i].item())
+                    y_pred.append(pred[i].item())
 
     logging.info('Accuracy of the network on the %d test images: %d %%' % (len(test_dataset),
                                                                            100 * correct / total))
 
-    logging.info("The model saved: %s" % "final_model_dict_{}.pth".format(timestamp))
-    torch.save(model.state_dict(), os.path.join(opt.model_save_path, "final_model_dict_{}.pth".format(timestamp)))
+    logging.info("The model saved: %s" % "final_model_dict_{}.pth".format(opt.model_name))
+    torch.save(model.state_dict(), os.path.join(opt.model_save_path, "final_model_dict_{}.pth".format(opt.model_name)))
+    cr = classification_report(y_true, y_pred, target_names=opt.class_names, digits=4)
+    logging.info(cr)
+    f1_score_original = f1_score(y_true, y_pred, average=None, labels=np.arange(opt.num_classes))
+    df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=opt.class_names)
+    logging.info(df.to_string())
 
     # python train.py --n_epochs 100 --only_channels 0 2 3 4 5 6 7 8 9 10 11 --dev cuda --save_test data\WBC\test_samples_without_1_ch
