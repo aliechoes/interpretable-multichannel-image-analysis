@@ -74,7 +74,7 @@ if __name__ == '__main__':
     now = datetime.now()
     timestamp = datetime.timestamp(now)
 
-    logging.basicConfig(filename=os.path.join(opt.log_dir, 'cross_val_preprocessed{}.txt'.format(timestamp)),
+    logging.basicConfig(filename=os.path.join(opt.log_dir, 'cross_val_preprocessed_shuffled_{}.txt'.format(timestamp)),
                         level=logging.DEBUG)
     logging.info("the deviced being used is {}".format(opt.dev))
 
