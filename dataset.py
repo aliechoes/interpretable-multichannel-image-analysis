@@ -224,10 +224,11 @@ class Dataset_Generator_Preprocessed(Dataset):
 
     def __init__(self, path_to_data, set_indx,
                  transform=None, means=None, stds=None,
-                 only_channels=[], only_classes=None, num_channels=12):
+                 only_channels=[], channels_to_shuffle=[], only_classes=None, num_channels=12):
 
         self.path_to_data = path_to_data
         self.only_channels = only_channels
+        self.channels_to_shuffle = channels_to_shuffle
         self.only_classes = only_classes
         self.object_numbers = set_indx
 
@@ -250,6 +251,10 @@ class Dataset_Generator_Preprocessed(Dataset):
         image, label = tensor[0], tensor[1]
         if len(self.only_channels) > 0:
             image = image[self.only_channels, :, :]
+        if len(self.channels_to_shuffle) > 0:
+            for channel in self.channels_to_shuffle:
+                channel_shape = image[channel].shape
+                image[channel] = image[channel].flatten()[torch.randperm(len(image[channel].flatten()))].reshape(channel_shape)
         for i in range(self.num_channels):
             image[i] = (image[i] - self.means[i]) / self.stds[i]
         if self.transform:
