@@ -8,6 +8,7 @@ import copy
 import sys
 from imblearn.over_sampling import RandomOverSampler
 import os
+from imblearn.under_sampling import RandomUnderSampler
 
 sys.path.append("..")
 
@@ -52,6 +53,26 @@ def get_all_object_numbers_labels(h5_file, only_classes=None):
     labels = data.get("labels")[()][object_numbers]
     data.close()
     return object_numbers, labels
+
+
+def train_validation_test_split_wth_augmentation(X, y, validation_size=0.15, test_size=0.20, only_classes=None):
+    train, test, y_train, _ = train_test_split(X, y, test_size=test_size, stratify=y, random_state=42)
+
+    train, validation, _, _ = train_test_split(train, y_train, test_size=validation_size, stratify=y_train,
+                                               random_state=42)
+    return train, validation, test
+
+
+def train_validation_test_split_undersample(X, y, validation_size=0.15, test_size=0.20, only_classes=None):
+    undersample = RandomUnderSampler(random_state=42, sampling_strategy={3: 3044, 1: 3044, 2: 1215, 8: 1045, 0: 875, 4: 872, 7: 699, 5: 604, 6: 455})
+
+    train, test, y_train, y_test = train_test_split(X, y, test_size=test_size, stratify=y, random_state=42)
+
+    train, validation, y_train, y_validation = train_test_split(train, y_train, test_size=validation_size,
+                                                                stratify=y_train, random_state=42)
+
+    train, _ = undersample.fit_resample(np.asarray(train).reshape(-1, 1), np.asarray(y_train))
+    return train.T[0], validation, test
 
 
 def train_validation_test_split(h5_file, validation_size=0.15, test_size=0.20, only_classes=None):
