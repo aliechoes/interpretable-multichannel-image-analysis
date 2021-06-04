@@ -72,7 +72,7 @@ if __name__ == '__main__':
     now = datetime.now()
     timestamp = datetime.timestamp(now)
 
-    logging.basicConfig(filename=os.path.join(opt.log_dir, 'cross_val_preprocessed{}.txt'.format(timestamp)),
+    logging.basicConfig(filename=os.path.join(opt.log_dir, 'cross_val_preprocessed_right_{}.txt'.format(timestamp)),
                         level=logging.DEBUG)
     logging.info("the deviced being used is {}".format(opt.dev))
 
@@ -86,8 +86,6 @@ if __name__ == '__main__':
 
     logging.info("Start validation")
     print("Start Validation")
-
-    label_map = get_classes_map(opt.h5_file)
 
     transform = transforms.Compose(
         [transforms.RandomVerticalFlip(),
@@ -150,8 +148,6 @@ if __name__ == '__main__':
                                 batch_size=opt.batch_size,
                                 shuffle=False,
                                 num_workers=opt.num_workers)
-
-        logging.info('label_map used: %s' % (str(label_map)))
 
         logging.info('train dataset: %d, test dataset: %d' % (len(train_dataset), len(test_dataset)))
 

@@ -247,7 +247,12 @@ class Dataset_Generator_Preprocessed(Dataset):
         return len(self.object_numbers)
 
     def __getitem__(self, idx):
-        tensor = torch.load(os.path.join(self.path_to_data, "{}.pt".format(idx)))
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+
+        o_n = self.object_numbers[idx]
+
+        tensor = torch.load(os.path.join(self.path_to_data, "{}.pt".format(o_n)))
         image, label = tensor[0], tensor[1]
         if len(self.only_channels) > 0:
             image = image[self.only_channels, :, :]

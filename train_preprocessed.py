@@ -18,6 +18,16 @@ from dataset import Dataset_Generator, train_validation_test_split, get_classes_
 from util import get_statistics_2
 from collections import Counter
 
+seed_value = 42
+
+os.environ['PYTHONHASHSEED']=str(seed_value)
+import random
+random.seed(seed_value)
+
+np.random.seed(seed_value)
+
+torch.manual_seed(42)
+
 JCD_CLASS_NAMES = ['Anaphase', 'G1', 'G2', 'Metaphase', 'Prophase', 'S', 'Telophase']
 WBC_CLASS_NAMES = [' unknown',
                    ' CD4+ T',
@@ -56,13 +66,16 @@ parser.add_argument('--class_names', default=WBC_CLASS_NAMES, help="name of the 
 opt = parser.parse_args()
 
 if __name__ == '__main__':
+
+    # set device
     if opt.dev != 'cpu':
         opt.dev = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     now = datetime.now()
     timestamp = datetime.timestamp(now)
 
-    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_preprocessed{}.txt'.format(timestamp)),
+    # initialize logging
+    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_preprocessed_{}.txt'.format(timestamp)),
                         level=logging.DEBUG)
     logging.info("the deviced being used is {}".format(opt.dev))
 
@@ -70,14 +83,15 @@ if __name__ == '__main__':
     X, y = np.loadtxt(os.path.join(opt.path_to_data, "X.txt"), dtype=int), np.loadtxt(
         os.path.join(opt.path_to_data, "y.txt"), dtype=int)
 
-    train_indx, validation_indx_, test_indx_ = train_validation_test_split_wth_augmentation(X, y, only_classes=opt.only_classes)
-
-    label_map = get_classes_map(opt.h5_file)
+    # split data without augmentation
+    train_indx, validation_indx, test_indx = train_validation_test_split_wth_augmentation(X, y, only_classes=opt.only_classes)
 
     transform = transforms.Compose(
         [transforms.RandomVerticalFlip(),
          transforms.RandomHorizontalFlip(),
          transforms.RandomRotation(45)])
+
+    # initialize train_dataset and trainloader to calculate the train distribution
 
     train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                    set_indx=train_indx,
@@ -93,13 +107,7 @@ if __name__ == '__main__':
     # get statistics to normalize data
     statistics = get_statistics_2(trainloader, opt.only_channels, logging)
 
-    train_indx, validation_indx, test_indx = train_validation_test_split_undersample(X, y,
-                                                                                     only_classes=opt.only_classes)
-
-    assert (validation_indx_ == validation_indx).all()
-    assert (test_indx_ == test_indx).all()
-
-    # get weights per class and initialize weighted_sampler
+    # get weights per class and initialize WeightedRandomSampler, which samples elements from [0,..,len(weights)-1] with given probabilities (weights).
     y_train = y[train_indx]
     class_sample_count = np.array([len(np.where(y_train == t)[0]) for t in np.unique(y_train)])
     weights = 1. / torch.tensor(class_sample_count, dtype=torch.float).to(opt.dev)
@@ -154,7 +162,6 @@ if __name__ == '__main__':
                             num_workers=opt.num_workers)
 
     logging.info('test_indx used: %s' % (', '.join(str(x) for x in test_indx)))
-    logging.info('label_map used: %s' % (str(label_map)))
 
     logging.info('train dataset: %d, validation dataset: %d, test dataset: %d' % (
         len(train_dataset), len(validation_dataset), len(test_dataset)))
@@ -177,17 +184,15 @@ if __name__ == '__main__':
     if opt.resume_model != '':
         checkpoint = torch.load('{0}/{1}'.format(opt.model_save_path, opt.resume_model))
         model.load_state_dict(checkpoint)
-        for log in os.listdir(opt.log_dir):
-            os.remove(os.path.join(opt.log_dir, log))
-    # breakpoint()
+
+    # start training
     for epoch in range(opt.n_epochs):
         running_loss = 0.0
         logging.info('epoch%d' % epoch)
         for i, data in enumerate(trainloader, 0):
 
             # get the inputs; data is a list of [inputs, labels]
-            inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
-            labels = labels.reshape(-1)
+            inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev).reshape(-1)
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -221,6 +226,8 @@ if __name__ == '__main__':
 
     logging.info('Finished Training')
 
+
+    # evaluate data on test dataset
     correct = 0.
     total = 0.
     y_true = list()
@@ -244,6 +251,8 @@ if __name__ == '__main__':
                                                                            100 * correct / total))
 
     logging.info("The model saved: %s" % "final_model_dict_{}.pth".format(opt.model_name))
+
+    # save model and output classification report + f1 scores per class
     torch.save(model.state_dict(), os.path.join(opt.model_save_path, "final_model_dict_{}.pth".format(opt.model_name)))
     cr = classification_report(y_true, y_pred, target_names=opt.class_names, digits=4)
     logging.info(cr)
