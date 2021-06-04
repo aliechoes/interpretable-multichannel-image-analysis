@@ -131,26 +131,73 @@ def shuffle_pixel_interpretation(model, test_loader, num_channels, device, shuff
     for n in range(num_channels):
         y_pred_per_channel["y_pred_{}".format(n)] = list()
     with torch.no_grad():
-        for test_data in test_loader:
-            test_images, test_labels = test_data[0].to(device).float(), test_data[1].to(device)
-            pred = model(test_images).argmax(dim=1)
-            ### True and Predicted labels of original data
-            for i_or in range(len(pred)):
-                y_true.append(test_labels[i_or].item())
-                y_pred.append(pred[i_or].item())
-            ### Predited labels of shuffled data
-            for i in range(test_images[0].shape[0]):
+        for i, data in enumerate(test_loader, 0):
+            indx = (data["object_number"] != -1).reshape(-1)
+            if indx.sum() > 0:
+                inputs, labels = data["image"][indx], data["label"][indx]
+
+                inputs, labels = inputs.to(device), labels.to(device)
+                inputs = inputs.float()
+                labels = labels.reshape(-1)
+
+                outputs = model(inputs)
+                pred = outputs.argmax(dim=1)
+                for k in range(len(pred)):
+                    y_true.append(labels[k].item())
+                    y_pred.append(pred[k].item())
+                ### Predited labels of shuffled data
+                for channel in range(inputs[0].shape[0]):
+                    pred_images = []
+                    for image in inputs:
+                        image_shuffled_times = []
+                        for t in range(shuffle_times):
+                            im = shuffle_pixels_in_channel(channel, image)
+                            image_shuffled_times.append(im)
+                        image_shuffled_times = torch.stack(image_shuffled_times, dim=0)
+                        pred_image_shuffled_times = model(image_shuffled_times).argmax(dim=1)
+                        pred_images.append(pred_image_shuffled_times)
+                    for i_ch in range(len(pred_images)):
+                        try:
+                            y_pred_per_channel["y_pred_{}".format(channel)].append(pred_images[i_ch])
+                        except:
+                            breakpoint()
+            torch.cuda.empty_cache()
+        return y_true, y_pred, y_pred_per_channel
+
+
+def shuffle_pixel_interpretation_preprocessed(model, test_loader, num_channels, device, shuffle_times):
+    model.eval()
+    y_true = list()
+    y_pred = list()
+    y_pred_per_channel = {}
+    for n in range(num_channels):
+        y_pred_per_channel["y_pred_{}".format(n)] = list()
+    with torch.no_grad():
+        for data in test_loader:
+            inputs, labels = data[0].to(device).float(), data[1].to(device)
+            labels = labels.reshape(-1)
+
+            outputs = model(inputs)
+            pred = outputs.argmax(dim=1)
+            for k in range(len(pred)):
+                y_true.append(labels[k].item())
+                y_pred.append(pred[k].item())
+                ### Predited labels of shuffled data
+            for channel in range(inputs[0].shape[0]):
                 pred_images = []
-                for image in test_images:
+                for image in inputs:
                     image_shuffled_times = []
                     for t in range(shuffle_times):
-                        im = shuffle_pixels_in_channel(i, image)
+                        im = shuffle_pixels_in_channel(channel, image)
                         image_shuffled_times.append(im)
                     image_shuffled_times = torch.stack(image_shuffled_times, dim=0)
                     pred_image_shuffled_times = model(image_shuffled_times).argmax(dim=1)
                     pred_images.append(pred_image_shuffled_times)
                 for i_ch in range(len(pred_images)):
-                    y_pred_per_channel["y_pred_{}".format(i)].append(pred_images[i_ch])
+                    try:
+                        y_pred_per_channel["y_pred_{}".format(channel)].append(pred_images[i_ch])
+                    except:
+                        breakpoint()
             torch.cuda.empty_cache()
         return y_true, y_pred, y_pred_per_channel
 
@@ -158,9 +205,5 @@ def shuffle_pixel_interpretation(model, test_loader, num_channels, device, shuff
 def shuffle_pixels_in_channel(channel, image):
     im = copy.deepcopy(image)
     channel_shape = im[channel].shape
-    #breakpoint()
-    #im[0].flatten()[torch.randperm(len(im[0].flatten()))]
-    #arr = np.asarray(im[channel].flatten())
-    #np.random.shuffle(arr)
     im[channel] = im[channel].flatten()[torch.randperm(len(im[channel].flatten()))].reshape(channel_shape)
     return im

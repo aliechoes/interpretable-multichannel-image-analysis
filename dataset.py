@@ -9,9 +9,18 @@ import sys
 from imblearn.over_sampling import RandomOverSampler
 import os
 from imblearn.under_sampling import RandomUnderSampler
+import numpy as np
 
 sys.path.append("..")
+seed_value = 42
 
+os.environ['PYTHONHASHSEED']=str(seed_value)
+import random
+random.seed(seed_value)
+
+np.random.seed(seed_value)
+
+torch.manual_seed(42)
 
 def crop_pad_h_w(image_dummy, reshape_size):
     if image_dummy.shape[0] < reshape_size:
@@ -264,4 +273,4 @@ class Dataset_Generator_Preprocessed(Dataset):
             image[i] = (image[i] - self.means[i]) / self.stds[i]
         if self.transform:
             image = self.transform(image)
-        return image, label, idx
+        return image, label, o_n

@@ -17,6 +17,8 @@ from dataset import Dataset_Generator, train_validation_test_split, get_classes_
     number_of_channels, Dataset_Generator_Preprocessed, train_validation_test_split_wth_augmentation, train_validation_test_split_undersample
 from util import get_statistics_2
 from collections import Counter
+from imblearn.over_sampling import RandomOverSampler
+from torch.optim import lr_scheduler
 
 seed_value = 42
 
@@ -27,7 +29,6 @@ random.seed(seed_value)
 np.random.seed(seed_value)
 
 torch.manual_seed(42)
-torch.use_deterministic_algorithms(True)
 
 JCD_CLASS_NAMES = ['Anaphase', 'G1', 'G2', 'Metaphase', 'Prophase', 'S', 'Telophase']
 WBC_CLASS_NAMES = [' unknown',
@@ -46,9 +47,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--path_to_data', default="data/WBC/PreprocessedData",
                     help="dataset root dir")
 parser.add_argument('--batch_size', default=64, help="batch size", type=int)
-parser.add_argument('--n_epochs', default=30, help="epochs to train", type=int)
+parser.add_argument('--n_epochs', default=50, help="epochs to train", type=int)
 parser.add_argument('--num_workers', type=int, default=2, help='number of data loading workers')
-parser.add_argument('--lr', default=0.001, help="learning rate", type=float)
+parser.add_argument('--lr', default=1e-5, help="learning rate", type=float)
 parser.add_argument('--model_save_path', default='models/', help="path to save models")
 parser.add_argument('--model_name', default='best_metrics', help="path to save models")
 parser.add_argument('--log_dir', default='logs/', help="path to save logs")
@@ -74,7 +75,7 @@ if __name__ == '__main__':
     timestamp = datetime.timestamp(now)
 
     # initialize logging
-    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_preprocessed_{}.txt'.format(timestamp)),
+    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_preprocessed_ovs_{}.txt'.format(timestamp)),
                         level=logging.DEBUG)
     logging.info("the deviced being used is {}".format(opt.dev))
 
@@ -106,22 +107,13 @@ if __name__ == '__main__':
     # get statistics to normalize data
     statistics = get_statistics_2(trainloader, opt.only_channels, logging)
 
-    # get weights per class and initialize WeightedRandomSampler, which samples elements from [0,..,len(weights)-1] with given probabilities (weights).
+    # use oversampling to cope with unbalance data
     y_train = y[train_indx]
-    class_sample_count = np.array([len(np.where(y_train == t)[0]) for t in np.unique(y_train)])
-    weights = 1. / torch.tensor(class_sample_count, dtype=torch.float).to(opt.dev)
-    class_weights = weights.double()
 
-    class_weights_all = class_weights[y_train]
-    weighted_sampler = WeightedRandomSampler(
-        weights=class_weights_all,
-        num_samples=len(class_weights_all),
-        replacement=True
-    )
+    oversample = RandomOverSampler(random_state=seed_value, sampling_strategy='all')
 
-    logging.info('the length of the trainloader is: %s' % (str(len(trainloader))))
-    # collect statistics of the train data (mean & standard deviation) to normalize the data
-    logging.info('statistics used: %s' % (str(statistics)))
+    train_indx, _ = oversample.fit_resample(np.asarray(train_indx).reshape(-1, 1), np.asarray(y_train))
+    train_indx = train_indx.T[0]
 
     # create a new normalized datasets and loaders
     train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
@@ -149,8 +141,7 @@ if __name__ == '__main__':
     trainloader = DataLoader(train_dataset,
                              batch_size=opt.batch_size,
                              shuffle=False,
-                             num_workers=opt.num_workers,
-                             sampler=weighted_sampler)
+                             num_workers=opt.num_workers)
     validationloader = DataLoader(validation_dataset,
                                   batch_size=opt.batch_size,
                                   shuffle=False,
@@ -178,21 +169,23 @@ if __name__ == '__main__':
     model = model.to(opt.dev)
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
+
+    optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr)
+    scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
+    #optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
 
     if opt.resume_model != '':
         checkpoint = torch.load('{0}/{1}'.format(opt.model_save_path, opt.resume_model))
         model.load_state_dict(checkpoint)
-
-    logging.info("The model is loaded")
 
     # start training
     for epoch in range(opt.n_epochs):
         running_loss = 0.0
         logging.info('epoch%d' % epoch)
         for i, data in enumerate(trainloader, 0):
+
             # get the inputs; data is a list of [inputs, labels]
-            inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev).reshape(-1)
+            inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -201,7 +194,7 @@ if __name__ == '__main__':
             outputs = model(inputs)
             _, predicted = torch.max(outputs.data, 1)
 
-            loss = criterion(outputs, F.one_hot(labels.long(), opt.num_classes).type_as(outputs))
+            loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
 
@@ -210,12 +203,13 @@ if __name__ == '__main__':
             if i % 50 == 49:  # print every 2000 mini-batches
                 logging.info('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
                 running_loss = 0.0
+        if scheduler is not None:
+            scheduler.step()
         correct = 0
         total = 0
         with torch.no_grad():
             for i, data in enumerate(validationloader, 0):
                 inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
-                labels = labels.reshape(-1)
                 outputs = model(inputs)
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
@@ -236,7 +230,6 @@ if __name__ == '__main__':
     with torch.no_grad():
         for data in testloader:
             inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
-            labels = labels.reshape(-1)
 
             outputs = model(inputs)
             pred = outputs.argmax(dim=1)

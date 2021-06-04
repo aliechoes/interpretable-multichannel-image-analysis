@@ -7,6 +7,16 @@ from torchvision import datasets, transforms
 from torch.utils.data import Dataset, DataLoader
 import torch
 
+seed_value = 42
+
+os.environ['PYTHONHASHSEED']=str(seed_value)
+import random
+random.seed(seed_value)
+import numpy as np
+np.random.seed(seed_value)
+
+torch.manual_seed(42)
+
 
 def preprocess_image(path_to_images, batch, num_workers, test_data=[], statistics={}):
     files_to_interpret = []
@@ -44,9 +54,9 @@ def get_statistics_2(dataloader, only_channels, logging):
         for n in range(nmb_channels):
             statistics["mean"][n] += data_l[:, n, :, :].mean()
             statistics["std"][n] += data_l[:, n, :, :].std()
-    print('statistics used: %s' % (str(statistics)))
+    statistics["mean"] = statistics["mean"].div_(len(dataloader))
+    statistics["std"] = statistics["std"].div_(len(dataloader))
     logging.info('statistics used: %s' % (str(statistics)))
-    logging.info('length of the dataloader is: %s' % (str(len(dataloader))))
     return statistics
 
 
