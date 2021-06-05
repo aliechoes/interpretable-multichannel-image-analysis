@@ -19,6 +19,18 @@ import logging
 from custom_transforms import AddGaussianNoise
 from dataset import Dataset_Generator_Preprocessed
 from sklearn.model_selection import KFold
+from torch.optim import lr_scheduler
+
+seed_value = 42
+
+os.environ['PYTHONHASHSEED'] = str(seed_value)
+import random
+
+random.seed(seed_value)
+
+np.random.seed(seed_value)
+
+torch.manual_seed(42)
 
 JCD_CLASS_NAMES = ['Anaphase', 'G1', 'G2', 'Metaphase', 'Prophase', 'S', 'Telophase']
 WBC_CLASS_NAMES = [' unknown',
@@ -92,7 +104,7 @@ if __name__ == '__main__':
     now = datetime.now()
     timestamp = datetime.timestamp(now)
 
-    logging.basicConfig(filename=os.path.join(opt.log_dir, 'cross_validation_{}.txt'.format(timestamp)),
+    logging.basicConfig(filename=os.path.join(opt.log_dir, 'cross_validation_weighted_sampler_{}.txt'.format(timestamp)),
                         level=logging.DEBUG)
     logging.info("the deviced being used is {}".format(opt.dev))
 
@@ -102,59 +114,55 @@ if __name__ == '__main__':
          transforms.RandomRotation(45),
          AddGaussianNoise(0., 1., 0.3)])
 
-    # ros = RandomOverSampler(random_state=42, sampling_strategy='all')
-
     # rkf_search = oversampled_Kfold(n_splits=opt.n_splits, n_repeats=1)
-    torch.manual_seed(42)
-
     kf = KFold(n_splits=opt.n_splits, shuffle=True)
     X, y = np.loadtxt(os.path.join(opt.path_to_data, "X.txt"), dtype=int), np.loadtxt(
         os.path.join(opt.path_to_data, "y.txt"), dtype=int)
     best_accuracy = 0.0
-    criterion = nn.BCEWithLogitsLoss()
+    criterion = nn.CrossEntropyLoss()
 
     logging.info("Start validation")
-    print("Start Validation")
 
     for train_indx, test_indx in kf.split(X):
+        train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
+                                                       set_indx=train_indx,
+                                                       transform=transform,
+                                                       only_channels=opt.only_channels,
+                                                       num_channels=opt.num_channels)
+
+        trainloader = DataLoader(train_dataset,
+                                 batch_size=opt.batch_size,
+                                 shuffle=False,
+                                 num_workers=opt.num_workers)
+
         y_train = y[train_indx]
-        y_test = y[test_indx]
-        class_counts = Counter(y_train)
-        num_train_indx = sum(class_counts.values())
-        class_weights = []
-        for i in range(opt.num_classes):
-            #class_weights.append(class_counts.get(i) / num_train_indx)
-            class_weights.append(1. / class_counts.get(i))
-        class_weights = torch.FloatTensor(class_weights).to(opt.dev)
+        class_sample_count = np.array([len(np.where(y_train == t)[0]) for t in np.unique(y_train)])
+        weights = 1. / torch.tensor(class_sample_count, dtype=torch.float).to(opt.dev)
+        class_weights = weights.double()
+
         class_weights_all = class_weights[y_train]
         weighted_sampler = WeightedRandomSampler(
             weights=class_weights_all,
             num_samples=len(class_weights_all),
             replacement=True
         )
-        train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
-                                                       set_indx=train_indx,
-                                                       transform=transform,
-                                                       only_channels=opt.only_channels,
-                                                       num_channels=opt.num_channels)
-        trainloader = DataLoader(train_dataset,
-                                 sampler=weighted_sampler,
-                                 batch_size=opt.batch_size,
-                                 shuffle=False,
-                                 num_workers=opt.num_workers)
+        # get statistics to normalize data
         statistics = get_statistics_2(trainloader, opt.only_channels, logging)
+
         train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                        set_indx=train_indx, transform=transform,
-                                                       means=statistics["mean"].div_(len(trainloader)),
-                                                       stds=statistics["std"].div_(len(trainloader)),
+                                                       means=statistics["mean"],
+                                                       stds=statistics["std"],
                                                        only_channels=opt.only_channels,
                                                        num_channels=opt.num_channels)
+
         test_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                       set_indx=test_indx,
-                                                      means=statistics["mean"].div_(len(trainloader)),
-                                                      stds=statistics["std"].div_(len(trainloader)),
+                                                      means=statistics["mean"],
+                                                      stds=statistics["std"],
                                                       only_channels=opt.only_channels,
                                                       num_channels=opt.num_channels)
+
         trainloader = DataLoader(train_dataset,
                                  batch_size=opt.batch_size,
                                  shuffle=False,
@@ -164,6 +172,10 @@ if __name__ == '__main__':
                                 batch_size=opt.batch_size,
                                 shuffle=False,
                                 num_workers=opt.num_workers)
+
+        logging.info('train dataset: %d, test dataset: %d' % (
+            len(train_dataset), len(test_dataset)))
+
         model = resnet18(pretrained=True)
 
         # loading the imagenet weights in case it is possible
@@ -174,32 +186,37 @@ if __name__ == '__main__':
         model.fc = nn.Linear(num_ftrs, opt.num_classes)
 
         model = model.to(opt.dev)
-        optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
+
+        optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr)
+        scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
+
         for epoch in range(opt.n_epochs):
             running_loss = 0.0
-            print('epoch%d' % epoch)
             logging.info('epoch%d' % epoch)
             for i, data in enumerate(trainloader, 0):
-                indx = (data[1] != -1).reshape(-1)
-                if indx.sum() > 0:
-                    inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
-                    # labels = labels.reshape(-1)
-                    # zero the parameter gradients
-                    optimizer.zero_grad()
-                    # forward + backward + optimize
-                    outputs = model(inputs)
-                    _, predicted = torch.max(outputs.data, 1)
+                # get the inputs; data is a list of [inputs, labels]
+                inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
 
-                    loss = criterion(outputs, F.one_hot(labels.long(), opt.num_classes).type_as(outputs))
-                    loss.backward()
-                    optimizer.step()
+                # zero the parameter gradients
+                optimizer.zero_grad()
 
-                    # print statistics
-                    running_loss += loss.item()
-                    if i % 50 == 49:  # print every 2000 mini-batches
-                        print('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
-                        logging.info('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
-                        running_loss = 0.0
+                # forward + backward + optimize
+                outputs = model(inputs)
+                _, predicted = torch.max(outputs.data, 1)
+
+                loss = criterion(outputs, labels)
+                loss.backward()
+                optimizer.step()
+
+                # print statistics
+                running_loss += loss.item()
+                if i % 50 == 49:  # print every 2000 mini-batches
+                    logging.info('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
+                    running_loss = 0.0
+
+            logging.info('Finished Training')
+            if scheduler is not None:
+                scheduler.step()
         correct = 0.
         total = 0.
         y_true = list()
@@ -208,7 +225,6 @@ if __name__ == '__main__':
         with torch.no_grad():
             for data in testloader:
                 inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
-                # labels = labels.reshape(-1)
                 outputs = model(inputs)
                 pred = outputs.argmax(dim=1)
                 _, predicted = torch.max(outputs.data, 1)
@@ -218,20 +234,11 @@ if __name__ == '__main__':
                     y_true.append(labels[i].item())
                     y_pred.append(pred[i].item())
 
-        print('Accuracy of the network on the %d test images: %d %%' % (len(test_dataset), 100 * correct / total))
         logging.info(
             'Accuracy of the network on the %d test images: %d %%' % (len(test_dataset), 100 * correct / total))
-        if 100 * correct / total > best_accuracy:
-            best_accuracy = 100 * correct / total
-            torch.save(model.state_dict(), os.path.join(opt.model_save_path, "final_model_{}.pth".format(opt.model_name)))
-            logging.info('Model was saved with accuracy %d' % (best_accuracy))
-            #logging.info('train_indx used: %s' % (', '.join(str(x) for x in np.unique(train_indx))))
-            logging.info('test_indx used: %s' % (', '.join(str(x) for x in np.unique(test_indx))))
         cr = classification_report(y_true, y_pred, target_names=opt.class_names, digits=4)
         logging.info(cr)
-        print(cr)
         f1_score_original = f1_score(y_true, y_pred, average=None, labels=np.arange(opt.num_classes))
         df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=opt.class_names)
         logging.info(df.to_string())
-        print(df.to_string())
         torch.cuda.empty_cache()

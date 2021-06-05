@@ -1,28 +1,28 @@
 import torch
 import logging
 from torchvision import transforms
-from torch.utils.data import DataLoader, WeightedRandomSampler
+from torch.utils.data import DataLoader
 import torch.nn as nn
-import torch.nn.functional as F
 import argparse
 import os
-import torch.optim as optim
 import sys
 from datetime import datetime
 import numpy as np
 from sklearn.metrics import classification_report, f1_score
 import pandas as pd
 from resnet18 import resnet18
-from dataset import get_classes_map, Dataset_Generator_Preprocessed
+from dataset import Dataset_Generator_Preprocessed
 from util import get_statistics_2
 from collections import Counter
 from sklearn.model_selection import KFold
-
+from imblearn.over_sampling import RandomOverSampler
+from torch.optim import lr_scheduler
 
 seed_value = 42
 
-os.environ['PYTHONHASHSEED']=str(seed_value)
+os.environ['PYTHONHASHSEED'] = str(seed_value)
 import random
+
 random.seed(seed_value)
 
 np.random.seed(seed_value)
@@ -43,16 +43,12 @@ WBC_CLASS_NAMES = [' unknown',
 sys.path.append("..")
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--h5_file', default="data/WBC/Lyse fix sample_1_Focused & Singlets & CD45 pos.h5",
-                    help="dataset root dir")
 parser.add_argument('--path_to_data', default="data/WBC/PreprocessedData",
                     help="dataset root dir")
-parser.add_argument('--batch_size', default=64, help="batch size", type=int)
+parser.add_argument('--batch_size', default=300, help="batch size", type=int)
 parser.add_argument('--n_epochs', default=50, help="epochs to train", type=int)
 parser.add_argument('--num_workers', type=int, default=2, help='number of data loading workers')
-parser.add_argument('--lr', default=0.001, help="learning rate", type=float)
-parser.add_argument('--model_save_path', default='models/', help="path to save models")
-parser.add_argument('--model_name', default='best_metrics', help="path to save models")
+parser.add_argument('--lr', default=1e-5, help="learning rate", type=float)
 parser.add_argument('--log_dir', default='logs/', help="path to save logs")
 parser.add_argument('--only_channels', default=[], help="the channels to be used for the model training", nargs='+',
                     type=int)
@@ -66,13 +62,16 @@ parser.add_argument('--n_splits', default=5, type=int)
 opt = parser.parse_args()
 
 if __name__ == '__main__':
+
+    # set device
     if opt.dev != 'cpu':
         opt.dev = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     now = datetime.now()
     timestamp = datetime.timestamp(now)
 
-    logging.basicConfig(filename=os.path.join(opt.log_dir, 'cross_val_preprocessed_right_{}.txt'.format(timestamp)),
+    # initialize logging
+    logging.basicConfig(filename=os.path.join(opt.log_dir, 'cross_val_preprocessed_ovs_{}.txt'.format(timestamp)),
                         level=logging.DEBUG)
     logging.info("the deviced being used is {}".format(opt.dev))
 
@@ -80,19 +79,23 @@ if __name__ == '__main__':
     X, y = np.loadtxt(os.path.join(opt.path_to_data, "X.txt"), dtype=int), np.loadtxt(
         os.path.join(opt.path_to_data, "y.txt"), dtype=int)
 
+    #initialize cross validation
     kf = KFold(n_splits=opt.n_splits, shuffle=True)
 
-    criterion = nn.BCEWithLogitsLoss()
+    criterion = nn.CrossEntropyLoss()
 
     logging.info("Start validation")
-    print("Start Validation")
 
     transform = transforms.Compose(
         [transforms.RandomVerticalFlip(),
          transforms.RandomHorizontalFlip(),
          transforms.RandomRotation(45)])
 
+    oversample = RandomOverSampler(sampling_strategy='all')
+
     for train_indx, test_indx in kf.split(X):
+
+        # initialize train_dataset and trainloader to calculate the train distribution
 
         train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                        set_indx=train_indx,
@@ -108,46 +111,36 @@ if __name__ == '__main__':
         # get statistics to normalize data
         statistics = get_statistics_2(trainloader, opt.only_channels, logging)
 
-
-        # get weights per class and initialize weighted_sampler
+        # use oversampling to cope with unbalance data
         y_train = y[train_indx]
-        class_sample_count = np.array([len(np.where(y_train == t)[0]) for t in np.unique(y_train)])
-        weights = 1. / torch.tensor(class_sample_count, dtype=torch.float).to(opt.dev)
-        class_weights = weights.double()
 
-        class_weights_all = class_weights[y_train]
-        weighted_sampler = WeightedRandomSampler(
-            weights=class_weights_all,
-            num_samples=len(class_weights_all),
-            replacement=False
-        )
+        train_indx, _ = oversample.fit_resample(np.asarray(train_indx).reshape(-1, 1), np.asarray(y_train))
+        train_indx = train_indx.T[0]
 
         # create a new normalized datasets and loaders
         train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                        set_indx=train_indx, transform=transform,
-                                                       means=statistics["mean"].div_(len(trainloader)),
-                                                       stds=statistics["std"].div_(len(trainloader)),
+                                                       means=statistics["mean"],
+                                                       stds=statistics["std"],
                                                        only_channels=opt.only_channels,
                                                        num_channels=opt.num_channels)
 
         test_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
                                                       set_indx=test_indx,
-                                                      means=statistics["mean"].div_(len(trainloader)),
-                                                      stds=statistics["std"].div_(len(trainloader)),
+                                                      means=statistics["mean"],
+                                                      stds=statistics["std"],
                                                       only_channels=opt.only_channels,
                                                       num_channels=opt.num_channels)
-
-
         trainloader = DataLoader(train_dataset,
                                  batch_size=opt.batch_size,
                                  shuffle=False,
-                                 num_workers=opt.num_workers,
-                                 sampler=weighted_sampler)
-
+                                 num_workers=opt.num_workers)
         testloader = DataLoader(test_dataset,
                                 batch_size=opt.batch_size,
                                 shuffle=False,
                                 num_workers=opt.num_workers)
+
+
 
         logging.info('train dataset: %d, test dataset: %d' % (len(train_dataset), len(test_dataset)))
 
@@ -157,13 +150,14 @@ if __name__ == '__main__':
         model = resnet18(pretrained=True)
         if opt.num_channels != 3:
             model.conv1 = nn.Conv2d(opt.num_channels, 64, kernel_size=(7, 7),
-                                stride=(2, 2), padding=(3, 3), bias=False)
+                                    stride=(2, 2), padding=(3, 3), bias=False)
         num_ftrs = model.fc.in_features
         model.fc = nn.Linear(num_ftrs, opt.num_classes)
 
         model = model.to(opt.dev)
 
-        optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
+        optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr)
+        scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
         for epoch in range(opt.n_epochs):
             running_loss = 0.0
@@ -172,7 +166,6 @@ if __name__ == '__main__':
 
                 # get the inputs; data is a list of [inputs, labels]
                 inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
-                labels = labels.reshape(-1)
 
                 # zero the parameter gradients
                 optimizer.zero_grad()
@@ -181,7 +174,7 @@ if __name__ == '__main__':
                 outputs = model(inputs)
                 _, predicted = torch.max(outputs.data, 1)
 
-                loss = criterion(outputs, F.one_hot(labels.long(), opt.num_classes).type_as(outputs))
+                loss = criterion(outputs, labels)
                 loss.backward()
                 optimizer.step()
 
@@ -190,6 +183,8 @@ if __name__ == '__main__':
                 if i % 50 == 49:  # print every 2000 mini-batches
                     logging.info('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
                     running_loss = 0.0
+            if scheduler is not None:
+                scheduler.step()
 
         logging.info('Finished Training')
 
@@ -201,8 +196,6 @@ if __name__ == '__main__':
         with torch.no_grad():
             for data in testloader:
                 inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
-                labels = labels.reshape(-1)
-
                 outputs = model(inputs)
                 pred = outputs.argmax(dim=1)
                 _, predicted = torch.max(outputs.data, 1)
@@ -220,4 +213,4 @@ if __name__ == '__main__':
         f1_score_original = f1_score(y_true, y_pred, average=None, labels=np.arange(opt.num_classes))
         df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=opt.class_names)
         logging.info(df.to_string())
-
+        torch.cuda.empty_cache()

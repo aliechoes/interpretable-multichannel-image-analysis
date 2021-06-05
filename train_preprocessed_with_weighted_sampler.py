@@ -17,6 +17,7 @@ from dataset import Dataset_Generator, train_validation_test_split, get_classes_
     number_of_channels, Dataset_Generator_Preprocessed, train_validation_test_split_wth_augmentation, train_validation_test_split_undersample
 from util import get_statistics_2
 from collections import Counter
+from torch.optim import lr_scheduler
 
 seed_value = 42
 
@@ -74,7 +75,7 @@ if __name__ == '__main__':
     timestamp = datetime.timestamp(now)
 
     # initialize logging
-    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_preprocessed_{}.txt'.format(timestamp)),
+    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_preprocessed_weighted_sampler_{}.txt'.format(timestamp)),
                         level=logging.DEBUG)
     logging.info("the deviced being used is {}".format(opt.dev))
 
@@ -118,10 +119,6 @@ if __name__ == '__main__':
         num_samples=len(class_weights_all),
         replacement=True
     )
-
-    logging.info('the length of the trainloader is: %s' % (str(len(trainloader))))
-    # collect statistics of the train data (mean & standard deviation) to normalize the data
-    logging.info('statistics used: %s' % (str(statistics)))
 
     # create a new normalized datasets and loaders
     train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
@@ -178,7 +175,9 @@ if __name__ == '__main__':
     model = model.to(opt.dev)
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
+
+    optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr)
+    scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
     if opt.resume_model != '':
         checkpoint = torch.load('{0}/{1}'.format(opt.model_save_path, opt.resume_model))
@@ -210,6 +209,8 @@ if __name__ == '__main__':
             if i % 50 == 49:  # print every 2000 mini-batches
                 logging.info('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
                 running_loss = 0.0
+        if scheduler is not None:
+            scheduler.step()
         correct = 0
         total = 0
         with torch.no_grad():
@@ -250,10 +251,10 @@ if __name__ == '__main__':
     logging.info('Accuracy of the network on the %d test images: %d %%' % (len(test_dataset),
                                                                            100 * correct / total))
 
-    logging.info("The model saved: %s" % "final_model_dict_{}.pth".format(opt.model_name))
+    logging.info("The model saved: %s" % "final_model_dict_weighted_sampler_{}.pth".format(opt.model_name))
 
     # save model and output classification report + f1 scores per class
-    torch.save(model.state_dict(), os.path.join(opt.model_save_path, "final_model_dict_{}.pth".format(opt.model_name)))
+    torch.save(model.state_dict(), os.path.join(opt.model_save_path, "final_model_dict_weighted_sampler_{}.pth".format(opt.model_name)))
     cr = classification_report(y_true, y_pred, target_names=opt.class_names, digits=4)
     logging.info(cr)
     f1_score_original = f1_score(y_true, y_pred, average=None, labels=np.arange(opt.num_classes))
