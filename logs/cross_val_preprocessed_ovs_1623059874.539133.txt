@@ -1,0 +1,2367 @@
+INFO:root:the deviced being used is cuda:0
+INFO:root:Start validation
+INFO:root:statistics used: {'mean': tensor([0.0132, 0.0048, 0.0067, 0.0149, 0.0123, 0.0097, 0.0121, 0.0050, 0.0077]), 'std': tensor([0.0271, 0.0020, 0.0025, 0.0204, 0.0125, 0.0076, 0.0052, 0.0021, 0.0031])}
+INFO:root:train dataset: 131886, test dataset: 6256
+INFO:root:used only channels: [1, 3, 4, 5, 6, 7, 9, 10, 11]; only classes: None
+INFO:root:epoch0
+INFO:root:[1,    50] training loss: 0.03441223
+INFO:root:[1,   100] training loss: 0.02801886
+INFO:root:[1,   150] training loss: 0.05322707
+INFO:root:[1,   200] training loss: 0.04543965
+INFO:root:[1,   250] training loss: 0.06617309
+INFO:root:[1,   300] training loss: 0.05565778
+INFO:root:[1,   350] training loss: 0.06312243
+INFO:root:[1,   400] training loss: 0.06492568
+INFO:root:epoch1
+INFO:root:[2,    50] training loss: 0.02936400
+INFO:root:[2,   100] training loss: 0.02080478
+INFO:root:[2,   150] training loss: 0.04352276
+INFO:root:[2,   200] training loss: 0.04172007
+INFO:root:[2,   250] training loss: 0.05335457
+INFO:root:[2,   300] training loss: 0.05246046
+INFO:root:[2,   350] training loss: 0.05697802
+INFO:root:[2,   400] training loss: 0.05786410
+INFO:root:epoch2
+INFO:root:[3,    50] training loss: 0.01249317
+INFO:root:[3,   100] training loss: 0.01964232
+INFO:root:[3,   150] training loss: 0.03683013
+INFO:root:[3,   200] training loss: 0.03475133
+INFO:root:[3,   250] training loss: 0.04486030
+INFO:root:[3,   300] training loss: 0.04678627
+INFO:root:[3,   350] training loss: 0.04839481
+INFO:root:[3,   400] training loss: 0.04927127
+INFO:root:epoch3
+INFO:root:[4,    50] training loss: 0.00690256
+INFO:root:[4,   100] training loss: 0.01716298
+INFO:root:[4,   150] training loss: 0.02547525
+INFO:root:[4,   200] training loss: 0.02832245
+INFO:root:[4,   250] training loss: 0.03945134
+INFO:root:[4,   300] training loss: 0.04060897
+INFO:root:[4,   350] training loss: 0.03703334
+INFO:root:[4,   400] training loss: 0.03878033
+INFO:root:epoch4
+INFO:root:[5,    50] training loss: 0.00485142
+INFO:root:[5,   100] training loss: 0.01455005
+INFO:root:[5,   150] training loss: 0.01879826
+INFO:root:[5,   200] training loss: 0.02219355
+INFO:root:[5,   250] training loss: 0.02881605
+INFO:root:[5,   300] training loss: 0.03103590
+INFO:root:[5,   350] training loss: 0.02899010
+INFO:root:[5,   400] training loss: 0.03057871
+INFO:root:epoch5
+INFO:root:[6,    50] training loss: 0.00368203
+INFO:root:[6,   100] training loss: 0.01287891
+INFO:root:[6,   150] training loss: 0.01611823
+INFO:root:[6,   200] training loss: 0.01718870
+INFO:root:[6,   250] training loss: 0.02060708
+INFO:root:[6,   300] training loss: 0.02301893
+INFO:root:[6,   350] training loss: 0.02316136
+INFO:root:[6,   400] training loss: 0.02344417
+INFO:root:epoch6
+INFO:root:[7,    50] training loss: 0.00327531
+INFO:root:[7,   100] training loss: 0.01041210
+INFO:root:[7,   150] training loss: 0.01222480
+INFO:root:[7,   200] training loss: 0.01251409
+INFO:root:[7,   250] training loss: 0.01486267
+INFO:root:[7,   300] training loss: 0.01909022
+INFO:root:[7,   350] training loss: 0.01964750
+INFO:root:[7,   400] training loss: 0.01886415
+INFO:root:epoch7
+INFO:root:[8,    50] training loss: 0.00314734
+INFO:root:[8,   100] training loss: 0.01288368
+INFO:root:[8,   150] training loss: 0.02160987
+INFO:root:[8,   200] training loss: 0.01958794
+INFO:root:[8,   250] training loss: 0.01756186
+INFO:root:[8,   300] training loss: 0.03988564
+INFO:root:[8,   350] training loss: 0.01812395
+INFO:root:[8,   400] training loss: 0.01199414
+INFO:root:epoch8
+INFO:root:[9,    50] training loss: 0.00272188
+INFO:root:[9,   100] training loss: 0.00928064
+INFO:root:[9,   150] training loss: 0.01545482
+INFO:root:[9,   200] training loss: 0.00993571
+INFO:root:[9,   250] training loss: 0.01286081
+INFO:root:[9,   300] training loss: 0.02300961
+INFO:root:[9,   350] training loss: 0.01542900
+INFO:root:[9,   400] training loss: 0.01231517
+INFO:root:epoch9
+INFO:root:[10,    50] training loss: 0.00268958
+INFO:root:[10,   100] training loss: 0.00788537
+INFO:root:[10,   150] training loss: 0.01304662
+INFO:root:[10,   200] training loss: 0.00870487
+INFO:root:[10,   250] training loss: 0.01152116
+INFO:root:[10,   300] training loss: 0.01706161
+INFO:root:[10,   350] training loss: 0.01470220
+INFO:root:[10,   400] training loss: 0.01172923
+INFO:root:epoch10
+INFO:root:[11,    50] training loss: 0.00270934
+INFO:root:[11,   100] training loss: 0.00695879
+INFO:root:[11,   150] training loss: 0.01178607
+INFO:root:[11,   200] training loss: 0.00833811
+INFO:root:[11,   250] training loss: 0.01092928
+INFO:root:[11,   300] training loss: 0.01406112
+INFO:root:[11,   350] training loss: 0.01391487
+INFO:root:[11,   400] training loss: 0.01170757
+INFO:root:epoch11
+INFO:root:[12,    50] training loss: 0.00262774
+INFO:root:[12,   100] training loss: 0.00635263
+INFO:root:[12,   150] training loss: 0.01120884
+INFO:root:[12,   200] training loss: 0.00801033
+INFO:root:[12,   250] training loss: 0.01013422
+INFO:root:[12,   300] training loss: 0.01268871
+INFO:root:[12,   350] training loss: 0.01349439
+INFO:root:[12,   400] training loss: 0.01050198
+INFO:root:epoch12
+INFO:root:[13,    50] training loss: 0.00260639
+INFO:root:[13,   100] training loss: 0.00628506
+INFO:root:[13,   150] training loss: 0.01085898
+INFO:root:[13,   200] training loss: 0.00807569
+INFO:root:[13,   250] training loss: 0.00992452
+INFO:root:[13,   300] training loss: 0.01179004
+INFO:root:[13,   350] training loss: 0.01293022
+INFO:root:[13,   400] training loss: 0.01053460
+INFO:root:epoch13
+INFO:root:[14,    50] training loss: 0.00255374
+INFO:root:[14,   100] training loss: 0.00545335
+INFO:root:[14,   150] training loss: 0.00995498
+INFO:root:[14,   200] training loss: 0.00740360
+INFO:root:[14,   250] training loss: 0.00972050
+INFO:root:[14,   300] training loss: 0.01142580
+INFO:root:[14,   350] training loss: 0.01206152
+INFO:root:[14,   400] training loss: 0.00983355
+INFO:root:epoch14
+INFO:root:[15,    50] training loss: 0.00246359
+INFO:root:[15,   100] training loss: 0.00542016
+INFO:root:[15,   150] training loss: 0.00977434
+INFO:root:[15,   200] training loss: 0.00724026
+INFO:root:[15,   250] training loss: 0.00982158
+INFO:root:[15,   300] training loss: 0.01100575
+INFO:root:[15,   350] training loss: 0.01130757
+INFO:root:[15,   400] training loss: 0.00870627
+INFO:root:epoch15
+INFO:root:[16,    50] training loss: 0.00249555
+INFO:root:[16,   100] training loss: 0.00553753
+INFO:root:[16,   150] training loss: 0.01059710
+INFO:root:[16,   200] training loss: 0.00697204
+INFO:root:[16,   250] training loss: 0.00942448
+INFO:root:[16,   300] training loss: 0.01084338
+INFO:root:[16,   350] training loss: 0.01131791
+INFO:root:[16,   400] training loss: 0.00887687
+INFO:root:epoch16
+INFO:root:[17,    50] training loss: 0.00252347
+INFO:root:[17,   100] training loss: 0.00549340
+INFO:root:[17,   150] training loss: 0.00994033
+INFO:root:[17,   200] training loss: 0.00711307
+INFO:root:[17,   250] training loss: 0.00916228
+INFO:root:[17,   300] training loss: 0.01082544
+INFO:root:[17,   350] training loss: 0.01109265
+INFO:root:[17,   400] training loss: 0.00888928
+INFO:root:epoch17
+INFO:root:[18,    50] training loss: 0.00248111
+INFO:root:[18,   100] training loss: 0.00526894
+INFO:root:[18,   150] training loss: 0.00955997
+INFO:root:[18,   200] training loss: 0.00683725
+INFO:root:[18,   250] training loss: 0.00927559
+INFO:root:[18,   300] training loss: 0.01071245
+INFO:root:[18,   350] training loss: 0.01111700
+INFO:root:[18,   400] training loss: 0.00857277
+INFO:root:epoch18
+INFO:root:[19,    50] training loss: 0.00247692
+INFO:root:[19,   100] training loss: 0.00531788
+INFO:root:[19,   150] training loss: 0.00932047
+INFO:root:[19,   200] training loss: 0.00694614
+INFO:root:[19,   250] training loss: 0.00902843
+INFO:root:[19,   300] training loss: 0.01057448
+INFO:root:[19,   350] training loss: 0.01114450
+INFO:root:[19,   400] training loss: 0.00874342
+INFO:root:epoch19
+INFO:root:[20,    50] training loss: 0.00250890
+INFO:root:[20,   100] training loss: 0.00518307
+INFO:root:[20,   150] training loss: 0.00945438
+INFO:root:[20,   200] training loss: 0.00694861
+INFO:root:[20,   250] training loss: 0.00896880
+INFO:root:[20,   300] training loss: 0.01056798
+INFO:root:[20,   350] training loss: 0.01135995
+INFO:root:[20,   400] training loss: 0.00868558
+INFO:root:epoch20
+INFO:root:[21,    50] training loss: 0.00256937
+INFO:root:[21,   100] training loss: 0.00509337
+INFO:root:[21,   150] training loss: 0.00978621
+INFO:root:[21,   200] training loss: 0.00693098
+INFO:root:[21,   250] training loss: 0.00910416
+INFO:root:[21,   300] training loss: 0.01044586
+INFO:root:[21,   350] training loss: 0.01135263
+INFO:root:[21,   400] training loss: 0.00884217
+INFO:root:epoch21
+INFO:root:[22,    50] training loss: 0.00246643
+INFO:root:[22,   100] training loss: 0.00519802
+INFO:root:[22,   150] training loss: 0.00934096
+INFO:root:[22,   200] training loss: 0.00697656
+INFO:root:[22,   250] training loss: 0.00929721
+INFO:root:[22,   300] training loss: 0.01022953
+INFO:root:[22,   350] training loss: 0.01101156
+INFO:root:[22,   400] training loss: 0.00861111
+INFO:root:epoch22
+INFO:root:[23,    50] training loss: 0.00250155
+INFO:root:[23,   100] training loss: 0.00518562
+INFO:root:[23,   150] training loss: 0.00906845
+INFO:root:[23,   200] training loss: 0.00670338
+INFO:root:[23,   250] training loss: 0.00903372
+INFO:root:[23,   300] training loss: 0.01057521
+INFO:root:[23,   350] training loss: 0.01101717
+INFO:root:[23,   400] training loss: 0.00909396
+INFO:root:epoch23
+INFO:root:[24,    50] training loss: 0.00249718
+INFO:root:[24,   100] training loss: 0.00510061
+INFO:root:[24,   150] training loss: 0.00968413
+INFO:root:[24,   200] training loss: 0.00684323
+INFO:root:[24,   250] training loss: 0.00912788
+INFO:root:[24,   300] training loss: 0.01030126
+INFO:root:[24,   350] training loss: 0.01103107
+INFO:root:[24,   400] training loss: 0.00856472
+INFO:root:epoch24
+INFO:root:[25,    50] training loss: 0.00245995
+INFO:root:[25,   100] training loss: 0.00527797
+INFO:root:[25,   150] training loss: 0.00980236
+INFO:root:[25,   200] training loss: 0.00676677
+INFO:root:[25,   250] training loss: 0.00887893
+INFO:root:[25,   300] training loss: 0.01026161
+INFO:root:[25,   350] training loss: 0.01129878
+INFO:root:[25,   400] training loss: 0.00864487
+INFO:root:epoch25
+INFO:root:[26,    50] training loss: 0.00248338
+INFO:root:[26,   100] training loss: 0.00518574
+INFO:root:[26,   150] training loss: 0.00948041
+INFO:root:[26,   200] training loss: 0.00698158
+INFO:root:[26,   250] training loss: 0.00902655
+INFO:root:[26,   300] training loss: 0.01030100
+INFO:root:[26,   350] training loss: 0.01099138
+INFO:root:[26,   400] training loss: 0.00839733
+INFO:root:epoch26
+INFO:root:[27,    50] training loss: 0.00249567
+INFO:root:[27,   100] training loss: 0.00524562
+INFO:root:[27,   150] training loss: 0.00936036
+INFO:root:[27,   200] training loss: 0.00693663
+INFO:root:[27,   250] training loss: 0.00896226
+INFO:root:[27,   300] training loss: 0.01033230
+INFO:root:[27,   350] training loss: 0.01123663
+INFO:root:[27,   400] training loss: 0.00889030
+INFO:root:epoch27
+INFO:root:[28,    50] training loss: 0.00243718
+INFO:root:[28,   100] training loss: 0.00530561
+INFO:root:[28,   150] training loss: 0.00979346
+INFO:root:[28,   200] training loss: 0.00658728
+INFO:root:[28,   250] training loss: 0.00900461
+INFO:root:[28,   300] training loss: 0.01029101
+INFO:root:[28,   350] training loss: 0.01108050
+INFO:root:[28,   400] training loss: 0.00854513
+INFO:root:epoch28
+INFO:root:[29,    50] training loss: 0.00248360
+INFO:root:[29,   100] training loss: 0.00522499
+INFO:root:[29,   150] training loss: 0.00942755
+INFO:root:[29,   200] training loss: 0.00707623
+INFO:root:[29,   250] training loss: 0.00901478
+INFO:root:[29,   300] training loss: 0.01043867
+INFO:root:[29,   350] training loss: 0.01129064
+INFO:root:[29,   400] training loss: 0.00893080
+INFO:root:epoch29
+INFO:root:[30,    50] training loss: 0.00253646
+INFO:root:[30,   100] training loss: 0.00506941
+INFO:root:[30,   150] training loss: 0.00938474
+INFO:root:[30,   200] training loss: 0.00689904
+INFO:root:[30,   250] training loss: 0.00890745
+INFO:root:[30,   300] training loss: 0.01058093
+INFO:root:[30,   350] training loss: 0.01091569
+INFO:root:[30,   400] training loss: 0.00896167
+INFO:root:epoch30
+INFO:root:[31,    50] training loss: 0.00247352
+INFO:root:[31,   100] training loss: 0.00521934
+INFO:root:[31,   150] training loss: 0.00950352
+INFO:root:[31,   200] training loss: 0.00664894
+INFO:root:[31,   250] training loss: 0.00924178
+INFO:root:[31,   300] training loss: 0.01035074
+INFO:root:[31,   350] training loss: 0.01080534
+INFO:root:[31,   400] training loss: 0.00897792
+INFO:root:epoch31
+INFO:root:[32,    50] training loss: 0.00249796
+INFO:root:[32,   100] training loss: 0.00503328
+INFO:root:[32,   150] training loss: 0.00943790
+INFO:root:[32,   200] training loss: 0.00668999
+INFO:root:[32,   250] training loss: 0.00915739
+INFO:root:[32,   300] training loss: 0.01034178
+INFO:root:[32,   350] training loss: 0.01104539
+INFO:root:[32,   400] training loss: 0.00841229
+INFO:root:epoch32
+INFO:root:[33,    50] training loss: 0.00253422
+INFO:root:[33,   100] training loss: 0.00507221
+INFO:root:[33,   150] training loss: 0.00901169
+INFO:root:[33,   200] training loss: 0.00681934
+INFO:root:[33,   250] training loss: 0.00929145
+INFO:root:[33,   300] training loss: 0.01016870
+INFO:root:[33,   350] training loss: 0.01100928
+INFO:root:[33,   400] training loss: 0.00887700
+INFO:root:epoch33
+INFO:root:[34,    50] training loss: 0.00241978
+INFO:root:[34,   100] training loss: 0.00512591
+INFO:root:[34,   150] training loss: 0.00942145
+INFO:root:[34,   200] training loss: 0.00682429
+INFO:root:[34,   250] training loss: 0.00884238
+INFO:root:[34,   300] training loss: 0.01026602
+INFO:root:[34,   350] training loss: 0.01093146
+INFO:root:[34,   400] training loss: 0.00838174
+INFO:root:epoch34
+INFO:root:[35,    50] training loss: 0.00252539
+INFO:root:[35,   100] training loss: 0.00502933
+INFO:root:[35,   150] training loss: 0.00912121
+INFO:root:[35,   200] training loss: 0.00677152
+INFO:root:[35,   250] training loss: 0.00900505
+INFO:root:[35,   300] training loss: 0.01024950
+INFO:root:[35,   350] training loss: 0.01130347
+INFO:root:[35,   400] training loss: 0.00860678
+INFO:root:epoch35
+INFO:root:[36,    50] training loss: 0.00244727
+INFO:root:[36,   100] training loss: 0.00530642
+INFO:root:[36,   150] training loss: 0.00964848
+INFO:root:[36,   200] training loss: 0.00687118
+INFO:root:[36,   250] training loss: 0.00895523
+INFO:root:[36,   300] training loss: 0.01038389
+INFO:root:[36,   350] training loss: 0.01111570
+INFO:root:[36,   400] training loss: 0.00871080
+INFO:root:epoch36
+INFO:root:[37,    50] training loss: 0.00246824
+INFO:root:[37,   100] training loss: 0.00516054
+INFO:root:[37,   150] training loss: 0.00927200
+INFO:root:[37,   200] training loss: 0.00701425
+INFO:root:[37,   250] training loss: 0.00901398
+INFO:root:[37,   300] training loss: 0.01040576
+INFO:root:[37,   350] training loss: 0.01106109
+INFO:root:[37,   400] training loss: 0.00845495
+INFO:root:epoch37
+INFO:root:[38,    50] training loss: 0.00249502
+INFO:root:[38,   100] training loss: 0.00519880
+INFO:root:[38,   150] training loss: 0.01006315
+INFO:root:[38,   200] training loss: 0.00687341
+INFO:root:[38,   250] training loss: 0.00898812
+INFO:root:[38,   300] training loss: 0.01022326
+INFO:root:[38,   350] training loss: 0.01097589
+INFO:root:[38,   400] training loss: 0.00866427
+INFO:root:epoch38
+INFO:root:[39,    50] training loss: 0.00250043
+INFO:root:[39,   100] training loss: 0.00512421
+INFO:root:[39,   150] training loss: 0.00951697
+INFO:root:[39,   200] training loss: 0.00687255
+INFO:root:[39,   250] training loss: 0.00910989
+INFO:root:[39,   300] training loss: 0.01020955
+INFO:root:[39,   350] training loss: 0.01136939
+INFO:root:[39,   400] training loss: 0.00882438
+INFO:root:epoch39
+INFO:root:[40,    50] training loss: 0.00252657
+INFO:root:[40,   100] training loss: 0.00535183
+INFO:root:[40,   150] training loss: 0.01002861
+INFO:root:[40,   200] training loss: 0.00661483
+INFO:root:[40,   250] training loss: 0.00919524
+INFO:root:[40,   300] training loss: 0.01030824
+INFO:root:[40,   350] training loss: 0.01093506
+INFO:root:[40,   400] training loss: 0.00859982
+INFO:root:epoch40
+INFO:root:[41,    50] training loss: 0.00253374
+INFO:root:[41,   100] training loss: 0.00516498
+INFO:root:[41,   150] training loss: 0.00936951
+INFO:root:[41,   200] training loss: 0.00690912
+INFO:root:[41,   250] training loss: 0.00924439
+INFO:root:[41,   300] training loss: 0.01024705
+INFO:root:[41,   350] training loss: 0.01125834
+INFO:root:[41,   400] training loss: 0.00876386
+INFO:root:epoch41
+INFO:root:[42,    50] training loss: 0.00246359
+INFO:root:[42,   100] training loss: 0.00512652
+INFO:root:[42,   150] training loss: 0.00972368
+INFO:root:[42,   200] training loss: 0.00730000
+INFO:root:[42,   250] training loss: 0.00881531
+INFO:root:[42,   300] training loss: 0.01049337
+INFO:root:[42,   350] training loss: 0.01125790
+INFO:root:[42,   400] training loss: 0.00875232
+INFO:root:epoch42
+INFO:root:[43,    50] training loss: 0.00251677
+INFO:root:[43,   100] training loss: 0.00516390
+INFO:root:[43,   150] training loss: 0.00956928
+INFO:root:[43,   200] training loss: 0.00668210
+INFO:root:[43,   250] training loss: 0.00913690
+INFO:root:[43,   300] training loss: 0.01017774
+INFO:root:[43,   350] training loss: 0.01100751
+INFO:root:[43,   400] training loss: 0.00837992
+INFO:root:epoch43
+INFO:root:[44,    50] training loss: 0.00248366
+INFO:root:[44,   100] training loss: 0.00520680
+INFO:root:[44,   150] training loss: 0.00949976
+INFO:root:[44,   200] training loss: 0.00683371
+INFO:root:[44,   250] training loss: 0.00889051
+INFO:root:[44,   300] training loss: 0.01036491
+INFO:root:[44,   350] training loss: 0.01083623
+INFO:root:[44,   400] training loss: 0.00836634
+INFO:root:epoch44
+INFO:root:[45,    50] training loss: 0.00250275
+INFO:root:[45,   100] training loss: 0.00524694
+INFO:root:[45,   150] training loss: 0.00949911
+INFO:root:[45,   200] training loss: 0.00672516
+INFO:root:[45,   250] training loss: 0.00888966
+INFO:root:[45,   300] training loss: 0.01038611
+INFO:root:[45,   350] training loss: 0.01136413
+INFO:root:[45,   400] training loss: 0.00889477
+INFO:root:epoch45
+INFO:root:[46,    50] training loss: 0.00251791
+INFO:root:[46,   100] training loss: 0.00507365
+INFO:root:[46,   150] training loss: 0.01012598
+INFO:root:[46,   200] training loss: 0.00680624
+INFO:root:[46,   250] training loss: 0.00897355
+INFO:root:[46,   300] training loss: 0.01018461
+INFO:root:[46,   350] training loss: 0.01136482
+INFO:root:[46,   400] training loss: 0.00856739
+INFO:root:epoch46
+INFO:root:[47,    50] training loss: 0.00249076
+INFO:root:[47,   100] training loss: 0.00520569
+INFO:root:[47,   150] training loss: 0.00932932
+INFO:root:[47,   200] training loss: 0.00713445
+INFO:root:[47,   250] training loss: 0.00873292
+INFO:root:[47,   300] training loss: 0.01012874
+INFO:root:[47,   350] training loss: 0.01156570
+INFO:root:[47,   400] training loss: 0.00861455
+INFO:root:epoch47
+INFO:root:[48,    50] training loss: 0.00248146
+INFO:root:[48,   100] training loss: 0.00511357
+INFO:root:[48,   150] training loss: 0.00921532
+INFO:root:[48,   200] training loss: 0.00702513
+INFO:root:[48,   250] training loss: 0.00900918
+INFO:root:[48,   300] training loss: 0.01021520
+INFO:root:[48,   350] training loss: 0.01120629
+INFO:root:[48,   400] training loss: 0.00853278
+INFO:root:epoch48
+INFO:root:[49,    50] training loss: 0.00247202
+INFO:root:[49,   100] training loss: 0.00508724
+INFO:root:[49,   150] training loss: 0.00907663
+INFO:root:[49,   200] training loss: 0.00697868
+INFO:root:[49,   250] training loss: 0.00927491
+INFO:root:[49,   300] training loss: 0.01048098
+INFO:root:[49,   350] training loss: 0.01092579
+INFO:root:[49,   400] training loss: 0.00846068
+INFO:root:epoch49
+INFO:root:[50,    50] training loss: 0.00248232
+INFO:root:[50,   100] training loss: 0.00506557
+INFO:root:[50,   150] training loss: 0.00906904
+INFO:root:[50,   200] training loss: 0.00670790
+INFO:root:[50,   250] training loss: 0.00875333
+INFO:root:[50,   300] training loss: 0.01021557
+INFO:root:[50,   350] training loss: 0.01099711
+INFO:root:[50,   400] training loss: 0.00855218
+INFO:root:Finished Training
+INFO:root:Accuracy of the network on the 6256 test images: 97 %
+INFO:root:                   precision    recall  f1-score   support
+
+          unknown     0.8894    0.6955    0.7806       266
+           CD4+ T     0.9777    0.9989    0.9881       876
+           CD8+ T     0.9070    0.9148    0.9109       352
+ CD15+ neutrophil     0.9965    0.9992    0.9978      3671
+   CD14+ monocyte     0.9654    0.9960    0.9805       252
+          CD19+ B     0.9888    0.9833    0.9861       180
+         CD56+ NK     0.9370    0.9015    0.9189       132
+              NKT     0.7311    0.7909    0.7598       220
+       eosinophil     0.9776    0.9967    0.9871       307
+
+         accuracy                         0.9714      6256
+        macro avg     0.9301    0.9196    0.9233      6256
+     weighted avg     0.9713    0.9714    0.9707      6256
+
+INFO:root:    unknown    CD4+ T    CD8+ T   CD15+ neutrophil   CD14+ monocyte   CD19+ B   CD56+ NK       NKT   eosinophil
+0  0.780591  0.988142  0.910891           0.997824         0.980469  0.986072   0.918919  0.759825     0.987097
+INFO:root:statistics used: {'mean': tensor([0.0132, 0.0048, 0.0067, 0.0149, 0.0123, 0.0097, 0.0121, 0.0050, 0.0077]), 'std': tensor([0.0272, 0.0020, 0.0025, 0.0203, 0.0126, 0.0075, 0.0052, 0.0021, 0.0031])}
+INFO:root:train dataset: 131886, test dataset: 6256
+INFO:root:used only channels: [1, 3, 4, 5, 6, 7, 9, 10, 11]; only classes: None
+INFO:root:epoch0
+INFO:root:[1,    50] training loss: 0.03732098
+INFO:root:[1,   100] training loss: 0.03760036
+INFO:root:[1,   150] training loss: 0.06569976
+INFO:root:[1,   200] training loss: 0.04719850
+INFO:root:[1,   250] training loss: 0.05382930
+INFO:root:[1,   300] training loss: 0.05304969
+INFO:root:[1,   350] training loss: 0.05294557
+INFO:root:[1,   400] training loss: 0.06362740
+INFO:root:epoch1
+INFO:root:[2,    50] training loss: 0.02171612
+INFO:root:[2,   100] training loss: 0.02457172
+INFO:root:[2,   150] training loss: 0.04952483
+INFO:root:[2,   200] training loss: 0.04157333
+INFO:root:[2,   250] training loss: 0.04523912
+INFO:root:[2,   300] training loss: 0.05190866
+INFO:root:[2,   350] training loss: 0.05195112
+INFO:root:[2,   400] training loss: 0.05125542
+INFO:root:epoch2
+INFO:root:[3,    50] training loss: 0.00754305
+INFO:root:[3,   100] training loss: 0.02022057
+INFO:root:[3,   150] training loss: 0.04035445
+INFO:root:[3,   200] training loss: 0.03679262
+INFO:root:[3,   250] training loss: 0.03890552
+INFO:root:[3,   300] training loss: 0.04902237
+INFO:root:[3,   350] training loss: 0.04608840
+INFO:root:[3,   400] training loss: 0.03799463
+INFO:root:epoch3
+INFO:root:[4,    50] training loss: 0.00508079
+INFO:root:[4,   100] training loss: 0.01672954
+INFO:root:[4,   150] training loss: 0.03063468
+INFO:root:[4,   200] training loss: 0.02755797
+INFO:root:[4,   250] training loss: 0.02998557
+INFO:root:[4,   300] training loss: 0.04395085
+INFO:root:[4,   350] training loss: 0.03842344
+INFO:root:[4,   400] training loss: 0.02799480
+INFO:root:epoch4
+INFO:root:[5,    50] training loss: 0.00403181
+INFO:root:[5,   100] training loss: 0.01456314
+INFO:root:[5,   150] training loss: 0.02382841
+INFO:root:[5,   200] training loss: 0.02042258
+INFO:root:[5,   250] training loss: 0.02171909
+INFO:root:[5,   300] training loss: 0.03439334
+INFO:root:[5,   350] training loss: 0.02930140
+INFO:root:[5,   400] training loss: 0.02227373
+INFO:root:epoch5
+INFO:root:[6,    50] training loss: 0.00339242
+INFO:root:[6,   100] training loss: 0.01249646
+INFO:root:[6,   150] training loss: 0.01873941
+INFO:root:[6,   200] training loss: 0.01542658
+INFO:root:[6,   250] training loss: 0.01651158
+INFO:root:[6,   300] training loss: 0.02526448
+INFO:root:[6,   350] training loss: 0.02214326
+INFO:root:[6,   400] training loss: 0.01745539
+INFO:root:epoch6
+INFO:root:[7,    50] training loss: 0.00307037
+INFO:root:[7,   100] training loss: 0.01003686
+INFO:root:[7,   150] training loss: 0.01471548
+INFO:root:[7,   200] training loss: 0.01245702
+INFO:root:[7,   250] training loss: 0.01325522
+INFO:root:[7,   300] training loss: 0.01717179
+INFO:root:[7,   350] training loss: 0.01718891
+INFO:root:[7,   400] training loss: 0.01355924
+INFO:root:epoch7
+INFO:root:[8,    50] training loss: 0.00302765
+INFO:root:[8,   100] training loss: 0.01128681
+INFO:root:[8,   150] training loss: 0.02282110
+INFO:root:[8,   200] training loss: 0.01962372
+INFO:root:[8,   250] training loss: 0.01373725
+INFO:root:[8,   300] training loss: 0.01803378
+INFO:root:[8,   350] training loss: 0.01326091
+INFO:root:[8,   400] training loss: 0.01003680
+INFO:root:epoch8
+INFO:root:[9,    50] training loss: 0.00283518
+INFO:root:[9,   100] training loss: 0.00731406
+INFO:root:[9,   150] training loss: 0.01425755
+INFO:root:[9,   200] training loss: 0.01207776
+INFO:root:[9,   250] training loss: 0.01147936
+INFO:root:[9,   300] training loss: 0.01361627
+INFO:root:[9,   350] training loss: 0.01235111
+INFO:root:[9,   400] training loss: 0.00923756
+INFO:root:epoch9
+INFO:root:[10,    50] training loss: 0.00273487
+INFO:root:[10,   100] training loss: 0.00657204
+INFO:root:[10,   150] training loss: 0.01291570
+INFO:root:[10,   200] training loss: 0.01075391
+INFO:root:[10,   250] training loss: 0.01054784
+INFO:root:[10,   300] training loss: 0.01273735
+INFO:root:[10,   350] training loss: 0.01184642
+INFO:root:[10,   400] training loss: 0.00828150
+INFO:root:epoch10
+INFO:root:[11,    50] training loss: 0.00269971
+INFO:root:[11,   100] training loss: 0.00615984
+INFO:root:[11,   150] training loss: 0.01174985
+INFO:root:[11,   200] training loss: 0.01009481
+INFO:root:[11,   250] training loss: 0.01030666
+INFO:root:[11,   300] training loss: 0.01232362
+INFO:root:[11,   350] training loss: 0.01146814
+INFO:root:[11,   400] training loss: 0.00770388
+INFO:root:epoch11
+INFO:root:[12,    50] training loss: 0.00262060
+INFO:root:[12,   100] training loss: 0.00578054
+INFO:root:[12,   150] training loss: 0.01111315
+INFO:root:[12,   200] training loss: 0.00914051
+INFO:root:[12,   250] training loss: 0.00956387
+INFO:root:[12,   300] training loss: 0.01126523
+INFO:root:[12,   350] training loss: 0.01177882
+INFO:root:[12,   400] training loss: 0.00738544
+INFO:root:epoch12
+INFO:root:[13,    50] training loss: 0.00257822
+INFO:root:[13,   100] training loss: 0.00559343
+INFO:root:[13,   150] training loss: 0.01032192
+INFO:root:[13,   200] training loss: 0.00898133
+INFO:root:[13,   250] training loss: 0.00927219
+INFO:root:[13,   300] training loss: 0.01106809
+INFO:root:[13,   350] training loss: 0.01107961
+INFO:root:[13,   400] training loss: 0.00722216
+INFO:root:epoch13
+INFO:root:[14,    50] training loss: 0.00256718
+INFO:root:[14,   100] training loss: 0.00540465
+INFO:root:[14,   150] training loss: 0.00993403
+INFO:root:[14,   200] training loss: 0.00880489
+INFO:root:[14,   250] training loss: 0.00856383
+INFO:root:[14,   300] training loss: 0.01043529
+INFO:root:[14,   350] training loss: 0.01070220
+INFO:root:[14,   400] training loss: 0.00669430
+INFO:root:epoch14
+INFO:root:[15,    50] training loss: 0.00254733
+INFO:root:[15,   100] training loss: 0.00521950
+INFO:root:[15,   150] training loss: 0.00983549
+INFO:root:[15,   200] training loss: 0.00858139
+INFO:root:[15,   250] training loss: 0.00845812
+INFO:root:[15,   300] training loss: 0.00995232
+INFO:root:[15,   350] training loss: 0.01005819
+INFO:root:[15,   400] training loss: 0.00607909
+INFO:root:epoch15
+INFO:root:[16,    50] training loss: 0.00253178
+INFO:root:[16,   100] training loss: 0.00531535
+INFO:root:[16,   150] training loss: 0.00991117
+INFO:root:[16,   200] training loss: 0.00849404
+INFO:root:[16,   250] training loss: 0.00841716
+INFO:root:[16,   300] training loss: 0.01048730
+INFO:root:[16,   350] training loss: 0.01011175
+INFO:root:[16,   400] training loss: 0.00622049
+INFO:root:epoch16
+INFO:root:[17,    50] training loss: 0.00254495
+INFO:root:[17,   100] training loss: 0.00528003
+INFO:root:[17,   150] training loss: 0.00986661
+INFO:root:[17,   200] training loss: 0.00836057
+INFO:root:[17,   250] training loss: 0.00846447
+INFO:root:[17,   300] training loss: 0.01003477
+INFO:root:[17,   350] training loss: 0.01016147
+INFO:root:[17,   400] training loss: 0.00622256
+INFO:root:epoch17
+INFO:root:[18,    50] training loss: 0.00252029
+INFO:root:[18,   100] training loss: 0.00533055
+INFO:root:[18,   150] training loss: 0.00988405
+INFO:root:[18,   200] training loss: 0.00845771
+INFO:root:[18,   250] training loss: 0.00849774
+INFO:root:[18,   300] training loss: 0.00988000
+INFO:root:[18,   350] training loss: 0.00996489
+INFO:root:[18,   400] training loss: 0.00620106
+INFO:root:epoch18
+INFO:root:[19,    50] training loss: 0.00253523
+INFO:root:[19,   100] training loss: 0.00527653
+INFO:root:[19,   150] training loss: 0.00977682
+INFO:root:[19,   200] training loss: 0.00856212
+INFO:root:[19,   250] training loss: 0.00841263
+INFO:root:[19,   300] training loss: 0.01010622
+INFO:root:[19,   350] training loss: 0.01001958
+INFO:root:[19,   400] training loss: 0.00616893
+INFO:root:epoch19
+INFO:root:[20,    50] training loss: 0.00257621
+INFO:root:[20,   100] training loss: 0.00512762
+INFO:root:[20,   150] training loss: 0.00938958
+INFO:root:[20,   200] training loss: 0.00837384
+INFO:root:[20,   250] training loss: 0.00829526
+INFO:root:[20,   300] training loss: 0.00995410
+INFO:root:[20,   350] training loss: 0.01035446
+INFO:root:[20,   400] training loss: 0.00631182
+INFO:root:epoch20
+INFO:root:[21,    50] training loss: 0.00251651
+INFO:root:[21,   100] training loss: 0.00520175
+INFO:root:[21,   150] training loss: 0.00957567
+INFO:root:[21,   200] training loss: 0.00824253
+INFO:root:[21,   250] training loss: 0.00835384
+INFO:root:[21,   300] training loss: 0.01014886
+INFO:root:[21,   350] training loss: 0.01059000
+INFO:root:[21,   400] training loss: 0.00613855
+INFO:root:epoch21
+INFO:root:[22,    50] training loss: 0.00254106
+INFO:root:[22,   100] training loss: 0.00515775
+INFO:root:[22,   150] training loss: 0.00946992
+INFO:root:[22,   200] training loss: 0.00824398
+INFO:root:[22,   250] training loss: 0.00848411
+INFO:root:[22,   300] training loss: 0.00977594
+INFO:root:[22,   350] training loss: 0.01016594
+INFO:root:[22,   400] training loss: 0.00616560
+INFO:root:epoch22
+INFO:root:[23,    50] training loss: 0.00251973
+INFO:root:[23,   100] training loss: 0.00510077
+INFO:root:[23,   150] training loss: 0.00965835
+INFO:root:[23,   200] training loss: 0.00812175
+INFO:root:[23,   250] training loss: 0.00818260
+INFO:root:[23,   300] training loss: 0.00978224
+INFO:root:[23,   350] training loss: 0.00978669
+INFO:root:[23,   400] training loss: 0.00618140
+INFO:root:epoch23
+INFO:root:[24,    50] training loss: 0.00255288
+INFO:root:[24,   100] training loss: 0.00523818
+INFO:root:[24,   150] training loss: 0.00942645
+INFO:root:[24,   200] training loss: 0.00783255
+INFO:root:[24,   250] training loss: 0.00817391
+INFO:root:[24,   300] training loss: 0.01000690
+INFO:root:[24,   350] training loss: 0.00968083
+INFO:root:[24,   400] training loss: 0.00609160
+INFO:root:epoch24
+INFO:root:[25,    50] training loss: 0.00252809
+INFO:root:[25,   100] training loss: 0.00514691
+INFO:root:[25,   150] training loss: 0.00928906
+INFO:root:[25,   200] training loss: 0.00829335
+INFO:root:[25,   250] training loss: 0.00826604
+INFO:root:[25,   300] training loss: 0.00978345
+INFO:root:[25,   350] training loss: 0.01009911
+INFO:root:[25,   400] training loss: 0.00611181
+INFO:root:epoch25
+INFO:root:[26,    50] training loss: 0.00254657
+INFO:root:[26,   100] training loss: 0.00523415
+INFO:root:[26,   150] training loss: 0.00971259
+INFO:root:[26,   200] training loss: 0.00816722
+INFO:root:[26,   250] training loss: 0.00799201
+INFO:root:[26,   300] training loss: 0.00982012
+INFO:root:[26,   350] training loss: 0.01011277
+INFO:root:[26,   400] training loss: 0.00612197
+INFO:root:epoch26
+INFO:root:[27,    50] training loss: 0.00253177
+INFO:root:[27,   100] training loss: 0.00512910
+INFO:root:[27,   150] training loss: 0.00951570
+INFO:root:[27,   200] training loss: 0.00805958
+INFO:root:[27,   250] training loss: 0.00831454
+INFO:root:[27,   300] training loss: 0.00948976
+INFO:root:[27,   350] training loss: 0.01005269
+INFO:root:[27,   400] training loss: 0.00604916
+INFO:root:epoch27
+INFO:root:[28,    50] training loss: 0.00250004
+INFO:root:[28,   100] training loss: 0.00517046
+INFO:root:[28,   150] training loss: 0.00929377
+INFO:root:[28,   200] training loss: 0.00823343
+INFO:root:[28,   250] training loss: 0.00815397
+INFO:root:[28,   300] training loss: 0.00969380
+INFO:root:[28,   350] training loss: 0.00986527
+INFO:root:[28,   400] training loss: 0.00620315
+INFO:root:epoch28
+INFO:root:[29,    50] training loss: 0.00253582
+INFO:root:[29,   100] training loss: 0.00518517
+INFO:root:[29,   150] training loss: 0.00992637
+INFO:root:[29,   200] training loss: 0.00869523
+INFO:root:[29,   250] training loss: 0.00807391
+INFO:root:[29,   300] training loss: 0.00975964
+INFO:root:[29,   350] training loss: 0.00986818
+INFO:root:[29,   400] training loss: 0.00611269
+INFO:root:epoch29
+INFO:root:[30,    50] training loss: 0.00251813
+INFO:root:[30,   100] training loss: 0.00520783
+INFO:root:[30,   150] training loss: 0.00953919
+INFO:root:[30,   200] training loss: 0.00839741
+INFO:root:[30,   250] training loss: 0.00817781
+INFO:root:[30,   300] training loss: 0.01028923
+INFO:root:[30,   350] training loss: 0.00990932
+INFO:root:[30,   400] training loss: 0.00608884
+INFO:root:epoch30
+INFO:root:[31,    50] training loss: 0.00255251
+INFO:root:[31,   100] training loss: 0.00522667
+INFO:root:[31,   150] training loss: 0.00964863
+INFO:root:[31,   200] training loss: 0.00818961
+INFO:root:[31,   250] training loss: 0.00807266
+INFO:root:[31,   300] training loss: 0.00945918
+INFO:root:[31,   350] training loss: 0.01030093
+INFO:root:[31,   400] training loss: 0.00613797
+INFO:root:epoch31
+INFO:root:[32,    50] training loss: 0.00251282
+INFO:root:[32,   100] training loss: 0.00518971
+INFO:root:[32,   150] training loss: 0.00966796
+INFO:root:[32,   200] training loss: 0.00820172
+INFO:root:[32,   250] training loss: 0.00811737
+INFO:root:[32,   300] training loss: 0.00984511
+INFO:root:[32,   350] training loss: 0.00989686
+INFO:root:[32,   400] training loss: 0.00614357
+INFO:root:epoch32
+INFO:root:[33,    50] training loss: 0.00255158
+INFO:root:[33,   100] training loss: 0.00509601
+INFO:root:[33,   150] training loss: 0.00949653
+INFO:root:[33,   200] training loss: 0.00811156
+INFO:root:[33,   250] training loss: 0.00840240
+INFO:root:[33,   300] training loss: 0.00964151
+INFO:root:[33,   350] training loss: 0.01003193
+INFO:root:[33,   400] training loss: 0.00629435
+INFO:root:epoch33
+INFO:root:[34,    50] training loss: 0.00253851
+INFO:root:[34,   100] training loss: 0.00508619
+INFO:root:[34,   150] training loss: 0.00958350
+INFO:root:[34,   200] training loss: 0.00830928
+INFO:root:[34,   250] training loss: 0.00838280
+INFO:root:[34,   300] training loss: 0.00967333
+INFO:root:[34,   350] training loss: 0.01024441
+INFO:root:[34,   400] training loss: 0.00614951
+INFO:root:epoch34
+INFO:root:[35,    50] training loss: 0.00250059
+INFO:root:[35,   100] training loss: 0.00509798
+INFO:root:[35,   150] training loss: 0.00965866
+INFO:root:[35,   200] training loss: 0.00826638
+INFO:root:[35,   250] training loss: 0.00825677
+INFO:root:[35,   300] training loss: 0.00987367
+INFO:root:[35,   350] training loss: 0.00974701
+INFO:root:[35,   400] training loss: 0.00605491
+INFO:root:epoch35
+INFO:root:[36,    50] training loss: 0.00256746
+INFO:root:[36,   100] training loss: 0.00513799
+INFO:root:[36,   150] training loss: 0.00933691
+INFO:root:[36,   200] training loss: 0.00820344
+INFO:root:[36,   250] training loss: 0.00820912
+INFO:root:[36,   300] training loss: 0.00985478
+INFO:root:[36,   350] training loss: 0.01018042
+INFO:root:[36,   400] training loss: 0.00599696
+INFO:root:epoch36
+INFO:root:[37,    50] training loss: 0.00253469
+INFO:root:[37,   100] training loss: 0.00524248
+INFO:root:[37,   150] training loss: 0.00945909
+INFO:root:[37,   200] training loss: 0.00830920
+INFO:root:[37,   250] training loss: 0.00808748
+INFO:root:[37,   300] training loss: 0.01002662
+INFO:root:[37,   350] training loss: 0.01020077
+INFO:root:[37,   400] training loss: 0.00611701
+INFO:root:epoch37
+INFO:root:[38,    50] training loss: 0.00254348
+INFO:root:[38,   100] training loss: 0.00514406
+INFO:root:[38,   150] training loss: 0.00939317
+INFO:root:[38,   200] training loss: 0.00863093
+INFO:root:[38,   250] training loss: 0.00854988
+INFO:root:[38,   300] training loss: 0.00967574
+INFO:root:[38,   350] training loss: 0.00990405
+INFO:root:[38,   400] training loss: 0.00604262
+INFO:root:epoch38
+INFO:root:[39,    50] training loss: 0.00251522
+INFO:root:[39,   100] training loss: 0.00510952
+INFO:root:[39,   150] training loss: 0.00961567
+INFO:root:[39,   200] training loss: 0.00831769
+INFO:root:[39,   250] training loss: 0.00836307
+INFO:root:[39,   300] training loss: 0.00997664
+INFO:root:[39,   350] training loss: 0.00994847
+INFO:root:[39,   400] training loss: 0.00620993
+INFO:root:epoch39
+INFO:root:[40,    50] training loss: 0.00251482
+INFO:root:[40,   100] training loss: 0.00514030
+INFO:root:[40,   150] training loss: 0.00948319
+INFO:root:[40,   200] training loss: 0.00834928
+INFO:root:[40,   250] training loss: 0.00809530
+INFO:root:[40,   300] training loss: 0.00969253
+INFO:root:[40,   350] training loss: 0.01018337
+INFO:root:[40,   400] training loss: 0.00616878
+INFO:root:epoch40
+INFO:root:[41,    50] training loss: 0.00253587
+INFO:root:[41,   100] training loss: 0.00515567
+INFO:root:[41,   150] training loss: 0.00940881
+INFO:root:[41,   200] training loss: 0.00821790
+INFO:root:[41,   250] training loss: 0.00843457
+INFO:root:[41,   300] training loss: 0.00973542
+INFO:root:[41,   350] training loss: 0.01017776
+INFO:root:[41,   400] training loss: 0.00612564
+INFO:root:epoch41
+INFO:root:[42,    50] training loss: 0.00254167
+INFO:root:[42,   100] training loss: 0.00510189
+INFO:root:[42,   150] training loss: 0.00953844
+INFO:root:[42,   200] training loss: 0.00821819
+INFO:root:[42,   250] training loss: 0.00843080
+INFO:root:[42,   300] training loss: 0.00964995
+INFO:root:[42,   350] training loss: 0.01003328
+INFO:root:[42,   400] training loss: 0.00618793
+INFO:root:epoch42
+INFO:root:[43,    50] training loss: 0.00252567
+INFO:root:[43,   100] training loss: 0.00511456
+INFO:root:[43,   150] training loss: 0.00948745
+INFO:root:[43,   200] training loss: 0.00815613
+INFO:root:[43,   250] training loss: 0.00810708
+INFO:root:[43,   300] training loss: 0.00984615
+INFO:root:[43,   350] training loss: 0.00991171
+INFO:root:[43,   400] training loss: 0.00620527
+INFO:root:epoch43
+INFO:root:[44,    50] training loss: 0.00251570
+INFO:root:[44,   100] training loss: 0.00509123
+INFO:root:[44,   150] training loss: 0.00942219
+INFO:root:[44,   200] training loss: 0.00835807
+INFO:root:[44,   250] training loss: 0.00809955
+INFO:root:[44,   300] training loss: 0.00995722
+INFO:root:[44,   350] training loss: 0.01017755
+INFO:root:[44,   400] training loss: 0.00623633
+INFO:root:epoch44
+INFO:root:[45,    50] training loss: 0.00251398
+INFO:root:[45,   100] training loss: 0.00506153
+INFO:root:[45,   150] training loss: 0.00969897
+INFO:root:[45,   200] training loss: 0.00821291
+INFO:root:[45,   250] training loss: 0.00817226
+INFO:root:[45,   300] training loss: 0.00974070
+INFO:root:[45,   350] training loss: 0.00976009
+INFO:root:[45,   400] training loss: 0.00623635
+INFO:root:epoch45
+INFO:root:[46,    50] training loss: 0.00250765
+INFO:root:[46,   100] training loss: 0.00521491
+INFO:root:[46,   150] training loss: 0.00977994
+INFO:root:[46,   200] training loss: 0.00833961
+INFO:root:[46,   250] training loss: 0.00806300
+INFO:root:[46,   300] training loss: 0.00972812
+INFO:root:[46,   350] training loss: 0.00995950
+INFO:root:[46,   400] training loss: 0.00612035
+INFO:root:epoch46
+INFO:root:[47,    50] training loss: 0.00249794
+INFO:root:[47,   100] training loss: 0.00518291
+INFO:root:[47,   150] training loss: 0.00928580
+INFO:root:[47,   200] training loss: 0.00838523
+INFO:root:[47,   250] training loss: 0.00797599
+INFO:root:[47,   300] training loss: 0.00976316
+INFO:root:[47,   350] training loss: 0.01011951
+INFO:root:[47,   400] training loss: 0.00609550
+INFO:root:epoch47
+INFO:root:[48,    50] training loss: 0.00248238
+INFO:root:[48,   100] training loss: 0.00512773
+INFO:root:[48,   150] training loss: 0.00937791
+INFO:root:[48,   200] training loss: 0.00842542
+INFO:root:[48,   250] training loss: 0.00803413
+INFO:root:[48,   300] training loss: 0.00982421
+INFO:root:[48,   350] training loss: 0.00998721
+INFO:root:[48,   400] training loss: 0.00622842
+INFO:root:epoch48
+INFO:root:[49,    50] training loss: 0.00247334
+INFO:root:[49,   100] training loss: 0.00517812
+INFO:root:[49,   150] training loss: 0.00954530
+INFO:root:[49,   200] training loss: 0.00804914
+INFO:root:[49,   250] training loss: 0.00814872
+INFO:root:[49,   300] training loss: 0.00974086
+INFO:root:[49,   350] training loss: 0.01004797
+INFO:root:[49,   400] training loss: 0.00613563
+INFO:root:epoch49
+INFO:root:[50,    50] training loss: 0.00255195
+INFO:root:[50,   100] training loss: 0.00516727
+INFO:root:[50,   150] training loss: 0.00966500
+INFO:root:[50,   200] training loss: 0.00839987
+INFO:root:[50,   250] training loss: 0.00806466
+INFO:root:[50,   300] training loss: 0.00971121
+INFO:root:[50,   350] training loss: 0.01023053
+INFO:root:[50,   400] training loss: 0.00606253
+INFO:root:Finished Training
+INFO:root:Accuracy of the network on the 6256 test images: 97 %
+INFO:root:                   precision    recall  f1-score   support
+
+          unknown     0.7799    0.7376    0.7581       221
+           CD4+ T     0.9731    0.9920    0.9824       874
+           CD8+ T     0.9014    0.9740    0.9363       385
+ CD15+ neutrophil     0.9986    1.0000    0.9993      3671
+   CD14+ monocyte     0.9644    0.9963    0.9801       272
+          CD19+ B     1.0000    0.9826    0.9912       172
+         CD56+ NK     0.9466    0.9051    0.9254       137
+              NKT     0.7597    0.5909    0.6648       198
+       eosinophil     0.9818    0.9908    0.9863       326
+
+         accuracy                         0.9719      6256
+        macro avg     0.9228    0.9077    0.9138      6256
+     weighted avg     0.9703    0.9719    0.9706      6256
+
+INFO:root:    unknown    CD4+ T   CD8+ T   CD15+ neutrophil   CD14+ monocyte   CD19+ B   CD56+ NK       NKT   eosinophil
+0   0.75814  0.982436  0.93633           0.999319         0.980108  0.991202   0.925373  0.664773      0.98626
+INFO:root:statistics used: {'mean': tensor([0.0132, 0.0048, 0.0067, 0.0149, 0.0123, 0.0097, 0.0121, 0.0050, 0.0077]), 'std': tensor([0.0272, 0.0020, 0.0025, 0.0204, 0.0125, 0.0076, 0.0052, 0.0021, 0.0031])}
+INFO:root:train dataset: 132012, test dataset: 6256
+INFO:root:used only channels: [1, 3, 4, 5, 6, 7, 9, 10, 11]; only classes: None
+INFO:root:epoch0
+INFO:root:[1,    50] training loss: 0.02773595
+INFO:root:[1,   100] training loss: 0.02901370
+INFO:root:[1,   150] training loss: 0.04933367
+INFO:root:[1,   200] training loss: 0.05292625
+INFO:root:[1,   250] training loss: 0.06247398
+INFO:root:[1,   300] training loss: 0.06522645
+INFO:root:[1,   350] training loss: 0.06932370
+INFO:root:[1,   400] training loss: 0.06314320
+INFO:root:epoch1
+INFO:root:[2,    50] training loss: 0.02477085
+INFO:root:[2,   100] training loss: 0.01999025
+INFO:root:[2,   150] training loss: 0.03970667
+INFO:root:[2,   200] training loss: 0.04678944
+INFO:root:[2,   250] training loss: 0.04846304
+INFO:root:[2,   300] training loss: 0.05424144
+INFO:root:[2,   350] training loss: 0.05879003
+INFO:root:[2,   400] training loss: 0.05250342
+INFO:root:epoch2
+INFO:root:[3,    50] training loss: 0.01074563
+INFO:root:[3,   100] training loss: 0.01796271
+INFO:root:[3,   150] training loss: 0.03497294
+INFO:root:[3,   200] training loss: 0.04130259
+INFO:root:[3,   250] training loss: 0.04172106
+INFO:root:[3,   300] training loss: 0.04599695
+INFO:root:[3,   350] training loss: 0.05344071
+INFO:root:[3,   400] training loss: 0.04879008
+INFO:root:epoch3
+INFO:root:[4,    50] training loss: 0.00580573
+INFO:root:[4,   100] training loss: 0.01598296
+INFO:root:[4,   150] training loss: 0.03043949
+INFO:root:[4,   200] training loss: 0.03592993
+INFO:root:[4,   250] training loss: 0.03510890
+INFO:root:[4,   300] training loss: 0.03760015
+INFO:root:[4,   350] training loss: 0.04316895
+INFO:root:[4,   400] training loss: 0.04210904
+INFO:root:epoch4
+INFO:root:[5,    50] training loss: 0.00463614
+INFO:root:[5,   100] training loss: 0.01203406
+INFO:root:[5,   150] training loss: 0.02647302
+INFO:root:[5,   200] training loss: 0.02989805
+INFO:root:[5,   250] training loss: 0.02802902
+INFO:root:[5,   300] training loss: 0.03145565
+INFO:root:[5,   350] training loss: 0.03542298
+INFO:root:[5,   400] training loss: 0.02961637
+INFO:root:epoch5
+INFO:root:[6,    50] training loss: 0.00369877
+INFO:root:[6,   100] training loss: 0.00934521
+INFO:root:[6,   150] training loss: 0.02261358
+INFO:root:[6,   200] training loss: 0.02333325
+INFO:root:[6,   250] training loss: 0.01974365
+INFO:root:[6,   300] training loss: 0.02564404
+INFO:root:[6,   350] training loss: 0.02678404
+INFO:root:[6,   400] training loss: 0.02149105
+INFO:root:epoch6
+INFO:root:[7,    50] training loss: 0.00319336
+INFO:root:[7,   100] training loss: 0.00802634
+INFO:root:[7,   150] training loss: 0.01899736
+INFO:root:[7,   200] training loss: 0.01720295
+INFO:root:[7,   250] training loss: 0.01608888
+INFO:root:[7,   300] training loss: 0.02069280
+INFO:root:[7,   350] training loss: 0.02009606
+INFO:root:[7,   400] training loss: 0.01580912
+INFO:root:epoch7
+INFO:root:[8,    50] training loss: 0.00333253
+INFO:root:[8,   100] training loss: 0.01052428
+INFO:root:[8,   150] training loss: 0.02562824
+INFO:root:[8,   200] training loss: 0.03387951
+INFO:root:[8,   250] training loss: 0.01603291
+INFO:root:[8,   300] training loss: 0.03441120
+INFO:root:[8,   350] training loss: 0.01614010
+INFO:root:[8,   400] training loss: 0.01519477
+INFO:root:epoch8
+INFO:root:[9,    50] training loss: 0.00290383
+INFO:root:[9,   100] training loss: 0.00720219
+INFO:root:[9,   150] training loss: 0.01824113
+INFO:root:[9,   200] training loss: 0.01662318
+INFO:root:[9,   250] training loss: 0.01205602
+INFO:root:[9,   300] training loss: 0.01999919
+INFO:root:[9,   350] training loss: 0.01431746
+INFO:root:[9,   400] training loss: 0.01387800
+INFO:root:epoch9
+INFO:root:[10,    50] training loss: 0.00279201
+INFO:root:[10,   100] training loss: 0.00644289
+INFO:root:[10,   150] training loss: 0.01589324
+INFO:root:[10,   200] training loss: 0.01423046
+INFO:root:[10,   250] training loss: 0.01117352
+INFO:root:[10,   300] training loss: 0.01639474
+INFO:root:[10,   350] training loss: 0.01359008
+INFO:root:[10,   400] training loss: 0.01132227
+INFO:root:epoch10
+INFO:root:[11,    50] training loss: 0.00273590
+INFO:root:[11,   100] training loss: 0.00575009
+INFO:root:[11,   150] training loss: 0.01470574
+INFO:root:[11,   200] training loss: 0.01345326
+INFO:root:[11,   250] training loss: 0.01038968
+INFO:root:[11,   300] training loss: 0.01500594
+INFO:root:[11,   350] training loss: 0.01292640
+INFO:root:[11,   400] training loss: 0.01183684
+INFO:root:epoch11
+INFO:root:[12,    50] training loss: 0.00273570
+INFO:root:[12,   100] training loss: 0.00562596
+INFO:root:[12,   150] training loss: 0.01386818
+INFO:root:[12,   200] training loss: 0.01257983
+INFO:root:[12,   250] training loss: 0.01029067
+INFO:root:[12,   300] training loss: 0.01412434
+INFO:root:[12,   350] training loss: 0.01240252
+INFO:root:[12,   400] training loss: 0.01021959
+INFO:root:epoch12
+INFO:root:[13,    50] training loss: 0.00268142
+INFO:root:[13,   100] training loss: 0.00553945
+INFO:root:[13,   150] training loss: 0.01291893
+INFO:root:[13,   200] training loss: 0.01164697
+INFO:root:[13,   250] training loss: 0.00952193
+INFO:root:[13,   300] training loss: 0.01367713
+INFO:root:[13,   350] training loss: 0.01157522
+INFO:root:[13,   400] training loss: 0.00968458
+INFO:root:epoch13
+INFO:root:[14,    50] training loss: 0.00260728
+INFO:root:[14,   100] training loss: 0.00515205
+INFO:root:[14,   150] training loss: 0.01223670
+INFO:root:[14,   200] training loss: 0.01129990
+INFO:root:[14,   250] training loss: 0.00930956
+INFO:root:[14,   300] training loss: 0.01290423
+INFO:root:[14,   350] training loss: 0.01107969
+INFO:root:[14,   400] training loss: 0.00941109
+INFO:root:epoch14
+INFO:root:[15,    50] training loss: 0.00260739
+INFO:root:[15,   100] training loss: 0.00502925
+INFO:root:[15,   150] training loss: 0.01190102
+INFO:root:[15,   200] training loss: 0.01118103
+INFO:root:[15,   250] training loss: 0.00928696
+INFO:root:[15,   300] training loss: 0.01291335
+INFO:root:[15,   350] training loss: 0.01047677
+INFO:root:[15,   400] training loss: 0.00783340
+INFO:root:epoch15
+INFO:root:[16,    50] training loss: 0.00262065
+INFO:root:[16,   100] training loss: 0.00494487
+INFO:root:[16,   150] training loss: 0.01169797
+INFO:root:[16,   200] training loss: 0.01090803
+INFO:root:[16,   250] training loss: 0.00902575
+INFO:root:[16,   300] training loss: 0.01268969
+INFO:root:[16,   350] training loss: 0.01029308
+INFO:root:[16,   400] training loss: 0.00810395
+INFO:root:epoch16
+INFO:root:[17,    50] training loss: 0.00263478
+INFO:root:[17,   100] training loss: 0.00491012
+INFO:root:[17,   150] training loss: 0.01165882
+INFO:root:[17,   200] training loss: 0.01072200
+INFO:root:[17,   250] training loss: 0.00880096
+INFO:root:[17,   300] training loss: 0.01234396
+INFO:root:[17,   350] training loss: 0.01041619
+INFO:root:[17,   400] training loss: 0.00803535
+INFO:root:epoch17
+INFO:root:[18,    50] training loss: 0.00257381
+INFO:root:[18,   100] training loss: 0.00500135
+INFO:root:[18,   150] training loss: 0.01155568
+INFO:root:[18,   200] training loss: 0.01039041
+INFO:root:[18,   250] training loss: 0.00926066
+INFO:root:[18,   300] training loss: 0.01224652
+INFO:root:[18,   350] training loss: 0.01027524
+INFO:root:[18,   400] training loss: 0.00797023
+INFO:root:epoch18
+INFO:root:[19,    50] training loss: 0.00263012
+INFO:root:[19,   100] training loss: 0.00490666
+INFO:root:[19,   150] training loss: 0.01156352
+INFO:root:[19,   200] training loss: 0.01051932
+INFO:root:[19,   250] training loss: 0.00870883
+INFO:root:[19,   300] training loss: 0.01225243
+INFO:root:[19,   350] training loss: 0.01053142
+INFO:root:[19,   400] training loss: 0.00790779
+INFO:root:epoch19
+INFO:root:[20,    50] training loss: 0.00262581
+INFO:root:[20,   100] training loss: 0.00490756
+INFO:root:[20,   150] training loss: 0.01132653
+INFO:root:[20,   200] training loss: 0.01046290
+INFO:root:[20,   250] training loss: 0.00912194
+INFO:root:[20,   300] training loss: 0.01210002
+INFO:root:[20,   350] training loss: 0.01008358
+INFO:root:[20,   400] training loss: 0.00797238
+INFO:root:epoch20
+INFO:root:[21,    50] training loss: 0.00255004
+INFO:root:[21,   100] training loss: 0.00485077
+INFO:root:[21,   150] training loss: 0.01120909
+INFO:root:[21,   200] training loss: 0.01028959
+INFO:root:[21,   250] training loss: 0.00874637
+INFO:root:[21,   300] training loss: 0.01192414
+INFO:root:[21,   350] training loss: 0.01042418
+INFO:root:[21,   400] training loss: 0.00789163
+INFO:root:epoch21
+INFO:root:[22,    50] training loss: 0.00259725
+INFO:root:[22,   100] training loss: 0.00482437
+INFO:root:[22,   150] training loss: 0.01123668
+INFO:root:[22,   200] training loss: 0.01019704
+INFO:root:[22,   250] training loss: 0.00893998
+INFO:root:[22,   300] training loss: 0.01169246
+INFO:root:[22,   350] training loss: 0.01027286
+INFO:root:[22,   400] training loss: 0.00798645
+INFO:root:epoch22
+INFO:root:[23,    50] training loss: 0.00255890
+INFO:root:[23,   100] training loss: 0.00490647
+INFO:root:[23,   150] training loss: 0.01120169
+INFO:root:[23,   200] training loss: 0.01049773
+INFO:root:[23,   250] training loss: 0.00867908
+INFO:root:[23,   300] training loss: 0.01179479
+INFO:root:[23,   350] training loss: 0.01017302
+INFO:root:[23,   400] training loss: 0.00831560
+INFO:root:epoch23
+INFO:root:[24,    50] training loss: 0.00258492
+INFO:root:[24,   100] training loss: 0.00484575
+INFO:root:[24,   150] training loss: 0.01113882
+INFO:root:[24,   200] training loss: 0.01057372
+INFO:root:[24,   250] training loss: 0.00876910
+INFO:root:[24,   300] training loss: 0.01202354
+INFO:root:[24,   350] training loss: 0.01029603
+INFO:root:[24,   400] training loss: 0.00791736
+INFO:root:epoch24
+INFO:root:[25,    50] training loss: 0.00258711
+INFO:root:[25,   100] training loss: 0.00494033
+INFO:root:[25,   150] training loss: 0.01121607
+INFO:root:[25,   200] training loss: 0.01038595
+INFO:root:[25,   250] training loss: 0.00881882
+INFO:root:[25,   300] training loss: 0.01183967
+INFO:root:[25,   350] training loss: 0.00994629
+INFO:root:[25,   400] training loss: 0.00815021
+INFO:root:epoch25
+INFO:root:[26,    50] training loss: 0.00256732
+INFO:root:[26,   100] training loss: 0.00487814
+INFO:root:[26,   150] training loss: 0.01127447
+INFO:root:[26,   200] training loss: 0.01038540
+INFO:root:[26,   250] training loss: 0.00878572
+INFO:root:[26,   300] training loss: 0.01177165
+INFO:root:[26,   350] training loss: 0.01000592
+INFO:root:[26,   400] training loss: 0.00825138
+INFO:root:epoch26
+INFO:root:[27,    50] training loss: 0.00253477
+INFO:root:[27,   100] training loss: 0.00494998
+INFO:root:[27,   150] training loss: 0.01112335
+INFO:root:[27,   200] training loss: 0.01017886
+INFO:root:[27,   250] training loss: 0.00887793
+INFO:root:[27,   300] training loss: 0.01180271
+INFO:root:[27,   350] training loss: 0.00989128
+INFO:root:[27,   400] training loss: 0.00811034
+INFO:root:epoch27
+INFO:root:[28,    50] training loss: 0.00256936
+INFO:root:[28,   100] training loss: 0.00478371
+INFO:root:[28,   150] training loss: 0.01129840
+INFO:root:[28,   200] training loss: 0.01036280
+INFO:root:[28,   250] training loss: 0.00874007
+INFO:root:[28,   300] training loss: 0.01194737
+INFO:root:[28,   350] training loss: 0.01018123
+INFO:root:[28,   400] training loss: 0.00742697
+INFO:root:epoch28
+INFO:root:[29,    50] training loss: 0.00261339
+INFO:root:[29,   100] training loss: 0.00488860
+INFO:root:[29,   150] training loss: 0.01118493
+INFO:root:[29,   200] training loss: 0.01017492
+INFO:root:[29,   250] training loss: 0.00865546
+INFO:root:[29,   300] training loss: 0.01196267
+INFO:root:[29,   350] training loss: 0.00996889
+INFO:root:[29,   400] training loss: 0.00804934
+INFO:root:epoch29
+INFO:root:[30,    50] training loss: 0.00256579
+INFO:root:[30,   100] training loss: 0.00483444
+INFO:root:[30,   150] training loss: 0.01077055
+INFO:root:[30,   200] training loss: 0.01023377
+INFO:root:[30,   250] training loss: 0.00868799
+INFO:root:[30,   300] training loss: 0.01192430
+INFO:root:[30,   350] training loss: 0.00997263
+INFO:root:[30,   400] training loss: 0.00775796
+INFO:root:epoch30
+INFO:root:[31,    50] training loss: 0.00260494
+INFO:root:[31,   100] training loss: 0.00487415
+INFO:root:[31,   150] training loss: 0.01104237
+INFO:root:[31,   200] training loss: 0.01017117
+INFO:root:[31,   250] training loss: 0.00878410
+INFO:root:[31,   300] training loss: 0.01201997
+INFO:root:[31,   350] training loss: 0.01011396
+INFO:root:[31,   400] training loss: 0.00769587
+INFO:root:epoch31
+INFO:root:[32,    50] training loss: 0.00261955
+INFO:root:[32,   100] training loss: 0.00485423
+INFO:root:[32,   150] training loss: 0.01142174
+INFO:root:[32,   200] training loss: 0.01022099
+INFO:root:[32,   250] training loss: 0.00880270
+INFO:root:[32,   300] training loss: 0.01203420
+INFO:root:[32,   350] training loss: 0.01000898
+INFO:root:[32,   400] training loss: 0.00830399
+INFO:root:epoch32
+INFO:root:[33,    50] training loss: 0.00259866
+INFO:root:[33,   100] training loss: 0.00476689
+INFO:root:[33,   150] training loss: 0.01126558
+INFO:root:[33,   200] training loss: 0.01012491
+INFO:root:[33,   250] training loss: 0.00868627
+INFO:root:[33,   300] training loss: 0.01188620
+INFO:root:[33,   350] training loss: 0.01038230
+INFO:root:[33,   400] training loss: 0.00785511
+INFO:root:epoch33
+INFO:root:[34,    50] training loss: 0.00258725
+INFO:root:[34,   100] training loss: 0.00501014
+INFO:root:[34,   150] training loss: 0.01099994
+INFO:root:[34,   200] training loss: 0.01037878
+INFO:root:[34,   250] training loss: 0.00893138
+INFO:root:[34,   300] training loss: 0.01201868
+INFO:root:[34,   350] training loss: 0.01024501
+INFO:root:[34,   400] training loss: 0.00773357
+INFO:root:epoch34
+INFO:root:[35,    50] training loss: 0.00261561
+INFO:root:[35,   100] training loss: 0.00489858
+INFO:root:[35,   150] training loss: 0.01103397
+INFO:root:[35,   200] training loss: 0.01026984
+INFO:root:[35,   250] training loss: 0.00845186
+INFO:root:[35,   300] training loss: 0.01219060
+INFO:root:[35,   350] training loss: 0.01012312
+INFO:root:[35,   400] training loss: 0.00831996
+INFO:root:epoch35
+INFO:root:[36,    50] training loss: 0.00259211
+INFO:root:[36,   100] training loss: 0.00487562
+INFO:root:[36,   150] training loss: 0.01127463
+INFO:root:[36,   200] training loss: 0.01019519
+INFO:root:[36,   250] training loss: 0.00873065
+INFO:root:[36,   300] training loss: 0.01181702
+INFO:root:[36,   350] training loss: 0.00994329
+INFO:root:[36,   400] training loss: 0.00806436
+INFO:root:epoch36
+INFO:root:[37,    50] training loss: 0.00258433
+INFO:root:[37,   100] training loss: 0.00477283
+INFO:root:[37,   150] training loss: 0.01114953
+INFO:root:[37,   200] training loss: 0.01026875
+INFO:root:[37,   250] training loss: 0.00869811
+INFO:root:[37,   300] training loss: 0.01194741
+INFO:root:[37,   350] training loss: 0.01015921
+INFO:root:[37,   400] training loss: 0.00834273
+INFO:root:epoch37
+INFO:root:[38,    50] training loss: 0.00259754
+INFO:root:[38,   100] training loss: 0.00495533
+INFO:root:[38,   150] training loss: 0.01117956
+INFO:root:[38,   200] training loss: 0.01015758
+INFO:root:[38,   250] training loss: 0.00887505
+INFO:root:[38,   300] training loss: 0.01205941
+INFO:root:[38,   350] training loss: 0.01019671
+INFO:root:[38,   400] training loss: 0.00764416
+INFO:root:epoch38
+INFO:root:[39,    50] training loss: 0.00255728
+INFO:root:[39,   100] training loss: 0.00483964
+INFO:root:[39,   150] training loss: 0.01105522
+INFO:root:[39,   200] training loss: 0.01020966
+INFO:root:[39,   250] training loss: 0.00870145
+INFO:root:[39,   300] training loss: 0.01188561
+INFO:root:[39,   350] training loss: 0.00998752
+INFO:root:[39,   400] training loss: 0.00816459
+INFO:root:epoch39
+INFO:root:[40,    50] training loss: 0.00260615
+INFO:root:[40,   100] training loss: 0.00482141
+INFO:root:[40,   150] training loss: 0.01122078
+INFO:root:[40,   200] training loss: 0.01054374
+INFO:root:[40,   250] training loss: 0.00868541
+INFO:root:[40,   300] training loss: 0.01189088
+INFO:root:[40,   350] training loss: 0.01045806
+INFO:root:[40,   400] training loss: 0.00751363
+INFO:root:epoch40
+INFO:root:[41,    50] training loss: 0.00257662
+INFO:root:[41,   100] training loss: 0.00488444
+INFO:root:[41,   150] training loss: 0.01088203
+INFO:root:[41,   200] training loss: 0.01017203
+INFO:root:[41,   250] training loss: 0.00872108
+INFO:root:[41,   300] training loss: 0.01185217
+INFO:root:[41,   350] training loss: 0.01015470
+INFO:root:[41,   400] training loss: 0.00760110
+INFO:root:epoch41
+INFO:root:[42,    50] training loss: 0.00260803
+INFO:root:[42,   100] training loss: 0.00476132
+INFO:root:[42,   150] training loss: 0.01124427
+INFO:root:[42,   200] training loss: 0.01028802
+INFO:root:[42,   250] training loss: 0.00888516
+INFO:root:[42,   300] training loss: 0.01224178
+INFO:root:[42,   350] training loss: 0.00994014
+INFO:root:[42,   400] training loss: 0.00815854
+INFO:root:epoch42
+INFO:root:[43,    50] training loss: 0.00257276
+INFO:root:[43,   100] training loss: 0.00479207
+INFO:root:[43,   150] training loss: 0.01109216
+INFO:root:[43,   200] training loss: 0.01031353
+INFO:root:[43,   250] training loss: 0.00902978
+INFO:root:[43,   300] training loss: 0.01194967
+INFO:root:[43,   350] training loss: 0.00991323
+INFO:root:[43,   400] training loss: 0.00786368
+INFO:root:epoch43
+INFO:root:[44,    50] training loss: 0.00258702
+INFO:root:[44,   100] training loss: 0.00490294
+INFO:root:[44,   150] training loss: 0.01092201
+INFO:root:[44,   200] training loss: 0.01029909
+INFO:root:[44,   250] training loss: 0.00878298
+INFO:root:[44,   300] training loss: 0.01190943
+INFO:root:[44,   350] training loss: 0.00996555
+INFO:root:[44,   400] training loss: 0.00800040
+INFO:root:epoch44
+INFO:root:[45,    50] training loss: 0.00258391
+INFO:root:[45,   100] training loss: 0.00496640
+INFO:root:[45,   150] training loss: 0.01098699
+INFO:root:[45,   200] training loss: 0.01032318
+INFO:root:[45,   250] training loss: 0.00906220
+INFO:root:[45,   300] training loss: 0.01198548
+INFO:root:[45,   350] training loss: 0.01001358
+INFO:root:[45,   400] training loss: 0.00753410
+INFO:root:epoch45
+INFO:root:[46,    50] training loss: 0.00257200
+INFO:root:[46,   100] training loss: 0.00482543
+INFO:root:[46,   150] training loss: 0.01116992
+INFO:root:[46,   200] training loss: 0.01036450
+INFO:root:[46,   250] training loss: 0.00875965
+INFO:root:[46,   300] training loss: 0.01194363
+INFO:root:[46,   350] training loss: 0.01000859
+INFO:root:[46,   400] training loss: 0.00784537
+INFO:root:epoch46
+INFO:root:[47,    50] training loss: 0.00257748
+INFO:root:[47,   100] training loss: 0.00489597
+INFO:root:[47,   150] training loss: 0.01111700
+INFO:root:[47,   200] training loss: 0.01030981
+INFO:root:[47,   250] training loss: 0.00890404
+INFO:root:[47,   300] training loss: 0.01179577
+INFO:root:[47,   350] training loss: 0.00999529
+INFO:root:[47,   400] training loss: 0.00787314
+INFO:root:epoch47
+INFO:root:[48,    50] training loss: 0.00257515
+INFO:root:[48,   100] training loss: 0.00484785
+INFO:root:[48,   150] training loss: 0.01113352
+INFO:root:[48,   200] training loss: 0.01022333
+INFO:root:[48,   250] training loss: 0.00871305
+INFO:root:[48,   300] training loss: 0.01171843
+INFO:root:[48,   350] training loss: 0.00998929
+INFO:root:[48,   400] training loss: 0.00799251
+INFO:root:epoch48
+INFO:root:[49,    50] training loss: 0.00258716
+INFO:root:[49,   100] training loss: 0.00500556
+INFO:root:[49,   150] training loss: 0.01107144
+INFO:root:[49,   200] training loss: 0.00999116
+INFO:root:[49,   250] training loss: 0.00880695
+INFO:root:[49,   300] training loss: 0.01196890
+INFO:root:[49,   350] training loss: 0.01009075
+INFO:root:[49,   400] training loss: 0.00806415
+INFO:root:epoch49
+INFO:root:[50,    50] training loss: 0.00257059
+INFO:root:[50,   100] training loss: 0.00471996
+INFO:root:[50,   150] training loss: 0.01128772
+INFO:root:[50,   200] training loss: 0.01021568
+INFO:root:[50,   250] training loss: 0.00891864
+INFO:root:[50,   300] training loss: 0.01188410
+INFO:root:[50,   350] training loss: 0.00999817
+INFO:root:[50,   400] training loss: 0.00797182
+INFO:root:Finished Training
+INFO:root:Accuracy of the network on the 6256 test images: 97 %
+INFO:root:                   precision    recall  f1-score   support
+
+          unknown     0.8333    0.8088    0.8209       272
+           CD4+ T     0.9750    0.9967    0.9857       899
+           CD8+ T     0.8670    0.9658    0.9137       351
+ CD15+ neutrophil     0.9978    0.9997    0.9988      3657
+   CD14+ monocyte     0.9401    0.9882    0.9635       254
+          CD19+ B     0.9811    0.9689    0.9750       161
+         CD56+ NK     0.9706    0.9429    0.9565       140
+              NKT     0.8759    0.5854    0.7018       205
+       eosinophil     0.9906    0.9968    0.9937       317
+
+         accuracy                         0.9728      6256
+        macro avg     0.9368    0.9170    0.9233      6256
+     weighted avg     0.9723    0.9728    0.9714      6256
+
+INFO:root:    unknown    CD4+ T    CD8+ T   CD15+ neutrophil   CD14+ monocyte   CD19+ B   CD56+ NK       NKT   eosinophil
+0  0.820896  0.985699  0.913747           0.998771         0.963532     0.975   0.956522  0.701754     0.993711
+INFO:root:statistics used: {'mean': tensor([0.0132, 0.0048, 0.0067, 0.0149, 0.0123, 0.0097, 0.0121, 0.0050, 0.0077]), 'std': tensor([0.0271, 0.0020, 0.0025, 0.0204, 0.0125, 0.0075, 0.0052, 0.0021, 0.0031])}
+INFO:root:train dataset: 132219, test dataset: 6256
+INFO:root:used only channels: [1, 3, 4, 5, 6, 7, 9, 10, 11]; only classes: None
+INFO:root:epoch0
+INFO:root:[1,    50] training loss: 0.03630837
+INFO:root:[1,   100] training loss: 0.02758793
+INFO:root:[1,   150] training loss: 0.04545329
+INFO:root:[1,   200] training loss: 0.06125640
+INFO:root:[1,   250] training loss: 0.05987578
+INFO:root:[1,   300] training loss: 0.06392183
+INFO:root:[1,   350] training loss: 0.05180174
+INFO:root:[1,   400] training loss: 0.06546125
+INFO:root:epoch1
+INFO:root:[2,    50] training loss: 0.02725043
+INFO:root:[2,   100] training loss: 0.02039198
+INFO:root:[2,   150] training loss: 0.03927630
+INFO:root:[2,   200] training loss: 0.05158652
+INFO:root:[2,   250] training loss: 0.05204732
+INFO:root:[2,   300] training loss: 0.05248935
+INFO:root:[2,   350] training loss: 0.04836364
+INFO:root:[2,   400] training loss: 0.05582302
+INFO:root:epoch2
+INFO:root:[3,    50] training loss: 0.01189952
+INFO:root:[3,   100] training loss: 0.01880977
+INFO:root:[3,   150] training loss: 0.03464342
+INFO:root:[3,   200] training loss: 0.04038569
+INFO:root:[3,   250] training loss: 0.03853668
+INFO:root:[3,   300] training loss: 0.04136173
+INFO:root:[3,   350] training loss: 0.03936811
+INFO:root:[3,   400] training loss: 0.05175962
+INFO:root:epoch3
+INFO:root:[4,    50] training loss: 0.00802395
+INFO:root:[4,   100] training loss: 0.01793655
+INFO:root:[4,   150] training loss: 0.03406280
+INFO:root:[4,   200] training loss: 0.03613914
+INFO:root:[4,   250] training loss: 0.02740571
+INFO:root:[4,   300] training loss: 0.02975838
+INFO:root:[4,   350] training loss: 0.02647124
+INFO:root:[4,   400] training loss: 0.04104178
+INFO:root:epoch4
+INFO:root:[5,    50] training loss: 0.00469909
+INFO:root:[5,   100] training loss: 0.01258619
+INFO:root:[5,   150] training loss: 0.02773343
+INFO:root:[5,   200] training loss: 0.03512748
+INFO:root:[5,   250] training loss: 0.02018206
+INFO:root:[5,   300] training loss: 0.02046416
+INFO:root:[5,   350] training loss: 0.01863713
+INFO:root:[5,   400] training loss: 0.03572376
+INFO:root:epoch5
+INFO:root:[6,    50] training loss: 0.00385705
+INFO:root:[6,   100] training loss: 0.00866059
+INFO:root:[6,   150] training loss: 0.02375424
+INFO:root:[6,   200] training loss: 0.02965720
+INFO:root:[6,   250] training loss: 0.01475230
+INFO:root:[6,   300] training loss: 0.01470814
+INFO:root:[6,   350] training loss: 0.01397171
+INFO:root:[6,   400] training loss: 0.03020975
+INFO:root:epoch6
+INFO:root:[7,    50] training loss: 0.00337943
+INFO:root:[7,   100] training loss: 0.00645901
+INFO:root:[7,   150] training loss: 0.02110280
+INFO:root:[7,   200] training loss: 0.02579134
+INFO:root:[7,   250] training loss: 0.01155379
+INFO:root:[7,   300] training loss: 0.01087139
+INFO:root:[7,   350] training loss: 0.01066361
+INFO:root:[7,   400] training loss: 0.02742228
+INFO:root:epoch7
+INFO:root:[8,    50] training loss: 0.00325773
+INFO:root:[8,   100] training loss: 0.00568257
+INFO:root:[8,   150] training loss: 0.02606649
+INFO:root:[8,   200] training loss: 0.03808422
+INFO:root:[8,   250] training loss: 0.01323186
+INFO:root:[8,   300] training loss: 0.00898636
+INFO:root:[8,   350] training loss: 0.00902285
+INFO:root:[8,   400] training loss: 0.01673796
+INFO:root:epoch8
+INFO:root:[9,    50] training loss: 0.00297726
+INFO:root:[9,   100] training loss: 0.00494154
+INFO:root:[9,   150] training loss: 0.02127600
+INFO:root:[9,   200] training loss: 0.02705072
+INFO:root:[9,   250] training loss: 0.01073196
+INFO:root:[9,   300] training loss: 0.00841270
+INFO:root:[9,   350] training loss: 0.00832204
+INFO:root:[9,   400] training loss: 0.01753389
+INFO:root:epoch9
+INFO:root:[10,    50] training loss: 0.00287409
+INFO:root:[10,   100] training loss: 0.00469694
+INFO:root:[10,   150] training loss: 0.01854844
+INFO:root:[10,   200] training loss: 0.02138935
+INFO:root:[10,   250] training loss: 0.01016277
+INFO:root:[10,   300] training loss: 0.00815607
+INFO:root:[10,   350] training loss: 0.00806510
+INFO:root:[10,   400] training loss: 0.01772137
+INFO:root:epoch10
+INFO:root:[11,    50] training loss: 0.00277503
+INFO:root:[11,   100] training loss: 0.00446981
+INFO:root:[11,   150] training loss: 0.01631760
+INFO:root:[11,   200] training loss: 0.01916974
+INFO:root:[11,   250] training loss: 0.00952390
+INFO:root:[11,   300] training loss: 0.00786230
+INFO:root:[11,   350] training loss: 0.00796488
+INFO:root:[11,   400] training loss: 0.01701818
+INFO:root:epoch11
+INFO:root:[12,    50] training loss: 0.00277215
+INFO:root:[12,   100] training loss: 0.00428974
+INFO:root:[12,   150] training loss: 0.01480802
+INFO:root:[12,   200] training loss: 0.01742977
+INFO:root:[12,   250] training loss: 0.00918008
+INFO:root:[12,   300] training loss: 0.00767492
+INFO:root:[12,   350] training loss: 0.00784650
+INFO:root:[12,   400] training loss: 0.01643344
+INFO:root:epoch12
+INFO:root:[13,    50] training loss: 0.00278415
+INFO:root:[13,   100] training loss: 0.00423612
+INFO:root:[13,   150] training loss: 0.01349227
+INFO:root:[13,   200] training loss: 0.01616986
+INFO:root:[13,   250] training loss: 0.00869159
+INFO:root:[13,   300] training loss: 0.00746130
+INFO:root:[13,   350] training loss: 0.00783011
+INFO:root:[13,   400] training loss: 0.01540595
+INFO:root:epoch13
+INFO:root:[14,    50] training loss: 0.00263031
+INFO:root:[14,   100] training loss: 0.00405756
+INFO:root:[14,   150] training loss: 0.01247345
+INFO:root:[14,   200] training loss: 0.01480353
+INFO:root:[14,   250] training loss: 0.00822146
+INFO:root:[14,   300] training loss: 0.00700372
+INFO:root:[14,   350] training loss: 0.00759433
+INFO:root:[14,   400] training loss: 0.01492201
+INFO:root:epoch14
+INFO:root:[15,    50] training loss: 0.00266063
+INFO:root:[15,   100] training loss: 0.00394919
+INFO:root:[15,   150] training loss: 0.01201899
+INFO:root:[15,   200] training loss: 0.01519656
+INFO:root:[15,   250] training loss: 0.00812318
+INFO:root:[15,   300] training loss: 0.00702278
+INFO:root:[15,   350] training loss: 0.00728855
+INFO:root:[15,   400] training loss: 0.01310557
+INFO:root:epoch15
+INFO:root:[16,    50] training loss: 0.00265444
+INFO:root:[16,   100] training loss: 0.00398218
+INFO:root:[16,   150] training loss: 0.01176828
+INFO:root:[16,   200] training loss: 0.01523205
+INFO:root:[16,   250] training loss: 0.00831325
+INFO:root:[16,   300] training loss: 0.00699503
+INFO:root:[16,   350] training loss: 0.00734155
+INFO:root:[16,   400] training loss: 0.01309424
+INFO:root:epoch16
+INFO:root:[17,    50] training loss: 0.00265725
+INFO:root:[17,   100] training loss: 0.00390362
+INFO:root:[17,   150] training loss: 0.01159756
+INFO:root:[17,   200] training loss: 0.01465811
+INFO:root:[17,   250] training loss: 0.00804354
+INFO:root:[17,   300] training loss: 0.00695543
+INFO:root:[17,   350] training loss: 0.00736003
+INFO:root:[17,   400] training loss: 0.01317120
+INFO:root:epoch17
+INFO:root:[18,    50] training loss: 0.00270659
+INFO:root:[18,   100] training loss: 0.00391921
+INFO:root:[18,   150] training loss: 0.01143130
+INFO:root:[18,   200] training loss: 0.01459126
+INFO:root:[18,   250] training loss: 0.00804848
+INFO:root:[18,   300] training loss: 0.00685289
+INFO:root:[18,   350] training loss: 0.00736639
+INFO:root:[18,   400] training loss: 0.01318578
+INFO:root:epoch18
+INFO:root:[19,    50] training loss: 0.00263893
+INFO:root:[19,   100] training loss: 0.00399280
+INFO:root:[19,   150] training loss: 0.01122596
+INFO:root:[19,   200] training loss: 0.01427140
+INFO:root:[19,   250] training loss: 0.00818286
+INFO:root:[19,   300] training loss: 0.00691030
+INFO:root:[19,   350] training loss: 0.00726140
+INFO:root:[19,   400] training loss: 0.01319426
+INFO:root:epoch19
+INFO:root:[20,    50] training loss: 0.00269549
+INFO:root:[20,   100] training loss: 0.00391075
+INFO:root:[20,   150] training loss: 0.01115357
+INFO:root:[20,   200] training loss: 0.01468340
+INFO:root:[20,   250] training loss: 0.00825906
+INFO:root:[20,   300] training loss: 0.00687031
+INFO:root:[20,   350] training loss: 0.00727662
+INFO:root:[20,   400] training loss: 0.01319144
+INFO:root:epoch20
+INFO:root:[21,    50] training loss: 0.00264707
+INFO:root:[21,   100] training loss: 0.00382709
+INFO:root:[21,   150] training loss: 0.01108808
+INFO:root:[21,   200] training loss: 0.01407854
+INFO:root:[21,   250] training loss: 0.00816942
+INFO:root:[21,   300] training loss: 0.00681964
+INFO:root:[21,   350] training loss: 0.00729318
+INFO:root:[21,   400] training loss: 0.01317090
+INFO:root:epoch21
+INFO:root:[22,    50] training loss: 0.00268156
+INFO:root:[22,   100] training loss: 0.00388003
+INFO:root:[22,   150] training loss: 0.01115787
+INFO:root:[22,   200] training loss: 0.01372025
+INFO:root:[22,   250] training loss: 0.00792207
+INFO:root:[22,   300] training loss: 0.00680800
+INFO:root:[22,   350] training loss: 0.00729688
+INFO:root:[22,   400] training loss: 0.01306492
+INFO:root:epoch22
+INFO:root:[23,    50] training loss: 0.00262850
+INFO:root:[23,   100] training loss: 0.00387091
+INFO:root:[23,   150] training loss: 0.01107047
+INFO:root:[23,   200] training loss: 0.01386462
+INFO:root:[23,   250] training loss: 0.00809436
+INFO:root:[23,   300] training loss: 0.00683295
+INFO:root:[23,   350] training loss: 0.00724489
+INFO:root:[23,   400] training loss: 0.01310807
+INFO:root:epoch23
+INFO:root:[24,    50] training loss: 0.00260433
+INFO:root:[24,   100] training loss: 0.00388760
+INFO:root:[24,   150] training loss: 0.01108661
+INFO:root:[24,   200] training loss: 0.01384515
+INFO:root:[24,   250] training loss: 0.00820281
+INFO:root:[24,   300] training loss: 0.00678640
+INFO:root:[24,   350] training loss: 0.00720738
+INFO:root:[24,   400] training loss: 0.01305925
+INFO:root:epoch24
+INFO:root:[25,    50] training loss: 0.00266387
+INFO:root:[25,   100] training loss: 0.00389455
+INFO:root:[25,   150] training loss: 0.01108576
+INFO:root:[25,   200] training loss: 0.01389455
+INFO:root:[25,   250] training loss: 0.00803924
+INFO:root:[25,   300] training loss: 0.00674447
+INFO:root:[25,   350] training loss: 0.00729500
+INFO:root:[25,   400] training loss: 0.01300403
+INFO:root:epoch25
+INFO:root:[26,    50] training loss: 0.00263809
+INFO:root:[26,   100] training loss: 0.00390586
+INFO:root:[26,   150] training loss: 0.01104492
+INFO:root:[26,   200] training loss: 0.01402830
+INFO:root:[26,   250] training loss: 0.00823101
+INFO:root:[26,   300] training loss: 0.00678672
+INFO:root:[26,   350] training loss: 0.00720420
+INFO:root:[26,   400] training loss: 0.01295675
+INFO:root:epoch26
+INFO:root:[27,    50] training loss: 0.00260201
+INFO:root:[27,   100] training loss: 0.00388097
+INFO:root:[27,   150] training loss: 0.01090133
+INFO:root:[27,   200] training loss: 0.01352265
+INFO:root:[27,   250] training loss: 0.00817487
+INFO:root:[27,   300] training loss: 0.00684047
+INFO:root:[27,   350] training loss: 0.00723025
+INFO:root:[27,   400] training loss: 0.01298625
+INFO:root:epoch27
+INFO:root:[28,    50] training loss: 0.00267693
+INFO:root:[28,   100] training loss: 0.00382968
+INFO:root:[28,   150] training loss: 0.01090670
+INFO:root:[28,   200] training loss: 0.01394247
+INFO:root:[28,   250] training loss: 0.00797655
+INFO:root:[28,   300] training loss: 0.00677700
+INFO:root:[28,   350] training loss: 0.00721994
+INFO:root:[28,   400] training loss: 0.01299359
+INFO:root:epoch28
+INFO:root:[29,    50] training loss: 0.00259314
+INFO:root:[29,   100] training loss: 0.00389729
+INFO:root:[29,   150] training loss: 0.01088088
+INFO:root:[29,   200] training loss: 0.01376329
+INFO:root:[29,   250] training loss: 0.00801940
+INFO:root:[29,   300] training loss: 0.00671333
+INFO:root:[29,   350] training loss: 0.00711502
+INFO:root:[29,   400] training loss: 0.01294061
+INFO:root:epoch29
+INFO:root:[30,    50] training loss: 0.00265741
+INFO:root:[30,   100] training loss: 0.00390910
+INFO:root:[30,   150] training loss: 0.01087099
+INFO:root:[30,   200] training loss: 0.01407210
+INFO:root:[30,   250] training loss: 0.00797161
+INFO:root:[30,   300] training loss: 0.00683556
+INFO:root:[30,   350] training loss: 0.00724107
+INFO:root:[30,   400] training loss: 0.01297914
+INFO:root:epoch30
+INFO:root:[31,    50] training loss: 0.00264227
+INFO:root:[31,   100] training loss: 0.00383702
+INFO:root:[31,   150] training loss: 0.01092532
+INFO:root:[31,   200] training loss: 0.01396302
+INFO:root:[31,   250] training loss: 0.00821494
+INFO:root:[31,   300] training loss: 0.00676728
+INFO:root:[31,   350] training loss: 0.00725685
+INFO:root:[31,   400] training loss: 0.01297057
+INFO:root:epoch31
+INFO:root:[32,    50] training loss: 0.00259514
+INFO:root:[32,   100] training loss: 0.00388452
+INFO:root:[32,   150] training loss: 0.01086365
+INFO:root:[32,   200] training loss: 0.01385694
+INFO:root:[32,   250] training loss: 0.00820418
+INFO:root:[32,   300] training loss: 0.00676996
+INFO:root:[32,   350] training loss: 0.00730734
+INFO:root:[32,   400] training loss: 0.01301309
+INFO:root:epoch32
+INFO:root:[33,    50] training loss: 0.00260112
+INFO:root:[33,   100] training loss: 0.00396154
+INFO:root:[33,   150] training loss: 0.01093944
+INFO:root:[33,   200] training loss: 0.01411510
+INFO:root:[33,   250] training loss: 0.00829957
+INFO:root:[33,   300] training loss: 0.00673269
+INFO:root:[33,   350] training loss: 0.00721647
+INFO:root:[33,   400] training loss: 0.01313565
+INFO:root:epoch33
+INFO:root:[34,    50] training loss: 0.00265674
+INFO:root:[34,   100] training loss: 0.00384749
+INFO:root:[34,   150] training loss: 0.01094145
+INFO:root:[34,   200] training loss: 0.01398558
+INFO:root:[34,   250] training loss: 0.00793483
+INFO:root:[34,   300] training loss: 0.00674890
+INFO:root:[34,   350] training loss: 0.00731039
+INFO:root:[34,   400] training loss: 0.01299980
+INFO:root:epoch34
+INFO:root:[35,    50] training loss: 0.00263159
+INFO:root:[35,   100] training loss: 0.00382465
+INFO:root:[35,   150] training loss: 0.01086264
+INFO:root:[35,   200] training loss: 0.01433847
+INFO:root:[35,   250] training loss: 0.00793524
+INFO:root:[35,   300] training loss: 0.00683975
+INFO:root:[35,   350] training loss: 0.00720829
+INFO:root:[35,   400] training loss: 0.01292951
+INFO:root:epoch35
+INFO:root:[36,    50] training loss: 0.00259396
+INFO:root:[36,   100] training loss: 0.00383568
+INFO:root:[36,   150] training loss: 0.01097972
+INFO:root:[36,   200] training loss: 0.01410777
+INFO:root:[36,   250] training loss: 0.00796814
+INFO:root:[36,   300] training loss: 0.00671224
+INFO:root:[36,   350] training loss: 0.00722714
+INFO:root:[36,   400] training loss: 0.01298490
+INFO:root:epoch36
+INFO:root:[37,    50] training loss: 0.00265545
+INFO:root:[37,   100] training loss: 0.00384879
+INFO:root:[37,   150] training loss: 0.01092616
+INFO:root:[37,   200] training loss: 0.01384148
+INFO:root:[37,   250] training loss: 0.00773934
+INFO:root:[37,   300] training loss: 0.00677738
+INFO:root:[37,   350] training loss: 0.00720554
+INFO:root:[37,   400] training loss: 0.01296410
+INFO:root:epoch37
+INFO:root:[38,    50] training loss: 0.00262628
+INFO:root:[38,   100] training loss: 0.00394180
+INFO:root:[38,   150] training loss: 0.01097749
+INFO:root:[38,   200] training loss: 0.01425082
+INFO:root:[38,   250] training loss: 0.00778750
+INFO:root:[38,   300] training loss: 0.00673533
+INFO:root:[38,   350] training loss: 0.00721962
+INFO:root:[38,   400] training loss: 0.01291779
+INFO:root:epoch38
+INFO:root:[39,    50] training loss: 0.00268869
+INFO:root:[39,   100] training loss: 0.00387361
+INFO:root:[39,   150] training loss: 0.01097820
+INFO:root:[39,   200] training loss: 0.01374784
+INFO:root:[39,   250] training loss: 0.00839217
+INFO:root:[39,   300] training loss: 0.00672785
+INFO:root:[39,   350] training loss: 0.00728104
+INFO:root:[39,   400] training loss: 0.01302874
+INFO:root:epoch39
+INFO:root:[40,    50] training loss: 0.00263739
+INFO:root:[40,   100] training loss: 0.00393390
+INFO:root:[40,   150] training loss: 0.01091609
+INFO:root:[40,   200] training loss: 0.01393585
+INFO:root:[40,   250] training loss: 0.00818301
+INFO:root:[40,   300] training loss: 0.00674239
+INFO:root:[40,   350] training loss: 0.00718656
+INFO:root:[40,   400] training loss: 0.01305420
+INFO:root:epoch40
+INFO:root:[41,    50] training loss: 0.00261710
+INFO:root:[41,   100] training loss: 0.00379505
+INFO:root:[41,   150] training loss: 0.01097199
+INFO:root:[41,   200] training loss: 0.01408909
+INFO:root:[41,   250] training loss: 0.00792638
+INFO:root:[41,   300] training loss: 0.00677441
+INFO:root:[41,   350] training loss: 0.00724030
+INFO:root:[41,   400] training loss: 0.01295367
+INFO:root:epoch41
+INFO:root:[42,    50] training loss: 0.00261939
+INFO:root:[42,   100] training loss: 0.00387180
+INFO:root:[42,   150] training loss: 0.01088026
+INFO:root:[42,   200] training loss: 0.01398976
+INFO:root:[42,   250] training loss: 0.00797853
+INFO:root:[42,   300] training loss: 0.00690425
+INFO:root:[42,   350] training loss: 0.00722836
+INFO:root:[42,   400] training loss: 0.01302440
+INFO:root:epoch42
+INFO:root:[43,    50] training loss: 0.00270722
+INFO:root:[43,   100] training loss: 0.00390393
+INFO:root:[43,   150] training loss: 0.01097907
+INFO:root:[43,   200] training loss: 0.01390438
+INFO:root:[43,   250] training loss: 0.00805375
+INFO:root:[43,   300] training loss: 0.00681646
+INFO:root:[43,   350] training loss: 0.00721027
+INFO:root:[43,   400] training loss: 0.01301453
+INFO:root:epoch43
+INFO:root:[44,    50] training loss: 0.00264597
+INFO:root:[44,   100] training loss: 0.00390529
+INFO:root:[44,   150] training loss: 0.01103075
+INFO:root:[44,   200] training loss: 0.01367389
+INFO:root:[44,   250] training loss: 0.00785785
+INFO:root:[44,   300] training loss: 0.00669440
+INFO:root:[44,   350] training loss: 0.00723464
+INFO:root:[44,   400] training loss: 0.01308675
+INFO:root:epoch44
+INFO:root:[45,    50] training loss: 0.00263138
+INFO:root:[45,   100] training loss: 0.00386847
+INFO:root:[45,   150] training loss: 0.01089864
+INFO:root:[45,   200] training loss: 0.01381676
+INFO:root:[45,   250] training loss: 0.00792760
+INFO:root:[45,   300] training loss: 0.00684853
+INFO:root:[45,   350] training loss: 0.00722531
+INFO:root:[45,   400] training loss: 0.01302591
+INFO:root:epoch45
+INFO:root:[46,    50] training loss: 0.00263741
+INFO:root:[46,   100] training loss: 0.00388833
+INFO:root:[46,   150] training loss: 0.01092374
+INFO:root:[46,   200] training loss: 0.01361430
+INFO:root:[46,   250] training loss: 0.00779901
+INFO:root:[46,   300] training loss: 0.00670349
+INFO:root:[46,   350] training loss: 0.00718641
+INFO:root:[46,   400] training loss: 0.01295452
+INFO:root:epoch46
+INFO:root:[47,    50] training loss: 0.00263781
+INFO:root:[47,   100] training loss: 0.00387434
+INFO:root:[47,   150] training loss: 0.01094755
+INFO:root:[47,   200] training loss: 0.01394910
+INFO:root:[47,   250] training loss: 0.00795528
+INFO:root:[47,   300] training loss: 0.00679064
+INFO:root:[47,   350] training loss: 0.00717780
+INFO:root:[47,   400] training loss: 0.01302099
+INFO:root:epoch47
+INFO:root:[48,    50] training loss: 0.00262750
+INFO:root:[48,   100] training loss: 0.00390781
+INFO:root:[48,   150] training loss: 0.01084538
+INFO:root:[48,   200] training loss: 0.01402867
+INFO:root:[48,   250] training loss: 0.00807598
+INFO:root:[48,   300] training loss: 0.00664457
+INFO:root:[48,   350] training loss: 0.00723140
+INFO:root:[48,   400] training loss: 0.01289974
+INFO:root:epoch48
+INFO:root:[49,    50] training loss: 0.00263959
+INFO:root:[49,   100] training loss: 0.00385974
+INFO:root:[49,   150] training loss: 0.01090755
+INFO:root:[49,   200] training loss: 0.01428228
+INFO:root:[49,   250] training loss: 0.00812793
+INFO:root:[49,   300] training loss: 0.00676419
+INFO:root:[49,   350] training loss: 0.00726017
+INFO:root:[49,   400] training loss: 0.01290701
+INFO:root:epoch49
+INFO:root:[50,    50] training loss: 0.00261051
+INFO:root:[50,   100] training loss: 0.00397202
+INFO:root:[50,   150] training loss: 0.01089090
+INFO:root:[50,   200] training loss: 0.01407407
+INFO:root:[50,   250] training loss: 0.00793402
+INFO:root:[50,   300] training loss: 0.00681601
+INFO:root:[50,   350] training loss: 0.00724422
+INFO:root:[50,   400] training loss: 0.01291341
+INFO:root:Finished Training
+INFO:root:Accuracy of the network on the 6256 test images: 97 %
+INFO:root:                   precision    recall  f1-score   support
+
+          unknown     0.7773    0.7538    0.7654       264
+           CD4+ T     0.9800    0.9979    0.9888       933
+           CD8+ T     0.8723    0.9810    0.9235       369
+ CD15+ neutrophil     0.9986    0.9997    0.9992      3634
+   CD14+ monocyte     0.9713    0.9834    0.9773       241
+          CD19+ B     0.9899    0.9752    0.9825       202
+         CD56+ NK     0.9062    0.9134    0.9098       127
+              NKT     0.8156    0.5583    0.6628       206
+       eosinophil     0.9825    1.0000    0.9912       280
+
+         accuracy                         0.9703      6256
+        macro avg     0.9215    0.9070    0.9112      6256
+     weighted avg     0.9691    0.9703    0.9687      6256
+
+INFO:root:    unknown    CD4+ T    CD8+ T   CD15+ neutrophil   CD14+ monocyte   CD19+ B   CD56+ NK       NKT   eosinophil
+0  0.765385  0.988848  0.923469           0.999175          0.97732  0.982544   0.909804  0.662824      0.99115
+INFO:root:statistics used: {'mean': tensor([0.0132, 0.0048, 0.0067, 0.0149, 0.0123, 0.0097, 0.0121, 0.0050, 0.0077]), 'std': tensor([0.0271, 0.0020, 0.0025, 0.0203, 0.0125, 0.0075, 0.0052, 0.0021, 0.0031])}
+INFO:root:train dataset: 131697, test dataset: 6256
+INFO:root:used only channels: [1, 3, 4, 5, 6, 7, 9, 10, 11]; only classes: None
+INFO:root:epoch0
+INFO:root:[1,    50] training loss: 0.02791976
+INFO:root:[1,   100] training loss: 0.03547307
+INFO:root:[1,   150] training loss: 0.05545806
+INFO:root:[1,   200] training loss: 0.04870534
+INFO:root:[1,   250] training loss: 0.05561465
+INFO:root:[1,   300] training loss: 0.07448387
+INFO:root:[1,   350] training loss: 0.05974406
+INFO:root:[1,   400] training loss: 0.06938660
+INFO:root:epoch1
+INFO:root:[2,    50] training loss: 0.02846567
+INFO:root:[2,   100] training loss: 0.02328184
+INFO:root:[2,   150] training loss: 0.04465416
+INFO:root:[2,   200] training loss: 0.04192141
+INFO:root:[2,   250] training loss: 0.04504491
+INFO:root:[2,   300] training loss: 0.06522708
+INFO:root:[2,   350] training loss: 0.05477394
+INFO:root:[2,   400] training loss: 0.05985679
+INFO:root:epoch2
+INFO:root:[3,    50] training loss: 0.01279100
+INFO:root:[3,   100] training loss: 0.02021466
+INFO:root:[3,   150] training loss: 0.04088160
+INFO:root:[3,   200] training loss: 0.03779741
+INFO:root:[3,   250] training loss: 0.03648999
+INFO:root:[3,   300] training loss: 0.05782387
+INFO:root:[3,   350] training loss: 0.05094075
+INFO:root:[3,   400] training loss: 0.05056943
+INFO:root:epoch3
+INFO:root:[4,    50] training loss: 0.00674396
+INFO:root:[4,   100] training loss: 0.01663605
+INFO:root:[4,   150] training loss: 0.03352287
+INFO:root:[4,   200] training loss: 0.02866277
+INFO:root:[4,   250] training loss: 0.02678584
+INFO:root:[4,   300] training loss: 0.05028035
+INFO:root:[4,   350] training loss: 0.04455695
+INFO:root:[4,   400] training loss: 0.03874668
+INFO:root:epoch4
+INFO:root:[5,    50] training loss: 0.00496260
+INFO:root:[5,   100] training loss: 0.01379211
+INFO:root:[5,   150] training loss: 0.02806176
+INFO:root:[5,   200] training loss: 0.02244148
+INFO:root:[5,   250] training loss: 0.02071016
+INFO:root:[5,   300] training loss: 0.04157344
+INFO:root:[5,   350] training loss: 0.03616360
+INFO:root:[5,   400] training loss: 0.02727950
+INFO:root:epoch5
+INFO:root:[6,    50] training loss: 0.00388323
+INFO:root:[6,   100] training loss: 0.01199218
+INFO:root:[6,   150] training loss: 0.02144922
+INFO:root:[6,   200] training loss: 0.01739362
+INFO:root:[6,   250] training loss: 0.01517324
+INFO:root:[6,   300] training loss: 0.03213599
+INFO:root:[6,   350] training loss: 0.02863742
+INFO:root:[6,   400] training loss: 0.02087739
+INFO:root:epoch6
+INFO:root:[7,    50] training loss: 0.00351023
+INFO:root:[7,   100] training loss: 0.01070870
+INFO:root:[7,   150] training loss: 0.01650764
+INFO:root:[7,   200] training loss: 0.01467495
+INFO:root:[7,   250] training loss: 0.01113482
+INFO:root:[7,   300] training loss: 0.02663128
+INFO:root:[7,   350] training loss: 0.02230728
+INFO:root:[7,   400] training loss: 0.01611766
+INFO:root:epoch7
+INFO:root:[8,    50] training loss: 0.00375535
+INFO:root:[8,   100] training loss: 0.01148474
+INFO:root:[8,   150] training loss: 0.02382844
+INFO:root:[8,   200] training loss: 0.02584298
+INFO:root:[8,   250] training loss: 0.01247710
+INFO:root:[8,   300] training loss: 0.03692844
+INFO:root:[8,   350] training loss: 0.01575482
+INFO:root:[8,   400] training loss: 0.01127919
+INFO:root:epoch8
+INFO:root:[9,    50] training loss: 0.00307337
+INFO:root:[9,   100] training loss: 0.00784014
+INFO:root:[9,   150] training loss: 0.01624477
+INFO:root:[9,   200] training loss: 0.01473865
+INFO:root:[9,   250] training loss: 0.01006248
+INFO:root:[9,   300] training loss: 0.02965581
+INFO:root:[9,   350] training loss: 0.01550843
+INFO:root:[9,   400] training loss: 0.01159369
+INFO:root:epoch9
+INFO:root:[10,    50] training loss: 0.00295055
+INFO:root:[10,   100] training loss: 0.00681146
+INFO:root:[10,   150] training loss: 0.01488681
+INFO:root:[10,   200] training loss: 0.01268340
+INFO:root:[10,   250] training loss: 0.00944804
+INFO:root:[10,   300] training loss: 0.02408622
+INFO:root:[10,   350] training loss: 0.01473909
+INFO:root:[10,   400] training loss: 0.01130765
+INFO:root:epoch10
+INFO:root:[11,    50] training loss: 0.00280774
+INFO:root:[11,   100] training loss: 0.00638739
+INFO:root:[11,   150] training loss: 0.01355035
+INFO:root:[11,   200] training loss: 0.01131285
+INFO:root:[11,   250] training loss: 0.00872264
+INFO:root:[11,   300] training loss: 0.02104397
+INFO:root:[11,   350] training loss: 0.01444132
+INFO:root:[11,   400] training loss: 0.01143249
+INFO:root:epoch11
+INFO:root:[12,    50] training loss: 0.00273727
+INFO:root:[12,   100] training loss: 0.00629402
+INFO:root:[12,   150] training loss: 0.01300279
+INFO:root:[12,   200] training loss: 0.01110874
+INFO:root:[12,   250] training loss: 0.00825476
+INFO:root:[12,   300] training loss: 0.01888776
+INFO:root:[12,   350] training loss: 0.01381744
+INFO:root:[12,   400] training loss: 0.01084226
+INFO:root:epoch12
+INFO:root:[13,    50] training loss: 0.00265405
+INFO:root:[13,   100] training loss: 0.00589860
+INFO:root:[13,   150] training loss: 0.01186830
+INFO:root:[13,   200] training loss: 0.01056700
+INFO:root:[13,   250] training loss: 0.00802790
+INFO:root:[13,   300] training loss: 0.01720156
+INFO:root:[13,   350] training loss: 0.01344348
+INFO:root:[13,   400] training loss: 0.01094580
+INFO:root:epoch13
+INFO:root:[14,    50] training loss: 0.00265657
+INFO:root:[14,   100] training loss: 0.00571834
+INFO:root:[14,   150] training loss: 0.01166131
+INFO:root:[14,   200] training loss: 0.00984644
+INFO:root:[14,   250] training loss: 0.00773910
+INFO:root:[14,   300] training loss: 0.01605907
+INFO:root:[14,   350] training loss: 0.01296655
+INFO:root:[14,   400] training loss: 0.00982921
+INFO:root:epoch14
+INFO:root:[15,    50] training loss: 0.00261518
+INFO:root:[15,   100] training loss: 0.00566580
+INFO:root:[15,   150] training loss: 0.01159269
+INFO:root:[15,   200] training loss: 0.00973758
+INFO:root:[15,   250] training loss: 0.00756016
+INFO:root:[15,   300] training loss: 0.01617512
+INFO:root:[15,   350] training loss: 0.01165109
+INFO:root:[15,   400] training loss: 0.00910403
+INFO:root:epoch15
+INFO:root:[16,    50] training loss: 0.00255666
+INFO:root:[16,   100] training loss: 0.00548746
+INFO:root:[16,   150] training loss: 0.01126079
+INFO:root:[16,   200] training loss: 0.00946498
+INFO:root:[16,   250] training loss: 0.00755496
+INFO:root:[16,   300] training loss: 0.01606308
+INFO:root:[16,   350] training loss: 0.01198884
+INFO:root:[16,   400] training loss: 0.00903199
+INFO:root:epoch16
+INFO:root:[17,    50] training loss: 0.00266395
+INFO:root:[17,   100] training loss: 0.00551026
+INFO:root:[17,   150] training loss: 0.01075280
+INFO:root:[17,   200] training loss: 0.00958380
+INFO:root:[17,   250] training loss: 0.00747615
+INFO:root:[17,   300] training loss: 0.01555543
+INFO:root:[17,   350] training loss: 0.01161704
+INFO:root:[17,   400] training loss: 0.00923618
+INFO:root:epoch17
+INFO:root:[18,    50] training loss: 0.00258147
+INFO:root:[18,   100] training loss: 0.00552409
+INFO:root:[18,   150] training loss: 0.01132635
+INFO:root:[18,   200] training loss: 0.00933576
+INFO:root:[18,   250] training loss: 0.00747087
+INFO:root:[18,   300] training loss: 0.01528607
+INFO:root:[18,   350] training loss: 0.01182953
+INFO:root:[18,   400] training loss: 0.00932614
+INFO:root:epoch18
+INFO:root:[19,    50] training loss: 0.00265789
+INFO:root:[19,   100] training loss: 0.00523957
+INFO:root:[19,   150] training loss: 0.01088162
+INFO:root:[19,   200] training loss: 0.00945507
+INFO:root:[19,   250] training loss: 0.00736179
+INFO:root:[19,   300] training loss: 0.01551487
+INFO:root:[19,   350] training loss: 0.01182852
+INFO:root:[19,   400] training loss: 0.00938689
+INFO:root:epoch19
+INFO:root:[20,    50] training loss: 0.00257685
+INFO:root:[20,   100] training loss: 0.00532594
+INFO:root:[20,   150] training loss: 0.01088911
+INFO:root:[20,   200] training loss: 0.00941332
+INFO:root:[20,   250] training loss: 0.00736611
+INFO:root:[20,   300] training loss: 0.01565173
+INFO:root:[20,   350] training loss: 0.01155832
+INFO:root:[20,   400] training loss: 0.00900557
+INFO:root:epoch20
+INFO:root:[21,    50] training loss: 0.00258969
+INFO:root:[21,   100] training loss: 0.00529151
+INFO:root:[21,   150] training loss: 0.01079067
+INFO:root:[21,   200] training loss: 0.00941741
+INFO:root:[21,   250] training loss: 0.00747065
+INFO:root:[21,   300] training loss: 0.01518794
+INFO:root:[21,   350] training loss: 0.01171021
+INFO:root:[21,   400] training loss: 0.00899881
+INFO:root:epoch21
+INFO:root:[22,    50] training loss: 0.00258706
+INFO:root:[22,   100] training loss: 0.00518189
+INFO:root:[22,   150] training loss: 0.01059632
+INFO:root:[22,   200] training loss: 0.00900596
+INFO:root:[22,   250] training loss: 0.00746447
+INFO:root:[22,   300] training loss: 0.01561604
+INFO:root:[22,   350] training loss: 0.01154627
+INFO:root:[22,   400] training loss: 0.00907382
+INFO:root:epoch22
+INFO:root:[23,    50] training loss: 0.00256377
+INFO:root:[23,   100] training loss: 0.00524155
+INFO:root:[23,   150] training loss: 0.01097109
+INFO:root:[23,   200] training loss: 0.00953062
+INFO:root:[23,   250] training loss: 0.00730054
+INFO:root:[23,   300] training loss: 0.01477417
+INFO:root:[23,   350] training loss: 0.01162958
+INFO:root:[23,   400] training loss: 0.00932303
+INFO:root:epoch23
+INFO:root:[24,    50] training loss: 0.00258221
+INFO:root:[24,   100] training loss: 0.00544050
+INFO:root:[24,   150] training loss: 0.01068968
+INFO:root:[24,   200] training loss: 0.00920211
+INFO:root:[24,   250] training loss: 0.00734402
+INFO:root:[24,   300] training loss: 0.01503203
+INFO:root:[24,   350] training loss: 0.01152811
+INFO:root:[24,   400] training loss: 0.00892878
+INFO:root:epoch24
+INFO:root:[25,    50] training loss: 0.00254143
+INFO:root:[25,   100] training loss: 0.00538331
+INFO:root:[25,   150] training loss: 0.01072791
+INFO:root:[25,   200] training loss: 0.00911790
+INFO:root:[25,   250] training loss: 0.00724008
+INFO:root:[25,   300] training loss: 0.01528132
+INFO:root:[25,   350] training loss: 0.01179352
+INFO:root:[25,   400] training loss: 0.00924774
+INFO:root:epoch25
+INFO:root:[26,    50] training loss: 0.00260733
+INFO:root:[26,   100] training loss: 0.00526109
+INFO:root:[26,   150] training loss: 0.01090351
+INFO:root:[26,   200] training loss: 0.00919843
+INFO:root:[26,   250] training loss: 0.00721224
+INFO:root:[26,   300] training loss: 0.01505698
+INFO:root:[26,   350] training loss: 0.01166284
+INFO:root:[26,   400] training loss: 0.00890301
+INFO:root:epoch26
+INFO:root:[27,    50] training loss: 0.00259119
+INFO:root:[27,   100] training loss: 0.00522262
+INFO:root:[27,   150] training loss: 0.01086457
+INFO:root:[27,   200] training loss: 0.00914236
+INFO:root:[27,   250] training loss: 0.00740255
+INFO:root:[27,   300] training loss: 0.01492537
+INFO:root:[27,   350] training loss: 0.01179707
+INFO:root:[27,   400] training loss: 0.00905797
+INFO:root:epoch27
+INFO:root:[28,    50] training loss: 0.00256492
+INFO:root:[28,   100] training loss: 0.00524523
+INFO:root:[28,   150] training loss: 0.01076716
+INFO:root:[28,   200] training loss: 0.00958726
+INFO:root:[28,   250] training loss: 0.00725621
+INFO:root:[28,   300] training loss: 0.01474048
+INFO:root:[28,   350] training loss: 0.01166722
+INFO:root:[28,   400] training loss: 0.00922944
+INFO:root:epoch28
+INFO:root:[29,    50] training loss: 0.00255485
+INFO:root:[29,   100] training loss: 0.00527384
+INFO:root:[29,   150] training loss: 0.01082947
+INFO:root:[29,   200] training loss: 0.00950408
+INFO:root:[29,   250] training loss: 0.00728621
+INFO:root:[29,   300] training loss: 0.01488121
+INFO:root:[29,   350] training loss: 0.01170298
+INFO:root:[29,   400] training loss: 0.00890625
+INFO:root:epoch29
+INFO:root:[30,    50] training loss: 0.00259576
+INFO:root:[30,   100] training loss: 0.00528613
+INFO:root:[30,   150] training loss: 0.01077960
+INFO:root:[30,   200] training loss: 0.00888854
+INFO:root:[30,   250] training loss: 0.00712135
+INFO:root:[30,   300] training loss: 0.01505837
+INFO:root:[30,   350] training loss: 0.01154782
+INFO:root:[30,   400] training loss: 0.00913229
+INFO:root:epoch30
+INFO:root:[31,    50] training loss: 0.00260311
+INFO:root:[31,   100] training loss: 0.00522891
+INFO:root:[31,   150] training loss: 0.01058781
+INFO:root:[31,   200] training loss: 0.00932689
+INFO:root:[31,   250] training loss: 0.00740890
+INFO:root:[31,   300] training loss: 0.01466185
+INFO:root:[31,   350] training loss: 0.01171325
+INFO:root:[31,   400] training loss: 0.00902715
+INFO:root:epoch31
+INFO:root:[32,    50] training loss: 0.00256801
+INFO:root:[32,   100] training loss: 0.00519224
+INFO:root:[32,   150] training loss: 0.01083490
+INFO:root:[32,   200] training loss: 0.00898282
+INFO:root:[32,   250] training loss: 0.00721916
+INFO:root:[32,   300] training loss: 0.01521402
+INFO:root:[32,   350] training loss: 0.01150562
+INFO:root:[32,   400] training loss: 0.00896547
+INFO:root:epoch32
+INFO:root:[33,    50] training loss: 0.00259138
+INFO:root:[33,   100] training loss: 0.00532212
+INFO:root:[33,   150] training loss: 0.01060657
+INFO:root:[33,   200] training loss: 0.00911056
+INFO:root:[33,   250] training loss: 0.00741624
+INFO:root:[33,   300] training loss: 0.01529077
+INFO:root:[33,   350] training loss: 0.01137892
+INFO:root:[33,   400] training loss: 0.00916024
+INFO:root:epoch33
+INFO:root:[34,    50] training loss: 0.00256002
+INFO:root:[34,   100] training loss: 0.00521733
+INFO:root:[34,   150] training loss: 0.01063817
+INFO:root:[34,   200] training loss: 0.00942050
+INFO:root:[34,   250] training loss: 0.00724256
+INFO:root:[34,   300] training loss: 0.01520491
+INFO:root:[34,   350] training loss: 0.01152311
+INFO:root:[34,   400] training loss: 0.00906816
+INFO:root:epoch34
+INFO:root:[35,    50] training loss: 0.00255750
+INFO:root:[35,   100] training loss: 0.00530362
+INFO:root:[35,   150] training loss: 0.01046612
+INFO:root:[35,   200] training loss: 0.00946189
+INFO:root:[35,   250] training loss: 0.00729499
+INFO:root:[35,   300] training loss: 0.01517788
+INFO:root:[35,   350] training loss: 0.01142389
+INFO:root:[35,   400] training loss: 0.00929622
+INFO:root:epoch35
+INFO:root:[36,    50] training loss: 0.00260722
+INFO:root:[36,   100] training loss: 0.00530218
+INFO:root:[36,   150] training loss: 0.01089950
+INFO:root:[36,   200] training loss: 0.00984048
+INFO:root:[36,   250] training loss: 0.00729284
+INFO:root:[36,   300] training loss: 0.01527392
+INFO:root:[36,   350] training loss: 0.01159696
+INFO:root:[36,   400] training loss: 0.00893839
+INFO:root:epoch36
+INFO:root:[37,    50] training loss: 0.00251411
+INFO:root:[37,   100] training loss: 0.00526219
+INFO:root:[37,   150] training loss: 0.01076301
+INFO:root:[37,   200] training loss: 0.00916447
+INFO:root:[37,   250] training loss: 0.00716308
+INFO:root:[37,   300] training loss: 0.01505798
+INFO:root:[37,   350] training loss: 0.01152536
+INFO:root:[37,   400] training loss: 0.00918603
+INFO:root:epoch37
+INFO:root:[38,    50] training loss: 0.00255207
+INFO:root:[38,   100] training loss: 0.00517395
+INFO:root:[38,   150] training loss: 0.01049642
+INFO:root:[38,   200] training loss: 0.00905886
+INFO:root:[38,   250] training loss: 0.00734093
+INFO:root:[38,   300] training loss: 0.01507377
+INFO:root:[38,   350] training loss: 0.01164092
+INFO:root:[38,   400] training loss: 0.00916404
+INFO:root:epoch38
+INFO:root:[39,    50] training loss: 0.00258639
+INFO:root:[39,   100] training loss: 0.00534512
+INFO:root:[39,   150] training loss: 0.01078618
+INFO:root:[39,   200] training loss: 0.00941780
+INFO:root:[39,   250] training loss: 0.00726326
+INFO:root:[39,   300] training loss: 0.01497983
+INFO:root:[39,   350] training loss: 0.01150700
+INFO:root:[39,   400] training loss: 0.00887765
+INFO:root:epoch39
+INFO:root:[40,    50] training loss: 0.00261212
+INFO:root:[40,   100] training loss: 0.00523932
+INFO:root:[40,   150] training loss: 0.01075642
+INFO:root:[40,   200] training loss: 0.00924553
+INFO:root:[40,   250] training loss: 0.00721046
+INFO:root:[40,   300] training loss: 0.01501482
+INFO:root:[40,   350] training loss: 0.01172372
+INFO:root:[40,   400] training loss: 0.00896024
+INFO:root:epoch40
+INFO:root:[41,    50] training loss: 0.00256753
+INFO:root:[41,   100] training loss: 0.00515411
+INFO:root:[41,   150] training loss: 0.01059523
+INFO:root:[41,   200] training loss: 0.00909871
+INFO:root:[41,   250] training loss: 0.00734912
+INFO:root:[41,   300] training loss: 0.01521477
+INFO:root:[41,   350] training loss: 0.01137731
+INFO:root:[41,   400] training loss: 0.00897645
+INFO:root:epoch41
+INFO:root:[42,    50] training loss: 0.00262552
+INFO:root:[42,   100] training loss: 0.00535076
+INFO:root:[42,   150] training loss: 0.01097005
+INFO:root:[42,   200] training loss: 0.00923120
+INFO:root:[42,   250] training loss: 0.00723597
+INFO:root:[42,   300] training loss: 0.01521713
+INFO:root:[42,   350] training loss: 0.01175121
+INFO:root:[42,   400] training loss: 0.00876128
+INFO:root:epoch42
+INFO:root:[43,    50] training loss: 0.00256117
+INFO:root:[43,   100] training loss: 0.00520752
+INFO:root:[43,   150] training loss: 0.01107412
+INFO:root:[43,   200] training loss: 0.00916637
+INFO:root:[43,   250] training loss: 0.00719001
+INFO:root:[43,   300] training loss: 0.01488706
+INFO:root:[43,   350] training loss: 0.01171601
+INFO:root:[43,   400] training loss: 0.00890777
+INFO:root:epoch43
+INFO:root:[44,    50] training loss: 0.00265978
+INFO:root:[44,   100] training loss: 0.00530499
+INFO:root:[44,   150] training loss: 0.01085851
+INFO:root:[44,   200] training loss: 0.00923304
+INFO:root:[44,   250] training loss: 0.00720720
+INFO:root:[44,   300] training loss: 0.01509109
+INFO:root:[44,   350] training loss: 0.01145882
+INFO:root:[44,   400] training loss: 0.00910401
+INFO:root:epoch44
+INFO:root:[45,    50] training loss: 0.00254157
+INFO:root:[45,   100] training loss: 0.00527326
+INFO:root:[45,   150] training loss: 0.01099562
+INFO:root:[45,   200] training loss: 0.00897550
+INFO:root:[45,   250] training loss: 0.00732800
+INFO:root:[45,   300] training loss: 0.01548561
+INFO:root:[45,   350] training loss: 0.01163623
+INFO:root:[45,   400] training loss: 0.00910900
+INFO:root:epoch45
+INFO:root:[46,    50] training loss: 0.00255552
+INFO:root:[46,   100] training loss: 0.00519571
+INFO:root:[46,   150] training loss: 0.01081887
+INFO:root:[46,   200] training loss: 0.00916249
+INFO:root:[46,   250] training loss: 0.00734166
+INFO:root:[46,   300] training loss: 0.01492391
+INFO:root:[46,   350] training loss: 0.01161534
+INFO:root:[46,   400] training loss: 0.00891844
+INFO:root:epoch46
+INFO:root:[47,    50] training loss: 0.00256310
+INFO:root:[47,   100] training loss: 0.00524546
+INFO:root:[47,   150] training loss: 0.01069277
+INFO:root:[47,   200] training loss: 0.00947124
+INFO:root:[47,   250] training loss: 0.00722993
+INFO:root:[47,   300] training loss: 0.01500486
+INFO:root:[47,   350] training loss: 0.01158268
+INFO:root:[47,   400] training loss: 0.00900812
+INFO:root:epoch47
+INFO:root:[48,    50] training loss: 0.00258994
+INFO:root:[48,   100] training loss: 0.00517541
+INFO:root:[48,   150] training loss: 0.01074028
+INFO:root:[48,   200] training loss: 0.00929230
+INFO:root:[48,   250] training loss: 0.00723658
+INFO:root:[48,   300] training loss: 0.01516105
+INFO:root:[48,   350] training loss: 0.01172960
+INFO:root:[48,   400] training loss: 0.00886600
+INFO:root:epoch48
+INFO:root:[49,    50] training loss: 0.00258262
+INFO:root:[49,   100] training loss: 0.00508488
+INFO:root:[49,   150] training loss: 0.01095560
+INFO:root:[49,   200] training loss: 0.00939611
+INFO:root:[49,   250] training loss: 0.00741613
+INFO:root:[49,   300] training loss: 0.01557322
+INFO:root:[49,   350] training loss: 0.01164033
+INFO:root:[49,   400] training loss: 0.00903474
+INFO:root:epoch49
+INFO:root:[50,    50] training loss: 0.00256744
+INFO:root:[50,   100] training loss: 0.00512539
+INFO:root:[50,   150] training loss: 0.01046736
+INFO:root:[50,   200] training loss: 0.00903715
+INFO:root:[50,   250] training loss: 0.00735161
+INFO:root:[50,   300] training loss: 0.01517787
+INFO:root:[50,   350] training loss: 0.01176191
+INFO:root:[50,   400] training loss: 0.00909940
+INFO:root:Finished Training
+INFO:root:Accuracy of the network on the 6256 test images: 96 %
+INFO:root:                   precision    recall  f1-score   support
+
+          unknown     0.8424    0.6502    0.7339       263
+           CD4+ T     0.9727    0.9955    0.9840       894
+           CD8+ T     0.8966    0.9426    0.9190       331
+ CD15+ neutrophil     0.9978    0.9986    0.9982      3692
+   CD14+ monocyte     0.9597    0.9962    0.9776       263
+          CD19+ B     0.9824    0.9598    0.9709       174
+         CD56+ NK     0.9478    0.9549    0.9513       133
+              NKT     0.6946    0.7085    0.7015       199
+       eosinophil     0.9683    0.9935    0.9807       307
+
+         accuracy                         0.9690      6256
+        macro avg     0.9180    0.9111    0.9130      6256
+     weighted avg     0.9681    0.9690    0.9680      6256
+
+INFO:root:    unknown    CD4+ T    CD8+ T   CD15+ neutrophil   CD14+ monocyte   CD19+ B   CD56+ NK       NKT   eosinophil
+0  0.733906  0.983969  0.918999            0.99824         0.977612   0.97093   0.951311  0.701493     0.980707
