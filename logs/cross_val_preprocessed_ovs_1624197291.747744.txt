@@ -1,0 +1,13 @@
+INFO:root:the deviced being used is cuda:0
+INFO:root:Start validation
+INFO:root:statistics used: {'mean': tensor([0.1729, 0.0132, 0.0149, 0.0123, 0.0097, 0.1692, 0.0077]), 'std': tensor([0.0638, 0.0271, 0.0204, 0.0125, 0.0076, 0.0625, 0.0031])}
+INFO:root:train dataset: 131886, test dataset: 6256
+INFO:root:used only channels: [0, 1, 5, 6, 7, 8, 11]; only classes: None
+INFO:root:epoch0
+INFO:root:[1,    50] training loss: 0.03844408
+INFO:root:[1,   100] training loss: 0.02644157
+INFO:root:[1,   150] training loss: 0.04703065
+INFO:root:[1,   200] training loss: 0.04027129
+INFO:root:[1,   250] training loss: 0.06869932
+INFO:root:[1,   300] training loss: 0.06665134
+INFO:root:[1,   350] training loss: 0.06328986
