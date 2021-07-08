@@ -3,10 +3,8 @@ import logging
 from torchvision import datasets, transforms
 from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
 import torch.nn as nn
-import torch.nn.functional as F
 import argparse
 import os
-import torch.optim as optim
 import sys
 from datetime import datetime
 import numpy as np
@@ -14,16 +12,20 @@ from sklearn.metrics import classification_report, f1_score
 import pandas as pd
 from resnet18 import resnet18
 from dataset import Dataset_Generator, train_validation_test_split, get_classes_map, number_of_classes, \
-    number_of_channels, Dataset_Generator_Preprocessed, train_validation_test_split_wth_augmentation, train_validation_test_split_undersample
+    number_of_channels, Dataset_Generator_Preprocessed, train_validation_test_split_wth_augmentation, \
+    train_validation_test_split_undersample
 from util import get_statistics_2
 from collections import Counter
 from imblearn.over_sampling import RandomOverSampler
 from torch.optim import lr_scheduler
+from custom_transforms import AddGaussianNoise
+from sklearn.metrics import roc_auc_score
 
 seed_value = 42
 
-os.environ['PYTHONHASHSEED']=str(seed_value)
+os.environ['PYTHONHASHSEED'] = str(seed_value)
 import random
+
 random.seed(seed_value)
 
 np.random.seed(seed_value)
@@ -44,12 +46,12 @@ WBC_CLASS_NAMES = [' unknown',
 sys.path.append("..")
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--path_to_data', default="data/WBC/PreprocessedData",
+parser.add_argument('--path_to_data', default="data/JurkatCells/PreprocessedData",
                     help="dataset root dir")
-parser.add_argument('--batch_size', default=64, help="batch size", type=int)
-parser.add_argument('--n_epochs', default=50, help="epochs to train", type=int)
+parser.add_argument('--batch_size', default=256, help="batch size", type=int)
+parser.add_argument('--n_epochs', default=30, help="epochs to train", type=int)
 parser.add_argument('--num_workers', type=int, default=2, help='number of data loading workers')
-parser.add_argument('--lr', default=1e-5, help="learning rate", type=float)
+parser.add_argument('--lr', default=1e-2, help="learning rate", type=float)
 parser.add_argument('--model_save_path', default='models/', help="path to save models")
 parser.add_argument('--model_name', default='best_metrics', help="path to save models")
 parser.add_argument('--log_dir', default='logs/', help="path to save logs")
@@ -59,10 +61,9 @@ parser.add_argument('--only_channels', default=[], help="the channels to be used
 parser.add_argument('--only_classes', default=None, help="the classes to be used for the model training", nargs='+',
                     type=int)
 parser.add_argument('--dev', default='cpu', help="cpu or cuda")
-parser.add_argument('--save_test', default=None, help="path where test data should be saved")
-parser.add_argument('--num_channels', type=int, default=12, help='number of channels')
-parser.add_argument('--num_classes', type=int, default=9, help='number of classes')
-parser.add_argument('--class_names', default=WBC_CLASS_NAMES, help="name of the classes", nargs='+', type=str)
+parser.add_argument('--num_channels', type=int, default=3, help='number of channels')
+parser.add_argument('--num_classes', type=int, default=7, help='number of classes')
+parser.add_argument('--class_names', default=JCD_CLASS_NAMES, help="name of the classes", nargs='+', type=str)
 opt = parser.parse_args()
 
 if __name__ == '__main__':
@@ -75,7 +76,7 @@ if __name__ == '__main__':
     timestamp = datetime.timestamp(now)
 
     # initialize logging
-    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_preprocessed_ovs_{}.txt'.format(timestamp)),
+    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_preprocessed_ovs_jcd_{}.txt'.format(timestamp)),
                         level=logging.DEBUG)
     logging.info("the deviced being used is {}".format(opt.dev))
 
@@ -84,18 +85,30 @@ if __name__ == '__main__':
         os.path.join(opt.path_to_data, "y.txt"), dtype=int)
 
     # split data without augmentation
-    train_indx, validation_indx, test_indx = train_validation_test_split_wth_augmentation(X, y, only_classes=opt.only_classes)
+    train_indx, validation_indx, test_indx = train_validation_test_split_wth_augmentation(X, y,
+                                                                                          only_classes=opt.only_classes)
 
     transform = transforms.Compose(
         [transforms.RandomVerticalFlip(),
          transforms.RandomHorizontalFlip(),
          transforms.RandomRotation(45)])
 
+    train_transform = transforms.Compose([
+        transforms.RandomCrop(64),
+        transforms.RandomAffine(degrees=90, translate=(0.2, 0.2)),
+        transforms.Resize(size=64),
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomVerticalFlip(),
+        #transforms.RandomErasing(scale=(0.02, 0.2), ratio=(0.3, 0.9))
+     ])
+    test_transform = transforms.Compose([
+        transforms.Resize(64)
+     ])
+
     # initialize train_dataset and trainloader to calculate the train distribution
 
     train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
-                                                   set_indx=train_indx,
-                                                   transform=transform,
+                                                   set_indx=train_indx, transform=train_transform,
                                                    only_channels=opt.only_channels,
                                                    num_channels=opt.num_channels)
 
@@ -105,38 +118,39 @@ if __name__ == '__main__':
                              num_workers=opt.num_workers)
 
     # get statistics to normalize data
-    statistics = get_statistics_2(trainloader, opt.only_channels, logging)
+    statistics = get_statistics_2(trainloader, opt.only_channels, logging, opt.num_channels)
 
+    # statistics = {'mean': None, 'std': None}
     # use oversampling to cope with unbalance data
     y_train = y[train_indx]
-
+    class_sample_count = np.array([len(np.where(y_train == t)[0]) for t in np.unique(y_train)])
+    weights = len(y_train) / class_sample_count
     oversample = RandomOverSampler(random_state=seed_value, sampling_strategy='all')
 
-    train_indx, _ = oversample.fit_resample(np.asarray(train_indx).reshape(-1, 1), np.asarray(y_train))
+    train_indx, y_train = oversample.fit_resample(np.asarray(train_indx).reshape(-1, 1), np.asarray(y_train))
     train_indx = train_indx.T[0]
-
+    y_train = y[train_indx]
     # create a new normalized datasets and loaders
     train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
-                                                   set_indx=train_indx, transform=transform,
+                                                   set_indx=train_indx, transform=train_transform,
                                                    means=statistics["mean"],
                                                    stds=statistics["std"],
                                                    only_channels=opt.only_channels,
                                                    num_channels=opt.num_channels)
 
     validation_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
-                                                   set_indx=validation_indx, transform=transform,
-                                                   means=statistics["mean"],
-                                                   stds=statistics["std"],
-                                                   only_channels=opt.only_channels,
-                                                   num_channels=opt.num_channels)
+                                                        set_indx=validation_indx, transform=test_transform,
+                                                        means=statistics["mean"],
+                                                        stds=statistics["std"],
+                                                        only_channels=opt.only_channels,
+                                                        num_channels=opt.num_channels)
 
     test_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
-                                                  set_indx=test_indx,
+                                                  set_indx=test_indx, transform=test_transform,
                                                   means=statistics["mean"],
                                                   stds=statistics["std"],
                                                   only_channels=opt.only_channels,
                                                   num_channels=opt.num_channels)
-
 
     trainloader = DataLoader(train_dataset,
                              batch_size=opt.batch_size,
@@ -167,18 +181,20 @@ if __name__ == '__main__':
     model.fc = nn.Linear(num_ftrs, opt.num_classes)
 
     model = model.to(opt.dev)
-
-    criterion = nn.CrossEntropyLoss()
+    class_weights = torch.FloatTensor(weights).to(opt.dev)
+    criterion = nn.CrossEntropyLoss(weight=class_weights)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr)
     scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
-    #optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
+    # optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum=0.9)
 
     if opt.resume_model != '':
         checkpoint = torch.load('{0}/{1}'.format(opt.model_save_path, opt.resume_model))
         model.load_state_dict(checkpoint)
 
     # start training
+    best_metric = -1
+    best_metric_epoch = -1
     for epoch in range(opt.n_epochs):
         running_loss = 0.0
         logging.info('epoch%d' % epoch)
@@ -208,18 +224,29 @@ if __name__ == '__main__':
         correct = 0
         total = 0
         with torch.no_grad():
+            y_pred = torch.tensor([], dtype=torch.float32, device=opt.dev)
+            y = torch.tensor([], dtype=torch.long, device=opt.dev)
+            epoch_val_loss = 0
+            step_val = 0
             for i, data in enumerate(validationloader, 0):
                 inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
                 outputs = model(inputs)
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (labels.reshape(-1) == predicted).sum().item()
+                y_pred = torch.cat([y_pred, predicted], dim=0)
+                y = torch.cat([y, labels.reshape(-1)], dim=0)
+            f1_sc = f1_score(y.cpu(), y_pred.cpu(), average='macro')
+            if f1_sc > best_metric:
+                best_metric = f1_sc
+                best_metric_epoch = epoch + 1
+                torch.save(model.state_dict(), 'models/best_metric_model_jcd_oversampling.pth')
+                print('saved new best metric model')
 
         logging.info('Accuracy of the network on the %d validation images: %d %%' % (
             len(validation_dataset), 100 * correct / total))
 
     logging.info('Finished Training')
-
 
     # evaluate data on test dataset
     correct = 0.
@@ -252,5 +279,3 @@ if __name__ == '__main__':
     f1_score_original = f1_score(y_true, y_pred, average=None, labels=np.arange(opt.num_classes))
     df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=opt.class_names)
     logging.info(df.to_string())
-
-    # python train.py --n_epochs 100 --only_channels 0 2 3 4 5 6 7 8 9 10 11 --dev cuda --save_test data\WBC\test_samples_without_1_ch

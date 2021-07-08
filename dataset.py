@@ -14,13 +14,15 @@ import numpy as np
 sys.path.append("..")
 seed_value = 42
 
-os.environ['PYTHONHASHSEED']=str(seed_value)
+os.environ['PYTHONHASHSEED'] = str(seed_value)
 import random
+
 random.seed(seed_value)
 
 np.random.seed(seed_value)
 
 torch.manual_seed(42)
+
 
 def crop_pad_h_w(image_dummy, reshape_size):
     if image_dummy.shape[0] < reshape_size:
@@ -73,7 +75,9 @@ def train_validation_test_split_wth_augmentation(X, y, validation_size=0.15, tes
 
 
 def train_validation_test_split_undersample(X, y, validation_size=0.15, test_size=0.20, only_classes=None):
-    undersample = RandomUnderSampler(random_state=42, sampling_strategy={3: 3044, 1: 3044, 2: 1215, 8: 1045, 0: 875, 4: 872, 7: 699, 5: 604, 6: 455})
+    undersample = RandomUnderSampler(random_state=42,
+                                     sampling_strategy={3: 3044, 1: 3044, 2: 1215, 8: 1045, 0: 875, 4: 872, 7: 699,
+                                                        5: 604, 6: 455})
 
     train, test, y_train, y_test = train_test_split(X, y, test_size=test_size, stratify=y, random_state=42)
 
@@ -268,9 +272,24 @@ class Dataset_Generator_Preprocessed(Dataset):
         if len(self.channels_to_shuffle) > 0:
             for channel in self.channels_to_shuffle:
                 channel_shape = image[channel].shape
-                image[channel] = image[channel].flatten()[torch.randperm(len(image[channel].flatten()))].reshape(channel_shape)
+                image[channel] = image[channel].flatten()[torch.randperm(len(image[channel].flatten()))].reshape(
+                    channel_shape)
         for i in range(self.num_channels):
             image[i] = (image[i] - self.means[i]) / self.stds[i]
         if self.transform:
             image = self.transform(image)
         return image, label, o_n
+
+
+class JurkatDataset(Dataset):
+
+    def __init__(self, image_files, labels, transforms):
+        self.image_files = image_files
+        self.labels = labels
+        self.transforms = transforms
+
+    def __len__(self):
+        return len(self.image_files)
+
+    def __getitem__(self, index):
+        return self.transforms(self.image_files[index]), self.labels[index]
