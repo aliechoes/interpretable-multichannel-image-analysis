@@ -28,7 +28,6 @@ random.seed(seed_value)
 np.random.seed(seed_value)
 
 torch.manual_seed(42)
-torch.use_deterministic_algorithms(True)
 
 JCD_CLASS_NAMES = ['Anaphase', 'G1', 'G2', 'Metaphase', 'Prophase', 'S', 'Telophase']
 WBC_CLASS_NAMES = [' unknown',

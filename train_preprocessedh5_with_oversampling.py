@@ -13,8 +13,8 @@ import pandas as pd
 from resnet18 import resnet18
 from dataset import Dataset_Generator, train_validation_test_split, get_classes_map, number_of_classes, \
     number_of_channels, Dataset_Generator_Preprocessed, train_validation_test_split_wth_augmentation, \
-    train_validation_test_split_undersample
-from util import get_statistics_2
+    train_validation_test_split_undersample, Dataset_Generator_Preprocessed_h5
+from util import get_statistics_h5
 from collections import Counter
 from imblearn.over_sampling import RandomOverSampler
 from torch.optim import lr_scheduler
@@ -25,6 +25,7 @@ seed_value = 0
 
 os.environ['PYTHONHASHSEED'] = str(seed_value)
 import random
+import h5py
 
 random.seed(seed_value)
 
@@ -46,11 +47,12 @@ WBC_CLASS_NAMES = [' unknown',
 sys.path.append("..")
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--path_to_data', default="data/JurkatCells/PreprocessedData",
+parser.add_argument('--path_to_data', default="data/JurkatCells/PreprocessedDatah5",
                     help="dataset root dir")
 parser.add_argument('--batch_size', default=64, help="batch size", type=int)
 parser.add_argument('--n_epochs', default=100, help="epochs to train", type=int)
 parser.add_argument('--num_workers', type=int, default=2, help='number of data loading workers')
+parser.add_argument('--scaling_factor', type=float, default=255., help='scaling factor')
 parser.add_argument('--lr', default=1e-3, help="learning rate", type=float)
 parser.add_argument('--model_save_path', default='models/', help="path to save models")
 parser.add_argument('--model_name', default='best_metrics', help="path to save models")
@@ -76,13 +78,22 @@ if __name__ == '__main__':
     timestamp = datetime.timestamp(now)
 
     # initialize logging
-    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_preprocessed_ovs_jcd_{}.txt'.format(timestamp)),
+    logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_preprocessedh5_ovs_{}_{}.txt'.format(opt.model_name, timestamp)),
                         level=logging.DEBUG)
     logging.info("the deviced being used is {}".format(opt.dev))
 
     # load X and y
-    X, y = np.loadtxt(os.path.join(opt.path_to_data, "X.txt"), dtype=int), np.loadtxt(
-        os.path.join(opt.path_to_data, "y.txt"), dtype=int)
+
+    X = []
+    y = []
+    for image_name in os.listdir(opt.path_to_data):
+        o_n = os.path.splitext(image_name)[0]
+        r = h5py.File(os.path.join(opt.path_to_data, image_name), 'r')
+        X.append(int(o_n))
+        y.append(r["label"][()])
+
+    class_names = list(set(y))
+    data_map = dict(zip(sorted(set(y)), np.arange(len(set(y)))))
 
     # split data without augmentation
     train_indx, validation_indx, test_indx = train_validation_test_split_wth_augmentation(X, y,
@@ -107,10 +118,13 @@ if __name__ == '__main__':
 
     # initialize train_dataset and trainloader to calculate the train distribution
 
-    train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
-                                                   set_indx=train_indx, transform=train_transform,
-                                                   only_channels=opt.only_channels,
-                                                   num_channels=opt.num_channels)
+    train_dataset = Dataset_Generator_Preprocessed_h5(path_to_data=opt.path_to_data,
+                                                      set_indx=train_indx,
+                                                      scaling_factor=opt.scaling_factor,
+                                                      transform=train_transform,
+                                                      data_map=data_map,
+                                                      only_channels=opt.only_channels,
+                                                      num_channels=opt.num_channels)
 
     trainloader = DataLoader(train_dataset,
                              batch_size=opt.batch_size,
@@ -118,39 +132,50 @@ if __name__ == '__main__':
                              num_workers=opt.num_workers)
 
     # get statistics to normalize data
-    statistics = get_statistics_2(trainloader, opt.only_channels, logging, opt.num_channels)
+    statistics = get_statistics_h5(trainloader, opt.only_channels, logging, opt.num_channels)
 
-    # statistics = {'mean': None, 'std': None}
     # use oversampling to cope with unbalance data
-    y_train = y[train_indx]
-    class_sample_count = np.array([len(np.where(y_train == t)[0]) for t in np.unique(y_train)])
+    y_train = [y[i] for i in train_indx]
+    class_sample_count = np.array([len(np.where(np.asarray(y_train) == t)[0]) for t in np.unique(y_train)])
     weights = len(y_train) / class_sample_count
     oversample = RandomOverSampler(random_state=seed_value, sampling_strategy='all')
 
     train_indx, y_train = oversample.fit_resample(np.asarray(train_indx).reshape(-1, 1), np.asarray(y_train))
     train_indx = train_indx.T[0]
-    y_train = y[train_indx]
+    y_train = [y[i] for i in train_indx]
     # create a new normalized datasets and loaders
-    train_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
-                                                   set_indx=train_indx, transform=train_transform,
-                                                   means=statistics["mean"],
-                                                   stds=statistics["std"],
-                                                   only_channels=opt.only_channels,
-                                                   num_channels=opt.num_channels)
+    train_dataset = Dataset_Generator_Preprocessed_h5(path_to_data=opt.path_to_data,
+                                                      set_indx=train_indx,
+                                                      scaling_factor=opt.scaling_factor,
+                                                      transform=train_transform,
+                                                      data_map=data_map,
+                                                      only_channels=opt.only_channels,
+                                                      num_channels=opt.num_channels,
+                                                      means=statistics["mean"],
+                                                      stds=statistics["std"]
+                                                      )
 
-    validation_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
-                                                        set_indx=validation_indx, transform=test_transform,
-                                                        means=statistics["mean"],
-                                                        stds=statistics["std"],
-                                                        only_channels=opt.only_channels,
-                                                        num_channels=opt.num_channels)
+    validation_dataset = Dataset_Generator_Preprocessed_h5(path_to_data=opt.path_to_data,
+                                                      set_indx=validation_indx,
+                                                      scaling_factor=opt.scaling_factor,
+                                                      transform=test_transform,
+                                                      data_map=data_map,
+                                                      only_channels=opt.only_channels,
+                                                      num_channels=opt.num_channels,
+                                                      means=statistics["mean"],
+                                                      stds=statistics["std"]
+                                                      )
 
-    test_dataset = Dataset_Generator_Preprocessed(path_to_data=opt.path_to_data,
-                                                  set_indx=test_indx, transform=test_transform,
-                                                  means=statistics["mean"],
-                                                  stds=statistics["std"],
-                                                  only_channels=opt.only_channels,
-                                                  num_channels=opt.num_channels)
+    test_dataset = Dataset_Generator_Preprocessed_h5(path_to_data=opt.path_to_data,
+                                                      set_indx=test_indx,
+                                                      scaling_factor=opt.scaling_factor,
+                                                      transform=test_transform,
+                                                      data_map=data_map,
+                                                      only_channels=opt.only_channels,
+                                                      num_channels=opt.num_channels,
+                                                      means=statistics["mean"],
+                                                      stds=statistics["std"]
+                                                      )
 
     trainloader = DataLoader(train_dataset,
                              batch_size=opt.batch_size,
@@ -204,7 +229,7 @@ if __name__ == '__main__':
         for i, data in enumerate(trainloader, 0):
 
             # get the inputs; data is a list of [inputs, labels]
-            inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
+            inputs, labels = data["image"].to(opt.dev).float(), data["label"].to(opt.dev).reshape(-1).long()
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -212,7 +237,6 @@ if __name__ == '__main__':
             # forward + backward + optimize
             outputs = model(inputs)
             _, predicted = torch.max(outputs.data, 1)
-
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
@@ -238,7 +262,7 @@ if __name__ == '__main__':
             step_val = 0
             for i, data in enumerate(validationloader, 0):
                 step_val += 1
-                inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
+                inputs, labels = data["image"].to(opt.dev).float(), data["label"].to(opt.dev).reshape(-1).long()
                 outputs = model(inputs)
                 val_loss = criterion(outputs, labels)
                 epoch_val_loss += val_loss.item()
@@ -255,7 +279,7 @@ if __name__ == '__main__':
                 best_metric_epoch = epoch + 1
                 torch.save(model.state_dict(), os.path.join(opt.model_save_path, "intermediate_model_dict_{}.pth".format(opt.model_name)))
                 print('saved new best metric model')
-            cr = classification_report(y.detach().cpu(), y_pred.detach().cpu(), target_names=opt.class_names, digits=4)
+            cr = classification_report(y.detach().cpu(), y_pred.detach().cpu(), target_names=class_names, digits=4)
             logging.info(cr)
 
         logging.info('Accuracy of the network on the %d validation images: %d %%' % (
@@ -271,7 +295,7 @@ if __name__ == '__main__':
 
     with torch.no_grad():
         for data in testloader:
-            inputs, labels = data[0].to(opt.dev).float(), data[1].to(opt.dev)
+            inputs, labels = data["image"].to(opt.dev).float(), data["label"].to(opt.dev).reshape(-1).long()
 
             outputs = model(inputs)
             pred = outputs.argmax(dim=1)
@@ -289,8 +313,8 @@ if __name__ == '__main__':
 
     # save model and output classification report + f1 scores per class
     torch.save(model.state_dict(), os.path.join(opt.model_save_path, "final_model_dict_{}.pth".format(opt.model_name)))
-    cr = classification_report(y_true, y_pred, target_names=opt.class_names, digits=4)
+    cr = classification_report(y_true, y_pred, target_names=class_names, digits=4)
     logging.info(cr)
     f1_score_original = f1_score(y_true, y_pred, average=None, labels=np.arange(opt.num_classes))
-    df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=opt.class_names)
+    df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=class_names)
     logging.info(df.to_string())

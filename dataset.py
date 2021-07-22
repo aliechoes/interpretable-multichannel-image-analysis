@@ -269,6 +269,8 @@ class Dataset_Generator_Preprocessed(Dataset):
         image, label = tensor[0], tensor[1]
         if len(self.only_channels) > 0:
             image = image[self.only_channels, :, :]
+        if self.transform:
+            image = self.transform(image)
         if len(self.channels_to_shuffle) > 0:
             for channel in self.channels_to_shuffle:
                 channel_shape = image[channel].shape
@@ -276,9 +278,93 @@ class Dataset_Generator_Preprocessed(Dataset):
                     channel_shape)
         for i in range(self.num_channels):
             image[i] = (image[i] - self.means[i]) / self.stds[i]
-        if self.transform:
-            image = self.transform(image)
         return image, label, o_n
+
+
+class Dataset_Generator_Preprocessed_h5(Dataset):
+
+    def __init__(self, path_to_data, set_indx, scaling_factor=4095., reshape_size=64, data_map=[],
+                 transform=None, means=None, stds=None,
+                 only_channels=[], channels_to_shuffle=[], only_classes=None, num_channels=12):
+
+        self.path_to_data = path_to_data
+        self.only_channels = only_channels
+        self.channels_to_shuffle = channels_to_shuffle
+        self.only_classes = only_classes
+        self.object_numbers = set_indx
+
+        self.scaling_factor = scaling_factor
+        self.reshape_size = reshape_size
+        self.data_map = data_map
+
+        self.num_channels = num_channels
+        self.transform = transform
+        if means is None:
+            self.means = torch.zeros(self.num_channels)
+        else:
+            self.means = means
+        if stds is None:
+            self.stds = torch.ones(self.num_channels)
+        else:
+            self.stds = stds
+
+    def __len__(self):
+        return len(self.object_numbers)
+
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+
+        o_n = self.object_numbers[idx]
+        try:
+            r = h5py.File(os.path.join(self.path_to_data, '{}.h5'.format(o_n)), 'r')
+            image_original = r.get('image')[()] / self.scaling_factor
+            # convert str label to int
+            label = r.get('label')[()]
+            # creating the image
+            h, w = crop_pad_h_w(image_original, self.reshape_size)
+            h1_crop, h2_crop, h1_pad, h2_pad = h
+            w1_crop, w2_crop, w1_pad, w2_pad = w
+            image = np.zeros((self.num_channels, self.reshape_size, self.reshape_size), dtype=np.float64)
+            nmb_of_channels = 0
+            # filling the image with different channels
+            for ch in range(image_original.shape[2]):
+                if len(self.only_channels) == 0 or ch in self.only_channels:
+                    image_dummy = crop(image_original[:, :, ch], ((h1_crop, h2_crop), (w1_crop, w2_crop)))
+                    image_dummy = np.pad(image_dummy, ((h1_pad, h2_pad), (w1_pad, w2_pad)), "edge")
+                    image[nmb_of_channels, :, :] = image_dummy
+                    nmb_of_channels += 1
+            image_original = None
+            # map numpy array to tensor
+            image = torch.from_numpy(copy.deepcopy(image))
+
+            if len(self.only_channels) > 0:
+                image = image[self.only_channels, :, :]
+
+            if self.transform:
+                image = self.transform(image)
+
+            for i in range(self.num_channels):
+                image[i] = (image[i] - self.means[i]) / self.stds[i]
+
+            if self.only_classes is not None:
+                label = self.only_classes.index(label)
+            label = np.array([self.data_map.get(label)])
+
+            object_number = np.array([o_n])
+            if len(self.channels_to_shuffle) > 0:
+                for channel in self.channels_to_shuffle:
+                    channel_shape = image[channel].shape
+                    image[channel] = image[channel].flatten()[torch.randperm(len(image[channel].flatten()))].reshape(
+                        channel_shape)
+
+            sample = {'image': image, 'label': torch.from_numpy(label), "idx": idx, "object_number": object_number}
+
+        except:
+            sample = {'image': torch.from_numpy(
+            np.zeros((self.num_channels, self.reshape_size, self.reshape_size), dtype=np.float64)),
+            'label': torch.from_numpy(np.array([-1])), "idx": idx, "object_number": np.array([-1])}
+        return sample
 
 
 class JurkatDataset(Dataset):
@@ -293,3 +379,23 @@ class JurkatDataset(Dataset):
 
     def __getitem__(self, index):
         return self.transforms(self.image_files[index]), self.labels[index]
+
+def save_data_in_h5_separate_files(dataset, folder_to_save_preprocessed_data, class_names):
+    X = []
+    y = []
+    dt_string = h5py.string_dtype(encoding='utf-8')
+    for idx, sample in enumerate(dataset):
+        image, label = np.ascontiguousarray(sample[0]), sample[1]
+        X.append(idx)
+        y.append(label)
+        # torch.save((image, label), os.path.join(folder_to_save_preprocessed_data,'{}.pt'.format(idx)))
+        f = h5py.File(os.path.join(folder_to_save_preprocessed_data, '{}.h5'.format(idx)), 'w')
+        f.create_dataset("image", data=image, dtype=float)
+        f.create_dataset("label", data=class_names[label], dtype=dt_string)
+        f.create_dataset("mask", data=None, dtype=float)
+        f.create_dataset("donor", data=None, dtype=dt_string)
+        f.create_dataset("experiment", data=None, dtype=dt_string)
+        f.create_dataset("channels", data=np.array(["Brightfield", "PI", "MPM2"]).astype(dt_string))
+        f.close()
+    print("All files saved")
+    return X, y
