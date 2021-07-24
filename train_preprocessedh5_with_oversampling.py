@@ -53,6 +53,7 @@ parser.add_argument('--batch_size', default=64, help="batch size", type=int)
 parser.add_argument('--n_epochs', default=100, help="epochs to train", type=int)
 parser.add_argument('--num_workers', type=int, default=2, help='number of data loading workers')
 parser.add_argument('--scaling_factor', type=float, default=255., help='scaling factor')
+parser.add_argument('--reshape_size', type=float, default=255., help='reshape size of the image')
 parser.add_argument('--lr', default=1e-3, help="learning rate", type=float)
 parser.add_argument('--model_save_path', default='models/', help="path to save models")
 parser.add_argument('--model_name', default='best_metrics', help="path to save models")
@@ -121,6 +122,7 @@ if __name__ == '__main__':
     train_dataset = Dataset_Generator_Preprocessed_h5(path_to_data=opt.path_to_data,
                                                       set_indx=train_indx,
                                                       scaling_factor=opt.scaling_factor,
+                                                      reshape_size=opt.reshape_size,
                                                       transform=train_transform,
                                                       data_map=data_map,
                                                       only_channels=opt.only_channels,
@@ -147,6 +149,7 @@ if __name__ == '__main__':
     train_dataset = Dataset_Generator_Preprocessed_h5(path_to_data=opt.path_to_data,
                                                       set_indx=train_indx,
                                                       scaling_factor=opt.scaling_factor,
+                                                      reshape_size=opt.reshape_size,
                                                       transform=train_transform,
                                                       data_map=data_map,
                                                       only_channels=opt.only_channels,
@@ -158,6 +161,7 @@ if __name__ == '__main__':
     validation_dataset = Dataset_Generator_Preprocessed_h5(path_to_data=opt.path_to_data,
                                                       set_indx=validation_indx,
                                                       scaling_factor=opt.scaling_factor,
+                                                           reshape_size=opt.reshape_size,
                                                       transform=test_transform,
                                                       data_map=data_map,
                                                       only_channels=opt.only_channels,
@@ -169,6 +173,7 @@ if __name__ == '__main__':
     test_dataset = Dataset_Generator_Preprocessed_h5(path_to_data=opt.path_to_data,
                                                       set_indx=test_indx,
                                                       scaling_factor=opt.scaling_factor,
+                                                     reshape_size=opt.reshape_size,
                                                       transform=test_transform,
                                                       data_map=data_map,
                                                       only_channels=opt.only_channels,
