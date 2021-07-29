@@ -338,9 +338,6 @@ class Dataset_Generator_Preprocessed_h5(Dataset):
             # map numpy array to tensor
             image = torch.from_numpy(copy.deepcopy(image))
 
-            if len(self.only_channels) > 0:
-                image = image[self.only_channels, :, :]
-
             if self.transform:
                 image = self.transform(image)
 
