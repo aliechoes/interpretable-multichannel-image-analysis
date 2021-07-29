@@ -16,15 +16,17 @@ from resnet18 import resnet18
 from dataset import Dataset_Generator, train_validation_test_split, get_classes_map, number_of_classes, \
     number_of_channels
 from util import get_statistics
+from multiprocessing import Pool
+from util import load_h5_file
 
 sys.path.append("..")
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--h5_file', default="data/WBC/Lyse fix sample_1_Focused & Singlets & CD45 pos.h5",
+parser.add_argument('--path_to_data', default="data/JurkatCells/PreprocessedDatah5",
                     help="dataset root dir")
-parser.add_argument('--batch_size', default=64, help="batch size", type=int)
+parser.add_argument('--batch_size', default=256, help="batch size", type=int)
 parser.add_argument('--n_epochs', default=30, help="epochs to train", type=int)
-parser.add_argument('--num_workers', type=int, default=0, help='number of data loading workers')
+parser.add_argument('--num_workers', type=int, default=2, help='number of data loading workers')
 parser.add_argument('--lr', default=0.001, help="learning rate", type=float)
 parser.add_argument('--model_save_path', default='models/', help="path to save models")
 parser.add_argument('--model_name', default='best_metrics', help="path to save models")
@@ -35,13 +37,8 @@ parser.add_argument('--only_channels', default=[], help="the channels to be used
 parser.add_argument('--only_classes', default=None, help="the classes to be used for the model training", nargs='+',
                     type=int)
 parser.add_argument('--dev', default='cpu', help="cpu or cuda")
-parser.add_argument('--save_test', default=None, help="path where test data should be saved")
 opt = parser.parse_args()
 
-STATISTICS = {'mean': torch.tensor([304.2639, 9.8240, 22.6822, 8.7255, 11.8347, 21.6101, 24.2642,
-                                    20.3926, 297.5268, 21.1990, 9.0134, 13.9198]),
-              'std': torch.tensor([111.9068, 13.5673, 8.3950, 3.7691, 4.4474, 23.4030, 21.6173,
-                                   16.3016, 109.4356, 8.6368, 3.8256, 5.8190])}
 
 if __name__ == '__main__':
     if opt.dev != 'cpu':
@@ -51,9 +48,17 @@ if __name__ == '__main__':
 
     timestamp = datetime.timestamp(now)
 
+    ### create a log file
     logging.basicConfig(filename=os.path.join(opt.log_dir, 'output_{}.txt'.format(timestamp)), level=logging.DEBUG)
     logging.info("the deviced being used is {}".format(opt.dev))
-    train_indx, validation_indx, test_indx = train_validation_test_split(h5_file=opt.h5_file,
+
+    postfix = 'h5'
+    file_list = [os.path.join(opt.path_to_data, f) for f in os.listdir(opt.path_to_data) if postfix in f]
+    breakpoint()
+    p = Pool(5)
+    X, y = p.map(load_h5_file, file_list)
+    breakpoint()
+    train_indx, validation_indx, test_indx = train_validation_test_split(h5_file=opt.path_to_data,
                                                                          only_classes=opt.only_classes)
 
     label_map = get_classes_map(opt.h5_file)

@@ -145,3 +145,23 @@ def plot_n_images(heatmap, number_channels):
         ax1.axes.get_yaxis().set_visible(False)
         ax1.imshow(heatmap[i - 1])
     plt.show()
+
+
+def read_data(path_to_data):
+    X = []
+    y = []
+    for image_name in os.listdir(path_to_data):
+        o_n = os.path.splitext(image_name)[0]
+        r = h5py.File(os.path.join(path_to_data, image_name), 'r')
+        X.append(int(o_n))
+        y.append(r["label"][()])
+
+    class_names = list(set(y))
+    data_map = dict(zip(sorted(set(y)), np.arange(len(set(y)))))
+    return X, y, class_names, data_map
+
+
+def calculate_weights(y_train):
+    class_sample_count = np.array([len(np.where(np.asarray(y_train) == t)[0]) for t in np.unique(y_train)])
+    weights = len(y_train) / class_sample_count
+    return weights
