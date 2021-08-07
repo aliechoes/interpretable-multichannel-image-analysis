@@ -56,7 +56,7 @@ parser.add_argument('--scaling_factor', type=float, default=255., help='scaling 
 parser.add_argument('--reshape_size', type=int, default=64, help='reshape size of the image')
 parser.add_argument('--lr', default=1e-3, help="learning rate", type=float)
 parser.add_argument('--model_save_path', default='models/', help="path to save models")
-parser.add_argument('--model_name', default='best_metrics', help="path to save models")
+parser.add_argument('--model_name', default='best_metrics', help="model name")
 parser.add_argument('--log_dir', default='logs/', help="path to save logs")
 parser.add_argument('--resume_model', default='', help="resume model name")
 parser.add_argument('--only_channels', default=[], help="the channels to be used for the model training", nargs='+',
