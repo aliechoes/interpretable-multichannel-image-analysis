@@ -83,9 +83,9 @@ if __name__ == '__main__':
     logging.info("the deviced being used is {}".format(opt.dev))
 
     # load X and y
-    X, y, class_names, data_map = read_data(opt.path_to_data)
-
-    #initialize cross validation
+    X, y, _, data_map = read_data(opt.path_to_data)
+    class_names = [i for i in list(data_map.keys())]
+    # initialize cross validation
     kf = KFold(n_splits=opt.n_splits, shuffle=True)
 
     logging.info("Start validation")
@@ -111,7 +111,8 @@ if __name__ == '__main__':
     fold = 0
     for train_indx, test_indx in kf.split(X):
         y_train = [y[i] for i in train_indx]
-        train_indx, val_indx, y_train, _ = train_test_split(train_indx,y_train, test_size=0.15, stratify=y_train, random_state=42)
+        train_indx, val_indx, y_train, _ = train_test_split(train_indx, y_train, test_size=0.15, stratify=y_train,
+                                                            random_state=42)
 
         # initialize train_dataset and trainloader to calculate the train distribution
 
@@ -133,7 +134,7 @@ if __name__ == '__main__':
         statistics = get_statistics_h5(trainloader, opt.only_channels, logging, opt.num_channels)
 
         # use oversampling to cope with unbalance data
-        #y_train = [y[i] for i in train_indx]
+        # y_train = [y[i] for i in train_indx]
         weights = calculate_weights(y_train)
 
         train_indx, _ = oversample.fit_resample(np.asarray(train_indx).reshape(-1, 1), np.asarray(y_train))
@@ -232,7 +233,7 @@ if __name__ == '__main__':
 
                 # print statistics
                 running_loss += loss.item()
-                if i % 50 == 49:  # print every 2000 mini-batches
+                if i % 2000 == 1999:  # print every 2000 mini-batches
                     logging.info('[%d, %5d] training loss: %.8f' % (epoch + 1, i + 1, running_loss / 2000))
                     running_loss = 0.0
 
@@ -257,8 +258,8 @@ if __name__ == '__main__':
                 epoch_val_loss /= step_val
                 scheduler.step(epoch_val_loss)
                 f1_sc = f1_score(y.cpu(), y_pred.cpu(), average='macro')
-                cr = classification_report(y.detach().cpu(), y_pred.detach().cpu(), target_names=class_names, digits=4)
-                logging.info(cr)
+                # cr = classification_report(y.detach().cpu(), y_pred.detach().cpu(), target_names=class_names, digits=4)
+                # logging.info(cr)
                 if f1_sc > best_metric:
                     best_metric = f1_sc
                     best_metric_epoch = epoch + 1
@@ -267,7 +268,6 @@ if __name__ == '__main__':
                                             "cv_model_fold_{}_dict_{}.pth".format(fold, opt.model_name)))
                     print('saved new best metric model')
 
-
         logging.info('Finished Training')
 
         correct = 0.
@@ -275,7 +275,7 @@ if __name__ == '__main__':
         y_true = list()
         y_pred = list()
         best_saved_model = torch.load(os.path.join(opt.model_save_path,
-                                            "cv_model_fold_{}_dict_{}.pth".format(fold, opt.model_name)))
+                                                   "cv_model_fold_{}_dict_{}.pth".format(fold, opt.model_name)))
         model.load_state_dict(best_saved_model)
 
         with torch.no_grad():
@@ -296,6 +296,6 @@ if __name__ == '__main__':
         cr = classification_report(y_true, y_pred, target_names=opt.class_names, digits=4)
         logging.info(cr)
         f1_score_original = f1_score(y_true, y_pred, average=None, labels=np.arange(opt.num_classes))
-        df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=opt.class_names)
+        df = pd.DataFrame(np.atleast_2d(f1_score_original), columns=class_names)
         logging.info(df.to_string())
         torch.cuda.empty_cache()

@@ -285,7 +285,7 @@ class Dataset_Generator_Preprocessed_h5(Dataset):
 
     def __init__(self, path_to_data, set_indx, scaling_factor=4095., reshape_size=64, data_map=[],
                  transform=None, means=None, stds=None,
-                 only_channels=[], channels_to_shuffle=[], only_classes=None, num_channels=12):
+                 only_channels=[], channels_to_shuffle=[], only_classes=None, num_channels=12, return_only_image=False):
 
         self.path_to_data = path_to_data
         self.only_channels = only_channels
@@ -296,6 +296,7 @@ class Dataset_Generator_Preprocessed_h5(Dataset):
         self.scaling_factor = scaling_factor
         self.reshape_size = reshape_size
         self.data_map = data_map
+        self.return_only_image = return_only_image
 
         self.num_channels = num_channels
         self.transform = transform
@@ -355,12 +356,14 @@ class Dataset_Generator_Preprocessed_h5(Dataset):
                     image[channel] = image[channel].flatten()[torch.randperm(len(image[channel].flatten()))].reshape(
                         channel_shape)
 
-            sample = {'image': image, 'label': torch.from_numpy(label), "idx": idx, "object_number": object_number}
+            sample = {'image': image, 'label': torch.from_numpy(label).long(), "idx": idx, "object_number": object_number}
 
         except:
             sample = {'image': torch.from_numpy(
             np.zeros((self.num_channels, self.reshape_size, self.reshape_size), dtype=np.float64)),
-            'label': torch.from_numpy(np.array([-1])), "idx": idx, "object_number": np.array([-1])}
+            'label': torch.from_numpy(np.array([-1])).long(), "idx": idx, "object_number": np.array([-1])}
+        if self.return_only_image:
+            return sample["image"].float(), sample["label"][0]
         return sample
 
 
